@@ -33,7 +33,7 @@ class TvSettingsTests {
     @Before fun setUp() { TvFixture.assumeTv() }
 
     @After fun cleanUp() {
-        RecordedNetwork.answers.remove("https://api.github.com/repos/Yigder/Prism/releases/latest")
+        RecordedNetwork.answers.remove("https://api.github.com/repos/teamsharkd89-commits/Prism/releases/latest")
         Fixture.container.settings.setNormalize(true)
     }
 
@@ -281,9 +281,9 @@ class TvSettingsTests {
     }
 
     @Test fun anUpdateShowsOnHomeAndTheRemoteReachesIt() {
-        RecordedNetwork.answers["https://api.github.com/repos/Yigder/Prism/releases/latest"] =
-            """{"tag_name":"v9.9.9","html_url":"https://github.com/Yigder/Prism/releases/tag/v9.9.9",
-               "assets":[{"name":"Prism.apk","browser_download_url":"https://github.com/Yigder/Prism/releases/download/v9.9.9/Prism.apk"}]}"""
+        RecordedNetwork.answers["https://api.github.com/repos/teamsharkd89-commits/Prism/releases/latest"] =
+            """{"tag_name":"v9.9.9","html_url":"https://github.com/teamsharkd89-commits/Prism/releases/tag/v9.9.9",
+               "assets":[{"name":"Prism.apk","browser_download_url":"https://github.com/teamsharkd89-commits/Prism/releases/download/v9.9.9/Prism.apk"}]}"""
         Fixture.ready()
         kotlinx.coroutines.runBlocking { Fixture.container.updates.checkNow() }
         TvFixture.launch()
