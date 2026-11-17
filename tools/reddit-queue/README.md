@@ -1,12 +1,12 @@
 # Reddit reply queue
 
-A small tool for Prism's developer, to answer people in r/PrismMusicApp sooner. It is not part of the app.
+A small tool for DVNE's developer, to answer people in r/DVNEMusicApp sooner. It is not part of the app.
 
 ## What it does
 
-1. `fetch.ps1` reads the newest posts and comments of r/PrismMusicApp (two requests per run).
+1. `fetch.ps1` reads the newest posts and comments of r/DVNEMusicApp (two requests per run).
 2. A reply to each question or bug report is drafted on the developer's PC with an AI assistant (Claude), checked
-   against Prism's source code and its GitHub issues.
+   against DVNE's source code and its GitHub issues.
 3. `queue.ps1` shows the developer each draft. They approve it, edit it, skip it or leave it for later.
 4. Only an approved reply is sent, as a comment in that thread, from the developer's account.
 
@@ -16,7 +16,7 @@ unattended posting.
 ## What it does not do
 
 - No votes, no private messages or chats, no new threads.
-- No other subreddit than r/PrismMusicApp.
+- No other subreddit than r/DVNEMusicApp.
 - No repeated or copied replies.
 - No Reddit data is kept beyond the threads being answered, none is shared, none is used to train AI.
 
@@ -40,4 +40,4 @@ and the developer pastes and sends it by hand.
 Keys and the queue are kept in `%USERPROFILE%\.prism-reddit`, outside this repository; the keys are encrypted for
 the developer's Windows account.
 
-License: GPL-3.0-or-later, like Prism.
+License: GPL-3.0-or-later, like DVNE.

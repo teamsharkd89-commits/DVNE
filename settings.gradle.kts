@@ -15,6 +15,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Prism"
+rootProject.name = "DVNE"
 include(":app")
 include(":baselineprofile")

@@ -8,7 +8,7 @@
     <!-- Saving lyrics into your music files on Android 9 and older (newer ones ask per change instead). -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="28" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <!-- Prism Connect: finding speakers and TVs on the Wi-Fi (SSDP multicast). -->
+    <!-- DVNE Connect: finding speakers and TVs on the Wi-Fi (SSDP multicast). -->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -23,18 +23,18 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-feature android:name="android.hardware.microphone" android:required="false" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
-    <!-- Installing Prism's own updates from GitHub (the listener confirms each in Android's installer). -->
+    <!-- Installing DVNE's own updates from GitHub (the listener confirms each in Android's installer). -->
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <uses-permission android:name="android.permission.UPDATE_PACKAGES_WITHOUT_USER_ACTION" />
-    <!-- Only to open Android's "uninstall Prism?" prompt when moving to the newly signed Prism. -->
+    <!-- Only to open Android's "uninstall DVNE?" prompt when moving to the newly signed DVNE. -->
     <uses-permission android:name="android.permission.REQUEST_DELETE_PACKAGES" />
-    <!-- Prism's lock screen (off by default; asked for only when it's turned on). Android lets a screen start from the
-         background only with "Display over other apps", which is the only reason it's here: Prism never draws over
+    <!-- DVNE's lock screen (off by default; asked for only when it's turned on). Android lets a screen start from the
+         background only with "Display over other apps", which is the only reason it's here: DVNE never draws over
          other apps. The full-screen intent is the fallback when that isn't allowed: it comes up later, as the phone wakes. -->
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
 
-    <!-- Prism TV (1.8.0): the same APK on Android TV and Google TV. A TV has no touchscreen, often no Wi-Fi (Ethernet),
+    <!-- DVNE TV (1.8.0): the same APK on Android TV and Google TV. A TV has no touchscreen, often no Wi-Fi (Ethernet),
          camera or autofocus; none of them is needed (microphone and camera are declared above). -->
     <uses-feature android:name="android.software.leanback" android:required="false" />
     <uses-feature android:name="android.hardware.touchscreen" android:required="false" />
@@ -54,7 +54,7 @@
     </queries>
 
     <application
-        android:name=".PrismApp"
+        android:name=".DvneApp"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -65,24 +65,24 @@
         android:label="${appLabel}"
         android:localeConfig="@xml/locales_config"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Prism"
+        android:theme="@style/Theme.Dvne"
         tools:targetApi="36">
 
-        <!-- Profiling from adb: only the side-by-side test copy ("Prism Dev", build.gradle.kts). -->
+        <!-- Profiling from adb: only the side-by-side test copy ("DVNE Dev", build.gradle.kts). -->
         <profileable
             android:shell="${profileable}"
             tools:targetApi="29" />
 
         <!-- The app's one screen. Its launcher entries are the aliases below, one per app icon (#20). -->
         <activity
-            android:name=".PrismActivity"
+            android:name=".DvneActivity"
             android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|keyboardHidden|uiMode"
             android:exported="true"
             android:launchMode="singleTask"
             android:supportsPictureInPicture="true"
             android:resizeableActivity="true"
             android:windowSoftInputMode="adjustResize">
-            <!-- Holding the "Prism" Quick Settings tile opens Prism. -->
+            <!-- Holding the "DVNE" Quick Settings tile opens DVNE. -->
             <intent-filter>
                 <action android:name="android.service.quicksettings.action.QS_TILE_PREFERENCES" />
             </intent-filter>
@@ -93,20 +93,20 @@
                 <data android:scheme="https" />
                 <data android:host="music.youtube.com" />
             </intent-filter>
-            <!-- YouTube / YouTube Music links shared from other apps ("Play in Prism"). -->
+            <!-- YouTube / YouTube Music links shared from other apps ("Play in DVNE"). -->
             <intent-filter android:label="@string/open_in_prism">
                 <action android:name="android.intent.action.SEND" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:mimeType="text/plain" />
             </intent-filter>
-            <!-- Looks (1.7.3): a .prismlook file (a zip) sent to Prism or opened with it. -->
+            <!-- Looks (1.7.3): a .prismlook file (a zip) sent to DVNE or opened with it. -->
             <intent-filter android:label="@string/open_in_prism">
                 <action android:name="android.intent.action.SEND" />
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:mimeType="application/zip" />
             </intent-filter>
-            <!-- An audio file opened from a file manager ("Open with Prism", 1.8.5): it plays from the file (OpenedAudio). -->
+            <!-- An audio file opened from a file manager ("Open with DVNE", 1.8.5): it plays from the file (OpenedAudio). -->
             <intent-filter android:label="@string/open_in_prism">
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -121,67 +121,67 @@
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="prism" android:host="lastfm" />
+                <data android:scheme="dvne" android:host="lastfm" />
                 <!-- Back from Spotify's authorize page (1.8.1): its loopback answer sends the browser here. -->
-                <data android:scheme="prism" android:host="spotify" />
-                <!-- A Prism TV's pairing QR code (1.8.0). -->
-                <data android:scheme="prism" android:host="pair" />
+                <data android:scheme="dvne" android:host="spotify" />
+                <!-- A DVNE TV's pairing QR code (1.8.0). -->
+                <data android:scheme="dvne" android:host="pair" />
             </intent-filter>
         </activity>
 
         <!-- App icons (Settings → Appearance → App icon, #20): exactly one of these launcher entries is enabled
              (`AppIcons`). The classic one keeps the old ".MainActivity" name, so home-screen icons from before
              1.6.7 still point at it. -->
-        <activity-alias android:name=".MainActivity" android:targetActivity=".PrismActivity" android:exported="true"
+        <activity-alias android:name=".MainActivity" android:targetActivity=".DvneActivity" android:exported="true"
             android:enabled="true" android:icon="@mipmap/ic_launcher" android:roundIcon="@mipmap/ic_launcher">
             <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter>
         </activity-alias>
-        <activity-alias android:name=".IconSpectrum" android:targetActivity=".PrismActivity" android:exported="true"
+        <activity-alias android:name=".IconSpectrum" android:targetActivity=".DvneActivity" android:exported="true"
             android:enabled="false" android:icon="@mipmap/ic_launcher_spectrum" android:roundIcon="@mipmap/ic_launcher_spectrum">
             <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter>
         </activity-alias>
-        <activity-alias android:name=".IconSolid" android:targetActivity=".PrismActivity" android:exported="true"
+        <activity-alias android:name=".IconSolid" android:targetActivity=".DvneActivity" android:exported="true"
             android:enabled="false" android:icon="@mipmap/ic_launcher_solid" android:roundIcon="@mipmap/ic_launcher_solid">
             <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter>
         </activity-alias>
-        <activity-alias android:name=".IconLight" android:targetActivity=".PrismActivity" android:exported="true"
+        <activity-alias android:name=".IconLight" android:targetActivity=".DvneActivity" android:exported="true"
             android:enabled="false" android:icon="@mipmap/ic_launcher_light" android:roundIcon="@mipmap/ic_launcher_light">
             <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter>
         </activity-alias>
-        <activity-alias android:name=".IconWave" android:targetActivity=".PrismActivity" android:exported="true"
+        <activity-alias android:name=".IconWave" android:targetActivity=".DvneActivity" android:exported="true"
             android:enabled="false" android:icon="@mipmap/ic_launcher_wave" android:roundIcon="@mipmap/ic_launcher_wave">
             <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter>
         </activity-alias>
-        <activity-alias android:name=".IconMidnight" android:targetActivity=".PrismActivity" android:exported="true"
+        <activity-alias android:name=".IconMidnight" android:targetActivity=".DvneActivity" android:exported="true"
             android:enabled="false" android:icon="@mipmap/ic_launcher_midnight" android:roundIcon="@mipmap/ic_launcher_midnight">
             <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter>
         </activity-alias>
-        <activity-alias android:name=".IconDusk" android:targetActivity=".PrismActivity" android:exported="true"
+        <activity-alias android:name=".IconDusk" android:targetActivity=".DvneActivity" android:exported="true"
             android:enabled="false" android:icon="@mipmap/ic_launcher_dusk" android:roundIcon="@mipmap/ic_launcher_dusk">
             <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter>
         </activity-alias>
-        <activity-alias android:name=".IconPaper" android:targetActivity=".PrismActivity" android:exported="true"
+        <activity-alias android:name=".IconPaper" android:targetActivity=".DvneActivity" android:exported="true"
             android:enabled="false" android:icon="@mipmap/ic_launcher_paper" android:roundIcon="@mipmap/ic_launcher_paper">
             <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter>
         </activity-alias>
-        <activity-alias android:name=".IconNeon" android:targetActivity=".PrismActivity" android:exported="true"
+        <activity-alias android:name=".IconNeon" android:targetActivity=".DvneActivity" android:exported="true"
             android:enabled="false" android:icon="@mipmap/ic_launcher_neon" android:roundIcon="@mipmap/ic_launcher_neon">
             <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter>
         </activity-alias>
-        <activity-alias android:name=".IconPastel" android:targetActivity=".PrismActivity" android:exported="true"
+        <activity-alias android:name=".IconPastel" android:targetActivity=".DvneActivity" android:exported="true"
             android:enabled="false" android:icon="@mipmap/ic_launcher_pastel" android:roundIcon="@mipmap/ic_launcher_pastel">
             <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter>
         </activity-alias>
-        <activity-alias android:name=".IconLine" android:targetActivity=".PrismActivity" android:exported="true"
+        <activity-alias android:name=".IconLine" android:targetActivity=".DvneActivity" android:exported="true"
             android:enabled="false" android:icon="@mipmap/ic_launcher_line" android:roundIcon="@mipmap/ic_launcher_line">
             <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter>
         </activity-alias>
-        <activity-alias android:name=".IconGold" android:targetActivity=".PrismActivity" android:exported="true"
+        <activity-alias android:name=".IconGold" android:targetActivity=".DvneActivity" android:exported="true"
             android:enabled="false" android:icon="@mipmap/ic_launcher_gold" android:roundIcon="@mipmap/ic_launcher_gold">
             <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter>
         </activity-alias>
 
-        <!-- Prism TV (1.8.0): the TV launcher's entry, with its own screens for a remote (ui/tv). On a TV the phone's
+        <!-- DVNE TV (1.8.0): the TV launcher's entry, with its own screens for a remote (ui/tv). On a TV the phone's
              screen above sends itself here. -->
         <activity
             android:name=".TvActivity"
@@ -189,16 +189,16 @@
             android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|keyboard|keyboardHidden|navigation|uiMode"
             android:exported="true"
             android:launchMode="singleTask"
-            android:theme="@style/Theme.Prism">
+            android:theme="@style/Theme.Dvne">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <!-- Prism's screensaver (1.8.0), where the TV or phone lets you pick one: the ambient screen. -->
+        <!-- DVNE's screensaver (1.8.0), where the TV or phone lets you pick one: the ambient screen. -->
         <service
-            android:name=".ui.tv.PrismDream"
+            android:name=".ui.tv.DvneDream"
             android:exported="true"
             android:label="@string/app_name"
             android:permission="android.permission.BIND_DREAM_SERVICE">
@@ -208,7 +208,7 @@
             </intent-filter>
         </service>
 
-        <!-- "Hey Google, play … on Prism": Assistant only offers apps that take this as music sources (Gemini keeps its own
+        <!-- "Hey Google, play … on DVNE": Assistant only offers apps that take this as music sources (Gemini keeps its own
              short list of linked services, and doesn't use it: #362). It runs over the lock screen (the phone sits locked in the car), where it shows nothing and closes at once. -->
         <activity
             android:name=".playback.VoicePlayActivity"
@@ -234,7 +234,7 @@
             android:screenOrientation="userPortrait"
             android:showWhenLocked="true"
             android:taskAffinity=""
-            android:theme="@style/Theme.Prism.LockScreen"
+            android:theme="@style/Theme.Dvne.LockScreen"
             tools:targetApi="27" />
 
         <!-- The playback service, once per app icon (Android Auto shows the media service's icon); only the one for the
@@ -416,13 +416,13 @@
             android:exported="true"
             android:excludeFromRecents="true"
             android:taskAffinity=""
-            android:theme="@style/Theme.Prism">
+            android:theme="@style/Theme.Dvne">
             <intent-filter><action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" /></intent-filter>
         </activity>
 
         <!-- Home screen widgets: one per look, so each shows up in the launcher's list. -->
         <receiver
-            android:name=".widget.PrismWidget"
+            android:name=".widget.DvneWidget"
             android:exported="false"
             android:label="@string/widget_prism_name">
             <intent-filter><action android:name="android.appwidget.action.APPWIDGET_UPDATE" /></intent-filter>
@@ -509,7 +509,7 @@
             android:name=".download.CancelDownloadsReceiver"
             android:exported="false" />
 
-        <!-- Results from Android's installer while Prism updates itself. -->
+        <!-- Results from Android's installer while DVNE updates itself. -->
         <receiver
             android:name=".data.UpdateInstallReceiver"
             android:exported="false" />
@@ -523,7 +523,7 @@
             android:resource="@drawable/ic_notification" />
 
         <service
-            android:name=".download.PrismDownloadService"
+            android:name=".download.DvneDownloadService"
             android:exported="false"
             android:foregroundServiceType="dataSync">
             <intent-filter>
@@ -532,7 +532,7 @@
             </intent-filter>
         </service>
 
-        <!-- Quick Settings: "Prism" plays or pauses what's lined up (1.7.8). -->
+        <!-- Quick Settings: "DVNE" plays or pauses what's lined up (1.7.8). -->
         <service
             android:name=".playback.PlayTileService"
             android:exported="true"
@@ -543,7 +543,7 @@
                 <action android:name="android.service.quicksettings.action.QS_TILE" />
             </intent-filter>
         </service>
-        <!-- Quick Settings: "Recognize song" opens Prism already listening. -->
+        <!-- Quick Settings: "Recognize song" opens DVNE already listening. -->
         <service
             android:name=".data.recognize.RecognizeTileService"
             android:exported="true"
@@ -557,7 +557,7 @@
 
         <!--
              1.8.3 (#388's log): ONNX Runtime (Sing) brings a content provider that runs at every start-up to set up its
-             telemetry, and fails there anyway (its native library is only downloaded with Sing). Prism sends nothing
+             telemetry, and fails there anyway (its native library is only downloaded with Sing). DVNE sends nothing
              anywhere and Sing loads the library itself when used, so the provider is left out.
         -->
         <provider

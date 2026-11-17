@@ -1,0 +1,35 @@
+package com.dvne.music
+
+import android.net.Uri
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import kotlinx.coroutines.runBlocking
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
+import org.junit.Test
+import org.junit.runner.RunWith
+import java.io.File
+import java.util.zip.ZipEntry
+import java.util.zip.ZipOutputStream
+
+/** Backups move between Dvne copies (#204, 1.7.9): one made by a Dvne with another app id is still a Dvne backup. */
+@RunWith(AndroidJUnit4::class)
+class BackupTest {
+    private fun zip(manifest: String?): Uri {
+        val f = File(Fixture.context.cacheDir, "test-backup-${System.nanoTime()}.zip")
+        ZipOutputStream(f.outputStream()).use { z ->
+            manifest?.let { z.putNextEntry(ZipEntry("dvne-backup.json")); z.write(it.toByteArray()); z.closeEntry() }
+            z.putNextEntry(ZipEntry("files/library/dvne.json")); z.write("{}".toByteArray()); z.closeEntry()
+        }
+        return Uri.fromFile(f)
+    }
+
+    @Test fun aBackupFromAnotherDvneCopyIsRecognised() = runBlocking {
+        val parts = Fixture.container.backup.partsOf(zip("""{"format":2,"app":"com.netease.cloudmusic","parts":["LIBRARY"]}"""))
+        assertEquals(setOf(com.dvne.music.data.BackupPart.LIBRARY), parts)
+    }
+
+    @Test fun aZipThatIsntABackupIsnt() = runBlocking {
+        assertNull(Fixture.container.backup.partsOf(zip(null)))
+        assertNull(Fixture.container.backup.partsOf(zip("""{"format":2,"parts":["LIBRARY"]}""")))
+    }
+}

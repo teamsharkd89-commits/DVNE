@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Replay (4×2, 1.8.5): this week's top song (cover, title, artist, plays and time) and beside it the top artist (their
-     photo when one is stored, name, time). Nothing played yet: Prism's mark and a line. -->
+     photo when one is stored, name, time). Nothing played yet: DVNE's mark and a line. -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@android:id/background"
     android:layout_width="match_parent"

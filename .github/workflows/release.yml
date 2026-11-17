@@ -23,12 +23,12 @@ jobs:
 
       - name: Decode keystore and write keystore.properties
         run: |
-          echo "${{ secrets.PRISM_KEYSTORE_BASE64 }}" | base64 -d > prism-release.keystore
+          echo "${{ secrets.DVNE_KEYSTORE_BASE64 }}" | base64 -d > dvne-release.keystore
           cat > keystore.properties <<EOF
-          storeFile=prism-release.keystore
-          storePassword=${{ secrets.PRISM_STORE_PASSWORD }}
-          keyAlias=${{ secrets.PRISM_KEY_ALIAS }}
-          keyPassword=${{ secrets.PRISM_KEY_PASSWORD }}
+          storeFile=dvne-release.keystore
+          storePassword=${{ secrets.DVNE_STORE_PASSWORD }}
+          keyAlias=${{ secrets.DVNE_KEY_ALIAS }}
+          keyPassword=${{ secrets.DVNE_KEY_PASSWORD }}
           EOF
 
       - name: Read version
@@ -42,16 +42,16 @@ jobs:
 
       - name: Prepare artifacts
         run: |
-          cp app/build/outputs/apk/release/app-release.apk Prism.apk
-          sha256sum Prism.apk > SHA256SUMS.txt
+          cp app/build/outputs/apk/release/app-release.apk DVNE.apk
+          sha256sum DVNE.apk > SHA256SUMS.txt
 
       - name: Publish release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ steps.version.outputs.version }}
-          name: Prism ${{ steps.version.outputs.version }}
+          name: DVNE ${{ steps.version.outputs.version }}
           files: |
-            Prism.apk
+            DVNE.apk
             SHA256SUMS.txt
           draft: false
           prerelease: false

@@ -1,23 +1,22 @@
 <div align="center">
 
-<img src="docs/screenshots/icon.png" width="96" alt="Prism app icon">
+<img src="docs/screenshots/icon.png" width="96" alt="DVNE app icon">
 
-# Prism
+# DVNE
 
 **Your music, refracted.**<br>
 A free YouTube Music app for Android phones and TVs.<br>
 Lyrics that light up word by word, mixes made on your phone, and no ads or tracking.
 
-[![Latest release](https://img.shields.io/github/v/release/Yigder/Prism?label=download&color=7c4dff)](../../releases/latest)
+[![Latest release](https://img.shields.io/github/v/release/teamsharkd89-commits/DVNE?label=download&color=7c4dff)](../../releases/latest)
 ![Android 8.0+](https://img.shields.io/badge/Android-8.0%2B-3ddc84?logo=android&logoColor=white)
 [![License: GPL-3.0-or-later](https://img.shields.io/badge/license-GPL--3.0--or--later-blue)](LICENSE)
-[![Support on Ko-fi](https://img.shields.io/badge/Ko--fi-support%20Prism-ff5e5b?logo=ko-fi&logoColor=white)](https://ko-fi.com/yigder)
 
-### [⬇ Download Prism.apk](../../releases/latest/download/Prism.apk)
+### [⬇ Download DVNE.apk](../../releases/latest/download/DVNE.apk)
 
-[What's new](../../releases/latest) · [All changes](CHANGELOG.md) · [Watch the film](../../releases/download/v1.8.6/Prism-1.8.6-film.mp4)
+[What's new](../../releases/latest) · [All changes](CHANGELOG.md)
 
-<a href="../../releases/download/v1.8.6/Prism-1.8.6-film.mp4"><img src="docs/screenshots/canvas-loop.webp" width="720" alt="Prism 1.8.6, Prism Canvas: a music video's loop fills the player and the controls fade away. Click to watch the one-minute film."></a>
+<img src="docs/screenshots/canvas-loop.webp" width="720" alt="DVNE 1.8.7, DVNE Canvas: a music video's loop fills the player and the controls fade away.">
 
 <img src="docs/screenshots/home.jpg" width="24%" alt="Home with the Replay card, shortcuts and Made for you">
 <img src="docs/screenshots/player.jpg" width="24%" alt="Now playing, colored by the album art">
@@ -27,34 +26,34 @@ Lyrics that light up word by word, mixes made on your phone, and no ads or track
 </div>
 
 > [!NOTE]
-> Prism is an independent, unofficial app. It is not affiliated with, endorsed by, or connected to Google, YouTube or YouTube Music.
+> DVNE is an independent, unofficial app. It is not affiliated with, endorsed by, or connected to Google, YouTube or YouTube Music.
 
 ## Install
 
-1. Download **[Prism.apk](../../releases/latest/download/Prism.apk)** on your phone (Android 8.0 or newer).
+1. Download **[DVNE.apk](../../releases/latest/download/DVNE.apk)** on your phone (Android 8.0 or newer).
 2. Open it. Android will ask you to allow installs from your browser or file manager.
 3. That's it. You can sign in with your YouTube Music account to sync your library, or skip that.
 
 Updates: when there's a new version, tap the banner on Home. Your downloads, history and settings are kept.
 
-**On a TV** (Android TV or Google TV): type code **8986606** into the Downloader app on the TV. Or, on your phone, turn on Settings → Speakers, TVs & browser → Share Prism with a TV, then type the address it shows into the TV.
+**On a TV** (Android TV or Google TV): type code **8986606** into the Downloader app on the TV. Or, on your phone, turn on Settings → Speakers, TVs & browser → Share DVNE with a TV, then type the address it shows into the TV.
 
 ### If Android says "App was denied access"
 
-The optional lock screen player needs a permission called "Display over other apps". From Android 13, Android may refuse it at first, because Prism doesn't come from a store. To allow it:
+The optional lock screen player needs a permission called "Display over other apps". From Android 13, Android may refuse it at first, because DVNE doesn't come from a store. To allow it:
 
-1. Open Prism's App info page, and tap ⋮ at the top right.
+1. Open DVNE's App info page, and tap ⋮ at the top right.
 2. Tap **Allow restricted settings**.
 3. Go back and allow the permission.
 
-Prism walks you through this on the setting's page. It uses the permission only to bring its player up on your lock screen, and never draws over other apps.
+DVNE walks you through this on the setting's page. It uses the permission only to bring its player up on your lock screen, and never draws over other apps.
 
 ## New in 1.8.7
 
 It just plays: this release is about the song you picked playing, and playing on.
 
-- **No more skips from a network hiccup:** Prism tries again from the same place, and waits when the phone is offline.
-- **"This song can't be played" on one Wi-Fi network:** Prism tries another way and remembers what worked there.
+- **No more skips from a network hiccup:** DVNE tries again from the same place, and waits when the phone is offline.
+- **"This song can't be played" on one Wi-Fi network:** DVNE tries another way and remembers what worked there.
 - **Is playback working?** A check in Settings → Backup & about that says, in plain words, what works on your phone and network.
 - **The right lyrics:** another song's lyrics are refused, and missing lyrics come back sooner.
 - **Keep lyrics showing:** the line being sung stays over a full-screen Canvas.
@@ -62,7 +61,7 @@ It just plays: this release is about the song you picked playing, and playing on
 
 Everything is worked out on your phone. See every change in the [changelog](CHANGELOG.md).
 
-## What Prism does
+## What DVNE does
 
 <table>
 <tr>
@@ -117,7 +116,7 @@ Find out what song is playing around you. Listen to podcasts with speed control,
 </tr>
 <tr>
 <td><img src="docs/screenshots/player.jpg" alt="Now playing"></td>
-<td><img src="docs/screenshots/account.jpg" alt="Prism Account"></td>
+<td><img src="docs/screenshots/account.jpg" alt="DVNE Account"></td>
 <td>
 
 ### No account needed
@@ -127,13 +126,13 @@ Make playlists and save albums without signing in. Or sign in to sync your likes
 </tr>
 </table>
 
-### Prism on your TV
+### DVNE on your TV
 
 Big lyrics, music videos and Sing, with screens made for a remote. Your phone can act as the remote too, and sign the TV in for you.
 
 <p align="center">
-<img src="docs/screenshots/tv-home.jpg" width="49%" alt="Prism TV's Home: Quick picks and holiday mixes">
-<img src="docs/screenshots/tv-player.jpg" width="49%" alt="Prism TV's full-screen player">
+<img src="docs/screenshots/tv-home.jpg" width="49%" alt="DVNE TV's Home: Quick picks and holiday mixes">
+<img src="docs/screenshots/tv-player.jpg" width="49%" alt="DVNE TV's full-screen player">
 </p>
 
 ### And more
@@ -142,29 +141,29 @@ Big lyrics, music videos and Sing, with screens made for a remote. Your phone ca
 |---|---|
 | **Make it yours** | Colors, fonts, icons, backgrounds, and layouts for the player and lyrics. Save them as a Look, share it, or try one from the community. |
 | **Lock screen player** | Turn it on to see the cover, controls and lyrics on your lock screen. |
-| **Offline** | Download songs with their lyrics and covers. Prism can also download songs you'll likely play next, and it plays your own music files. Artist pages work offline too. |
+| **Offline** | Download songs with their lyrics and covers. DVNE can also download songs you'll likely play next, and it plays your own music files. Artist pages work offline too. |
 | **Sound** | Equalizer, headphone correction, even volume between songs, crossfades, speed and pitch, and lossless playback of your own files. |
-| **Play anywhere** | Send music to Chromecast, Google TV and other speakers and TVs on your Wi-Fi. Control Prism from a browser, or move playback to another phone. |
+| **Play anywhere** | Send music to Chromecast, Google TV and other speakers and TVs on your Wi-Fi. Control DVNE from a browser, or move playback to another phone. |
 | **Listen together** | Phones on the same Wi-Fi play in step, and friends can add songs to your queue. Make a shared Blend playlist with a friend from a QR code. |
 | **Music videos** | Switch any song to its official video in one tap, with the lyrics still in sync. |
 | **Bring your history** | Bring in your plays and playlists from Spotify's data download, YouTube Music or Last.fm. They stay on your phone. |
-| **Connect other services** | Optional Last.fm scrobbling and Discord status. Spotify connects through a free developer app you make yourself, not a regular Spotify sign-in, and Prism walks you through it. |
+| **Connect other services** | Optional Last.fm scrobbling and Discord status. Spotify connects through a free developer app you make yourself, not a regular Spotify sign-in, and DVNE walks you through it. |
 | **Android Auto** | Your library, your mixes, and lyrics on the car screen. |
-| **Your language** | Prism comes in 31 languages. They were translated by AI (Claude), so [corrections are welcome](CONTRIBUTING.md#translations). |
-| **Slower phones** | Performance mode is one switch that makes Prism much lighter to run. |
+| **Your language** | DVNE comes in 31 languages. They were translated by AI (Claude), so [corrections are welcome](CONTRIBUTING.md#translations). |
+| **Slower phones** | Performance mode is one switch that makes DVNE much lighter to run. |
 
-<img src="docs/screenshots/android-auto-lyrics.jpg" width="600" alt="Prism on Android Auto, the sung line shown in place of the song title">
+<img src="docs/screenshots/android-auto-lyrics.jpg" width="600" alt="DVNE on Android Auto, the sung line shown in place of the song title">
 
 > [!WARNING]
 > **Android Auto lyrics are for passengers and for use while parked only.** Do not read lyrics while driving. You can turn car lyrics off in Settings → Devices & connections → Android Auto, or with the lyrics button on the car's player.
 
-**Prism not in Android Auto's list?** Android Auto hides apps that don't come from the Play Store. Open Android Auto's settings, tap the version number about 10 times, then in the ⋮ menu → Developer settings turn on **Unknown sources**.
+**DVNE not in Android Auto's list?** Android Auto hides apps that don't come from the Play Store. Open Android Auto's settings, tap the version number about 10 times, then in the ⋮ menu → Developer settings turn on **Unknown sources**.
 
 ## Privacy
 
-There is no Prism server and no tracking. Your history, recommendations, downloads and settings stay on your phone. If you sign in, your session is stored only inside the app.
+There is no DVNE server and no tracking. Your history, recommendations, downloads and settings stay on your phone. If you sign in, your session is stored only inside the app.
 
-Prism connects directly from your phone to YouTube Music, to lyric services, and to a few music services for genres and release dates. A few features also send what they need to work:
+DVNE connects directly from your phone to YouTube Music, to lyric services, and to a few music services for genres and release dates. A few features also send what they need to work:
 
 - **Song recognition** sends an audio fingerprint to Shazam, never the sound itself.
 - **Lyrics translation** and some pronunciation guides send the lyrics' text to Google Translate.
@@ -172,19 +171,19 @@ Prism connects directly from your phone to YouTube Music, to lyric services, and
 
 Listen Together, Blend and moving playback to another phone only talk to other devices on your Wi-Fi, and only while they're open.
 
-## Support Prism
+## Support DVNE
 
-Prism is free, and I build it in my spare time. If you enjoy it, you can buy me a coffee on **[Ko-fi](https://ko-fi.com/yigder)**. Every tip helps, and none is expected.
+DVNE is free, and I build it in my spare time. If you enjoy it, you can follow it on **[Instagram @dvn.vii](https://www.instagram.com/dvn.vii)**.
 
-<a href="https://ko-fi.com/yigder"><img src="https://img.shields.io/badge/Buy%20me%20a%20coffee-Ko--fi-ff5e5b?style=for-the-badge&logo=ko-fi&logoColor=white" alt="Support Prism on Ko-fi"></a>
+<a href="https://www.instagram.com/dvn.vii"><img src="https://img.shields.io/badge/Instagram-@dvn.vii-E4405F?logo=instagram&logoColor=white" alt="Follow DVNE on Instagram"></a>
 
 ## Help out
 
-Bug reports and ideas are welcome in [Issues](../../issues). To build Prism or send a change, see [CONTRIBUTING.md](CONTRIBUTING.md).
+Bug reports and ideas are welcome in [Issues](../../issues). To build DVNE or send a change, see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Credits
 
-Prism doesn't copy artwork, fonts or code from other apps, but many of its ideas and sources come from elsewhere.
+DVNE doesn't copy artwork, fonts or code from other apps, but many of its ideas and sources come from elsewhere.
 
 **Ideas**
 
@@ -197,14 +196,13 @@ Prism doesn't copy artwork, fonts or code from other apps, but many of its ideas
 - **Music and song info:** YouTube Music. Genres from Apple's iTunes Search API and Deezer. Release dates from Deezer.
 - **Lyrics:** [Better Lyrics](https://betterlyrics.org), NetEase, KuGou, LyricsPlus, Bini, [LRCLIB](https://lrclib.net), Unison, Genius and YouTube Music. Lyrics belong to their rights holders.
 - **Animated covers:** Apple Music, Tidal and the ViVi Music canvas list.
-- **Playlist import:** handed off to [TuneMyMusic](https://www.tunemymusic.com), a separate service. Prism shares nothing with it.
+- **Playlist import:** handed off to [TuneMyMusic](https://www.tunemymusic.com), a separate service. DVNE shares nothing with it.
 - **Signed-in playback:** [yt-dlp's EJS solver](https://github.com/yt-dlp/ejs) (Unlicense), with [meriyah](https://github.com/meriyah/meriyah) and [astring](https://github.com/davidbonnet/astring).
 - **Song recognition:** Shazam's service, with the fingerprint code ported from [SongRec](https://github.com/marin-m/SongRec) (GPL-3.0).
 - **Sing:** Deezer's [Spleeter](https://github.com/deezer/spleeter) model (MIT), converted by [sherpa-onnx](https://github.com/k2-fsa/sherpa-onnx), on [ONNX Runtime](https://github.com/microsoft/onnxruntime).
 - **Headphone correction:** [AutoEq](https://github.com/jaakkopasanen/AutoEq) (MIT).
 - **Fonts:** Outfit, Manrope, Plus Jakarta Sans, Urbanist, Nunito, Fraunces, Geist Mono, Atkinson Hyperlegible Next and OpenDyslexic, all under the SIL Open Font License.
 - **Libraries:** [NewPipe Extractor](https://github.com/TeamNewPipe/NewPipeExtractor), [Haze](https://github.com/chrisbanes/haze), [Coil](https://coil-kt.github.io/coil/), Media3 ExoPlayer and more. The app lists them all with their licenses in Settings → Backup & about → Open-source licenses.
-- **The film's music:** "Minimal Tech" by PaulYudin (Pixabay).
 
 All trademarks belong to their owners.
 
@@ -212,6 +210,6 @@ All trademarks belong to their owners.
 
 Copyright (C) 2026 Yigder
 
-Prism is free software: you can redistribute it and/or modify it under the terms of the [GNU General Public License](LICENSE) as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. It is distributed in the hope that it will be useful, but without any warranty; see the license for details.
+DVNE is free software: you can redistribute it and/or modify it under the terms of the [GNU General Public License](LICENSE) as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. It is distributed in the hope that it will be useful, but without any warranty; see the license for details.
 
-The license covers Prism's own code. The libraries it's built with keep their own licenses. Music, artwork, lyrics and the YouTube and YouTube Music names belong to their respective owners, and Prism is not affiliated with Google or YouTube.
+The license covers DVNE's own code. The libraries it's built with keep their own licenses. Music, artwork, lyrics and the YouTube and YouTube Music names belong to their respective owners, and DVNE is not affiliated with Google or YouTube.

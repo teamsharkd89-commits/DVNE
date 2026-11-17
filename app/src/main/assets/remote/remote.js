@@ -1,5 +1,5 @@
 'use strict';
-// Prism Remote: Prism on the phone, played from this browser. Talks only to the phone it was loaded from.
+// DVNE Remote: DVNE on the phone, played from this browser. Talks only to the phone it was loaded from.
 (() => {
   const $ = (id) => document.getElementById(id);
   const svg = (d, fill = true) => `<svg viewBox="0 0 24 24" aria-hidden="true">${fill ? `<path fill="currentColor" d="${d}"/>` : `<path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="${d}"/>`}</svg>`;
@@ -39,7 +39,7 @@
   async function api(path, body) {
     const opts = body === undefined
       ? { credentials: 'same-origin', cache: 'no-store' }
-      : { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json', 'X-Prism': '1' }, body: JSON.stringify(body) };
+      : { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json', 'X-DVNE': '1' }, body: JSON.stringify(body) };
     const r = await fetch(path, opts);
     if (r.status === 401) { showPair(); throw new Error('not paired'); }
     return r;
@@ -48,10 +48,10 @@
   async function send(path, body, failText) {
     try {
       const r = await api(path, body);
-      if (!r.ok) toast(failText || "Prism couldn't do that");
+      if (!r.ok) toast(failText || "DVNE couldn't do that");
       return r.ok;
     } catch (e) {
-      if (e.message !== 'not paired') toast("Can't reach Prism");
+      if (e.message !== 'not paired') toast("Can't reach DVNE");
       return false;
     }
   }
@@ -64,7 +64,7 @@
       if (h.paired) showApp(); else showPair();
     } catch (e) {
       showPair();
-      $('pair-error').textContent = "Can't reach Prism. Check that it's open on your phone and on the same Wi-Fi.";
+      $('pair-error').textContent = "Can't reach DVNE. Check that it's open on your phone and on the same Wi-Fi.";
     }
   }
 
@@ -73,7 +73,7 @@
     $('app').hidden = true;
     $('pair').hidden = false;
     setBackdrop(null);
-    document.title = 'Prism Remote';
+    document.title = 'DVNE Remote';
     setTimeout(() => $('code').focus(), 50);
   }
 
@@ -132,7 +132,7 @@
     try {
       const r = await fetch('/api/pair', {
         method: 'POST', credentials: 'same-origin',
-        headers: { 'Content-Type': 'application/json', 'X-Prism': '1' },
+        headers: { 'Content-Type': 'application/json', 'X-DVNE': '1' },
         body: JSON.stringify({ code, name: browserName() }),
       });
       if (r.ok) { $('code').value = ''; showApp(); return; }
@@ -140,7 +140,7 @@
       if (r.status === 429) err.textContent = `Too many tries. Wait ${j.seconds || 60} seconds, then use the code on the phone.`;
       else err.textContent = "That code doesn't match. Check the one on your phone (a new one shows after each pairing).";
     } catch (ex) {
-      err.textContent = "Can't reach Prism on your phone.";
+      err.textContent = "Can't reach DVNE on your phone.";
     } finally {
       button.disabled = false;
     }
@@ -176,13 +176,13 @@
     stateAt = performance.now();
     const song = s.song;
     $('title').textContent = song ? song.title : 'Nothing playing';
-    $('artist').textContent = song ? song.artist : 'Play something on Prism, or search here';
+    $('artist').textContent = song ? song.artist : 'Play something on DVNE, or search here';
     $('source').textContent = s.source || '';
     $('output').textContent = s.output === 'This phone' ? '' : `Playing on ${s.output}`;
     const art = $('art');
     if (song && song.art) { if (art.getAttribute('src') !== song.art) art.src = song.art; } else art.removeAttribute('src');
     setBackdrop(song && song.art);
-    document.title = song ? `${song.title} · ${song.artist}` : 'Prism Remote';
+    document.title = song ? `${song.title} · ${song.artist}` : 'DVNE Remote';
 
     const play = $('play');
     play.innerHTML = s.playing ? ICON.pause : ICON.play;
@@ -490,7 +490,7 @@
   });
 
   async function playSong(song, mode) {
-    const ok = await send('/api/play', { song, mode }, "Prism couldn't play that");
+    const ok = await send('/api/play', { song, mode }, "DVNE couldn't play that");
     if (ok) toast(mode === 'now' ? `Playing ${song.title}` : mode === 'next' ? `${song.title} plays next` : `${song.title} added to the queue`);
   }
 

@@ -1,7 +1,7 @@
-# Prism's icons
+# DVNE's icons
 
 Every icon in the app is drawn here, one SVG file per icon, named like its Kotlin name (`Home.svg` is
-`PrismIcons.Home`). The build turns these files into `PrismIconData` (`generatePrismIcons` in `app/build.gradle.kts`),
+`DvneIcons.Home`). The build turns these files into `DvneIconData` (`generateDvneIcons` in `app/build.gradle.kts`),
 so the app always shows exactly what's drawn here. Open them in any vector editor or browser.
 
 ## The grid

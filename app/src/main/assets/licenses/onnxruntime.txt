@@ -1,7 +1,7 @@
 ONNX Runtime
 Copyright (c) Microsoft Corporation
 
-Prism carries ONNX Runtime's Java bridge; its engine library is downloaded the first time Sing is used.
+DVNE carries ONNX Runtime's Java bridge; its engine library is downloaded the first time Sing is used.
 
 MIT License:
 
