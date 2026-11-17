@@ -1913,7 +1913,7 @@
     <string name="devices">기기</string>
     <string name="search_settings">설정 검색</string>
     <string name="no_settings_match">\"%1$s\"과(와) 일치하는 설정이 없어요</string>
-    <string name="prism">DVNE %1$s</string>
+    <string name="dvne">DVNE %1$s</string>
     <string name="unofficial_not_affiliated_with_google_or">비공식 · Google 또는 YouTube와 관련 없음</string>
     <string name="prism_has_no_server">DVNE에는 서버가 없어요</string>
     <string name="your_history_replay_and_settings_live">기록, Replay, 설정은 이 휴대전화에만 저장돼요.</string>

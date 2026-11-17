@@ -1913,7 +1913,7 @@
     <string name="devices">Enheter</string>
     <string name="search_settings">Sök i inställningar</string>
     <string name="no_settings_match">Inga inställningar matchar \"%1$s\"</string>
-    <string name="prism">DVNE %1$s</string>
+    <string name="dvne">DVNE %1$s</string>
     <string name="unofficial_not_affiliated_with_google_or">Inofficiell · inte kopplad till Google eller YouTube</string>
     <string name="prism_has_no_server">DVNE har ingen server</string>
     <string name="your_history_replay_and_settings_live">Din historik, Replay och dina inställningar finns bara på den här telefonen.</string>

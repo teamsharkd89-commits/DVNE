@@ -1913,7 +1913,7 @@
     <string name="devices">מכשירים</string>
     <string name="search_settings">חיפוש בהגדרות</string>
     <string name="no_settings_match">אין הגדרות שמתאימות ל-״%1$s״</string>
-    <string name="prism">DVNE %1$s</string>
+    <string name="dvne">DVNE %1$s</string>
     <string name="unofficial_not_affiliated_with_google_or">לא רשמי · לא קשור ל-Google או ל-YouTube</string>
     <string name="prism_has_no_server">ל-DVNE אין שרת</string>
     <string name="your_history_replay_and_settings_live">ההיסטוריה, Replay וההגדרות שלך נמצאים רק בטלפון הזה.</string>

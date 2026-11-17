@@ -1913,7 +1913,7 @@
     <string name="devices">Mga device</string>
     <string name="search_settings">Maghanap sa mga setting</string>
     <string name="no_settings_match">Walang setting na tumutugma sa \"%1$s\"</string>
-    <string name="prism">DVNE %1$s</string>
+    <string name="dvne">DVNE %1$s</string>
     <string name="unofficial_not_affiliated_with_google_or">Hindi opisyal · walang kaugnayan sa Google o YouTube</string>
     <string name="prism_has_no_server">Walang server ang DVNE</string>
     <string name="your_history_replay_and_settings_live">Sa phone na ito lang nakatira ang history, Replay at mga setting mo.</string>

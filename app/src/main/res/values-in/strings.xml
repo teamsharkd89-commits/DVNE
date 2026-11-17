@@ -1913,7 +1913,7 @@
     <string name="devices">Perangkat</string>
     <string name="search_settings">Cari setelan</string>
     <string name="no_settings_match">Tidak ada setelan yang cocok dengan \"%1$s\"</string>
-    <string name="prism">DVNE %1$s</string>
+    <string name="dvne">DVNE %1$s</string>
     <string name="unofficial_not_affiliated_with_google_or">Tidak resmi · tidak berafiliasi dengan Google atau YouTube</string>
     <string name="prism_has_no_server">DVNE tidak punya server</string>
     <string name="your_history_replay_and_settings_live">Riwayat, Replay, dan setelanmu hanya ada di ponsel ini.</string>

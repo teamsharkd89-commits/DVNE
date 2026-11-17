@@ -1913,7 +1913,7 @@
     <string name="devices">Eszközök</string>
     <string name="search_settings">Keresés a beállításokban</string>
     <string name="no_settings_match">Egy beállítás sem felel meg ennek: „%1$s”</string>
-    <string name="prism">DVNE %1$s</string>
+    <string name="dvne">DVNE %1$s</string>
     <string name="unofficial_not_affiliated_with_google_or">Nem hivatalos · nem áll kapcsolatban a Google-lel vagy a YouTube-bal</string>
     <string name="prism_has_no_server">A DVNE nincs szervere</string>
     <string name="your_history_replay_and_settings_live">Az előzményeid, a Replay és a beállításaid csak ezen a telefonon vannak.</string>

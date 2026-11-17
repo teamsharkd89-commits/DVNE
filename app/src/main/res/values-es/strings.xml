@@ -1913,7 +1913,7 @@
     <string name="devices">Dispositivos</string>
     <string name="search_settings">Buscar en la configuración</string>
     <string name="no_settings_match">Ningún ajuste coincide con \"%1$s\"</string>
-    <string name="prism">DVNE %1$s</string>
+    <string name="dvne">DVNE %1$s</string>
     <string name="unofficial_not_affiliated_with_google_or">No oficial · sin relación con Google ni YouTube</string>
     <string name="prism_has_no_server">DVNE no tiene servidor</string>
     <string name="your_history_replay_and_settings_live">Tu historial, Replay y configuración solo están en este teléfono.</string>

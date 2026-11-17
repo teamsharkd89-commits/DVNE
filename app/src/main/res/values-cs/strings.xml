@@ -1913,7 +1913,7 @@
     <string name="devices">Zařízení</string>
     <string name="search_settings">Hledat v nastavení</string>
     <string name="no_settings_match">Výrazu „%1$s“ neodpovídá žádné nastavení</string>
-    <string name="prism">DVNE %1$s</string>
+    <string name="dvne">DVNE %1$s</string>
     <string name="unofficial_not_affiliated_with_google_or">Neoficiální · bez spojení s Googlem nebo YouTube</string>
     <string name="prism_has_no_server">DVNE nemá žádný server</string>
     <string name="your_history_replay_and_settings_live">Tvoje historie, Replay a nastavení jsou jen v tomto telefonu.</string>

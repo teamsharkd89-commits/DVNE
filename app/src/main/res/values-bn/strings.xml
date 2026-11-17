@@ -1913,7 +1913,7 @@
     <string name="devices">ডিভাইস</string>
     <string name="search_settings">সেটিংস সার্চ করুন</string>
     <string name="no_settings_match">\"%1$s\"-এর সাথে কোনো সেটিং মেলেনি</string>
-    <string name="prism">DVNE %1$s</string>
+    <string name="dvne">DVNE %1$s</string>
     <string name="unofficial_not_affiliated_with_google_or">অনানুষ্ঠানিক · Google বা YouTube-এর সাথে সম্পর্কিত নয়</string>
     <string name="prism_has_no_server">DVNE-এর কোনো সার্ভার নেই</string>
     <string name="your_history_replay_and_settings_live">আপনার ইতিহাস, Replay আর সেটিংস শুধু এই ফোনেই থাকে।</string>

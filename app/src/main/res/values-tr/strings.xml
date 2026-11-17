@@ -1913,7 +1913,7 @@
     <string name="devices">Cihazlar</string>
     <string name="search_settings">Ayarlarda ara</string>
     <string name="no_settings_match">\"%1$s\" ile eşleşen ayar yok</string>
-    <string name="prism">DVNE %1$s</string>
+    <string name="dvne">DVNE %1$s</string>
     <string name="unofficial_not_affiliated_with_google_or">Resmî değil · Google ya da YouTube ile bağlantısı yok</string>
     <string name="prism_has_no_server">DVNE\'in sunucusu yok</string>
     <string name="your_history_replay_and_settings_live">Geçmişin, Replay ve ayarların yalnızca bu telefonda durur.</string>

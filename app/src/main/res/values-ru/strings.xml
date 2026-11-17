@@ -1913,7 +1913,7 @@
     <string name="devices">Устройства</string>
     <string name="search_settings">Поиск по настройкам</string>
     <string name="no_settings_match">Нет настроек по запросу «%1$s»</string>
-    <string name="prism">DVNE %1$s</string>
+    <string name="dvne">DVNE %1$s</string>
     <string name="unofficial_not_affiliated_with_google_or">Неофициальное · не связано с Google или YouTube</string>
     <string name="prism_has_no_server">У DVNE нет сервера</string>
     <string name="your_history_replay_and_settings_live">Твоя история, Replay и настройки хранятся только на этом телефоне.</string>

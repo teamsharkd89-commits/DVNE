@@ -1913,7 +1913,7 @@
     <string name="devices">设备</string>
     <string name="search_settings">搜索设置</string>
     <string name="no_settings_match">没有与“%1$s”匹配的设置</string>
-    <string name="prism">DVNE %1$s</string>
+    <string name="dvne">DVNE %1$s</string>
     <string name="unofficial_not_affiliated_with_google_or">非官方 · 与 Google 或 YouTube 无关</string>
     <string name="prism_has_no_server">DVNE 没有服务器</string>
     <string name="your_history_replay_and_settings_live">你的历史记录、Replay 和设置只保存在这台手机上。</string>

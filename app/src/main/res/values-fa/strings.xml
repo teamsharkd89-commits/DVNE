@@ -1913,7 +1913,7 @@
     <string name="devices">دستگاه‌ها</string>
     <string name="search_settings">جستجوی تنظیمات</string>
     <string name="no_settings_match">هیچ تنظیمی با «%1$s» جور نیست</string>
-    <string name="prism">DVNE %1$s</string>
+    <string name="dvne">DVNE %1$s</string>
     <string name="unofficial_not_affiliated_with_google_or">غیررسمی · بدون وابستگی به Google یا YouTube</string>
     <string name="prism_has_no_server">DVNE سرور ندارد</string>
     <string name="your_history_replay_and_settings_live">تاریخچه، Replay و تنظیمات شما فقط روی همین گوشی هستند.</string>

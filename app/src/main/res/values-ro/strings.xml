@@ -1913,7 +1913,7 @@
     <string name="devices">Dispozitive</string>
     <string name="search_settings">Caută în setări</string>
     <string name="no_settings_match">Nicio setare nu se potrivește cu „%1$s”</string>
-    <string name="prism">DVNE %1$s</string>
+    <string name="dvne">DVNE %1$s</string>
     <string name="unofficial_not_affiliated_with_google_or">Neoficial · neafiliat cu Google sau YouTube</string>
     <string name="prism_has_no_server">DVNE nu are server</string>
     <string name="your_history_replay_and_settings_live">Istoricul, Replay și setările tale stau doar pe acest telefon.</string>

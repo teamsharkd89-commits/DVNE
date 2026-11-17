@@ -1913,7 +1913,7 @@
     <string name="devices">ڈیوائسز</string>
     <string name="search_settings">ترتیبات میں تلاش کریں</string>
     <string name="no_settings_match">\"%1$s\" سے کوئی ترتیب میل نہیں کھاتی</string>
-    <string name="prism">DVNE %1$s</string>
+    <string name="dvne">DVNE %1$s</string>
     <string name="unofficial_not_affiliated_with_google_or">غیر سرکاری · Google یا YouTube سے وابستہ نہیں</string>
     <string name="prism_has_no_server">DVNE کا کوئی سرور نہیں</string>
     <string name="your_history_replay_and_settings_live">آپ کی ہسٹری، Replay اور ترتیبات صرف اسی فون پر رہتی ہیں۔</string>

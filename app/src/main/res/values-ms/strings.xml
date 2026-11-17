@@ -1913,7 +1913,7 @@
     <string name="devices">Peranti</string>
     <string name="search_settings">Cari tetapan</string>
     <string name="no_settings_match">Tiada tetapan yang sepadan dengan \"%1$s\"</string>
-    <string name="prism">DVNE %1$s</string>
+    <string name="dvne">DVNE %1$s</string>
     <string name="unofficial_not_affiliated_with_google_or">Tidak rasmi · tidak bergabung dengan Google atau YouTube</string>
     <string name="prism_has_no_server">DVNE tiada pelayan</string>
     <string name="your_history_replay_and_settings_live">Sejarah, Replay dan tetapan anda hanya ada pada telefon ini.</string>

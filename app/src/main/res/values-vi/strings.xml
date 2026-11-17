@@ -1913,7 +1913,7 @@
     <string name="devices">Thiết bị</string>
     <string name="search_settings">Tìm trong cài đặt</string>
     <string name="no_settings_match">Không có cài đặt nào khớp với \"%1$s\"</string>
-    <string name="prism">DVNE %1$s</string>
+    <string name="dvne">DVNE %1$s</string>
     <string name="unofficial_not_affiliated_with_google_or">Không chính thức · không liên kết với Google hay YouTube</string>
     <string name="prism_has_no_server">DVNE không có máy chủ</string>
     <string name="your_history_replay_and_settings_live">Lịch sử, Replay và cài đặt của bạn chỉ nằm trên điện thoại này.</string>
