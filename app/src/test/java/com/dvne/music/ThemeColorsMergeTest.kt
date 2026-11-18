@@ -22,9 +22,9 @@ import org.junit.Test
 class ThemeColorsMergeTest {
     private val themes = ThemeMode.entries.flatMap { m -> listOf(false, true).map { m to it } }
 
-    /** Theme chips + Pure black → Theme: System / Light / Dark / Black. 3 × 2 = 6 stored combinations. */
+    /** Theme chips + Pure black → Theme: System / Light / Dark / Black / AMOLED. 4 × 2 = 8 stored combinations. */
     @Test fun everyStoredThemeComesBackUnchanged() {
-        assertEquals(6, themes.size)
+        assertEquals(8, themes.size)
         for (was in themes) assertEquals("$was", was, themeToStored(themeToMerged(was.first, was.second), was))
         // What each shows as: pure black is Black only with Dark; under System and Light it is kept, unseen.
         assertEquals(ThemeChoice.BLACK, themeToMerged(ThemeMode.DARK, true))
@@ -33,16 +33,20 @@ class ThemeColorsMergeTest {
         assertEquals(ThemeChoice.LIGHT, themeToMerged(ThemeMode.LIGHT, false))
         assertEquals(ThemeChoice.SYSTEM, themeToMerged(ThemeMode.SYSTEM, true))
         assertEquals(ThemeChoice.SYSTEM, themeToMerged(ThemeMode.SYSTEM, false))
-        assertEquals(listOf("System", "Light", "Dark", "Black"), ThemeChoice.entries.map { it.label })
+        // AMOLED shows as itself whatever pure black was stored as.
+        assertEquals(ThemeChoice.AMOLED, themeToMerged(ThemeMode.AMOLED, true))
+        assertEquals(ThemeChoice.AMOLED, themeToMerged(ThemeMode.AMOLED, false))
+        assertEquals(listOf("System", "Light", "Dark", "Black", "AMOLED"), ThemeChoice.entries.map { it.label })
     }
 
     @Test fun aPickStoresWhatItSays() {
         for (was in themes) {
             assertEquals(ThemeMode.DARK to true, themeToStored(ThemeChoice.BLACK, was))
             assertEquals(ThemeMode.DARK to false, themeToStored(ThemeChoice.DARK, was))
-            // System and Light don't touch pure black.
+            // System, Light and AMOLED don't touch pure black.
             assertEquals(ThemeMode.LIGHT to was.second, themeToStored(ThemeChoice.LIGHT, was))
             assertEquals(ThemeMode.SYSTEM to was.second, themeToStored(ThemeChoice.SYSTEM, was))
+            assertEquals(ThemeMode.AMOLED to was.second, themeToStored(ThemeChoice.AMOLED, was))
             // The control shows what was picked.
             for (c in ThemeChoice.entries) assertEquals(c, themeToStored(c, was).let { themeToMerged(it.first, it.second) })
         }

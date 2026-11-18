@@ -162,4 +162,16 @@ class IssueFixes1811Test {
         assertFalse(com.dvne.music.data.UpdateChecker.isNewer("1.8.1", "1.8.1.1"))
         assertFalse(com.dvne.music.data.UpdateChecker.isNewer("1.8.1.1", "1.8.1.1"))
     }
+
+    /** 1.8.7.8: the update banner lists the release's changes, one per line. */
+    @Test fun releaseNotesListEachChangeOnItsOwnLine() {
+        // The workflow already cuts the body to this version's section; the banner only drops its headers and markers.
+        val body = "### Tema AMOLED\n\n- **Tema AMOLED.** Negro total.\n- Tres plantillas.\n* La actualización explica sus cambios.\n"
+        assertEquals(
+            listOf("Tema AMOLED. Negro total.", "Tres plantillas.", "La actualización explica sus cambios."),
+            com.dvne.music.data.releaseNotes(body),
+        )
+        assertEquals(emptyList<String>(), com.dvne.music.data.releaseNotes(null))
+        assertEquals(emptyList<String>(), com.dvne.music.data.releaseNotes("  \n"))
+    }
 }

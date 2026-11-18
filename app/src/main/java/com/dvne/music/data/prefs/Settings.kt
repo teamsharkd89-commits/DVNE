@@ -26,7 +26,7 @@ import kotlinx.serialization.json.Json
 
 private val Context.dataStore by preferencesDataStore("prism_settings")
 
-enum class ThemeMode(val label: String) { SYSTEM(tr(R.string.system)), LIGHT(tr(R.string.light)), DARK(tr(R.string.dark)) }
+enum class ThemeMode(val label: String) { SYSTEM(tr(R.string.system)), LIGHT(tr(R.string.light)), DARK(tr(R.string.dark)), AMOLED("AMOLED") }
 enum class ColorSource(val label: String) { ARTWORK(tr(R.string.widget_now_playing)), DYNAMIC(tr(R.string.wallpaper)), CUSTOM(tr(R.string.custom)) }
 // CLEAR: see-through glass. Its own word (1.8.0): the shared "clear" is the verb ("Clear history"), and translations
 // read it as "erase" (消去, Hapus…).
@@ -83,6 +83,13 @@ enum class AutoplaySource(val label: String) { MIXED(tr(R.string.both)), YOURS(t
 
 /** DIAL (Reddit, 1.7.9.1): pages of 3 × 3 square tiles, as YouTube Music's Speed dial, for any section's items. */
 enum class SectionStyle(val label: String) { CAROUSEL(tr(R.string.carousel)), GRID(tr(R.string.grid)), LIST(tr(R.string.list)), HERO(tr(R.string.spotlight)), DIAL(tr(R.string.grid_3x3)) }
+
+/** A Home template: a preset layout for Customize Home (1.8.7.8). */
+enum class HomeTemplate(val label: String) {
+    CLASSIC(tr(R.string.home_template_classic)),
+    HERO(tr(R.string.home_template_hero)),
+    COMPACT(tr(R.string.home_template_compact)),
+}
 
 // ---------------------------------------------------------------- Look & layout
 
@@ -502,6 +509,8 @@ data class MixPrefs(
 /** Home: its sections, header, greeting tiles and buttons (1.8.7: moved out of [AppSettings] into a group of their own). */
 data class HomePrefs(
     val layout: List<HomeSectionConfig> = HomeSections.initial,
+    /** The last Home template applied from Customize Home (1.8.7.8). */
+    val template: HomeTemplate = HomeTemplate.CLASSIC,
     val header: HomeHeader = HomeHeader.GREETING,
     val headerHeight: HomeHeaderHeight = HomeHeaderHeight.MEDIUM,
     /** The picture behind a PICTURE header: a background design's name, or "PHOTO|<file>" (as backgrounds keep theirs). */
@@ -1520,6 +1529,39 @@ object HomeSections {
     )
 
     /**
+     * A Home template's layout (1.8.7.8): the fresh install's sections, with the song sections in the
+     * template's style. Classic is the install as it comes; Big covers spotlights the songs; Compact lists them.
+     */
+    fun templateLayout(template: HomeTemplate): List<HomeSectionConfig> {
+        val songStyle = when (template) {
+            HomeTemplate.CLASSIC -> return initial
+            HomeTemplate.HERO -> SectionStyle.HERO
+            HomeTemplate.COMPACT -> SectionStyle.LIST
+        }
+        return initial.map { cfg ->
+            when (cfg.key) {
+                QUICK_PICKS, MADE_FOR_YOU, NEW_RELEASES, ON_REPEAT, "${YT_PREFIX}mixed for you" -> cfg.copy(style = songStyle)
+                else -> cfg
+            }
+        }
+    }
+
+    /**
+     * Applies [template] to [current]: the template's sections in its order and style, then anything else
+     * already on Home (pins, rules, shelves) in its own order, untouched — a template never removes a section.
+     * A section's own name, picture and tile survive the template.
+     */
+    fun applyTemplate(current: List<HomeSectionConfig>, template: HomeTemplate): List<HomeSectionConfig> {
+        val preset = templateLayout(template)
+        val presetKeys = preset.map { it.key }.toSet()
+        val kept = current.filter { it.key !in presetKeys }
+        val applied = preset.map { p ->
+            current.firstOrNull { it.key == p.key }?.let { p.copy(name = it.name, art = it.art, tile = it.tile) } ?: p
+        }
+        return applied + kept
+    }
+
+    /**
      * Sections added in a later Dvne, put into an existing layout once (after Quick picks, or at the top), so people
      * who customized Home before still get them; removing them afterwards sticks.
      */
@@ -1901,6 +1943,11 @@ data class AppSettings(
     val performanceMode: Boolean = false,
     val performanceOffered: Boolean = false,
 ) {
+    /** The AMOLED theme: true black everywhere (implies [pureBlack]'s pages, plus no grain, no frost). */
+    val isAmoled: Boolean get() = themeMode == ThemeMode.AMOLED
+    /** Pages on true black: the Pure black switch, or the AMOLED theme. */
+    val blackPages: Boolean get() = pureBlack || isAmoled
+
     val isLoggedIn: Boolean get() = cookie.contains("SAPISID")
 
     // The lyrics' look, read as before (1.7.7 moved them into [lyricsLook]; see [LyricsLookPrefs]).
@@ -2126,6 +2173,7 @@ class SettingsRepository(
         val smartDownloadsCellular = booleanPreferencesKey("smart_downloads_cellular")
         val eq = stringPreferencesKey("eq")
         val homeLayout = stringPreferencesKey("home_layout")
+        val homeTemplate = stringPreferencesKey("home_template")
         val autoAddSections = booleanPreferencesKey("auto_add_sections")
         val homeHideKinds = stringPreferencesKey("home_hide_kinds")
         val searchSections = stringPreferencesKey("search_sections")
@@ -2910,6 +2958,7 @@ class SettingsRepository(
                         // Release Radar's section was "New releases", the same name as YouTube's own shelf beside it.
                         ?.map { s -> if (s.key == HomeSections.NEW_RELEASES && s.title == "New releases") s.copy(title = HomeSections.NEW_RELEASES_TITLE) else s }
                 }.let { it ?: d.home.layout }.map(HomeSections::inYourLanguage),
+                template = p.enum(K.homeTemplate, d.home.template),
                 header = p.enum(K.homeHeader, d.home.header),
                 headerHeight = p.enum(K.homeHeaderHeight, d.home.headerHeight),
                 headerPicture = p[K.homeHeaderPicture] ?: d.home.headerPicture,
@@ -3508,6 +3557,7 @@ class SettingsRepository(
     fun setHomeLayout(v: List<HomeSectionConfig>) = edit {
         it[K.homeLayout] = json.encodeToString(kotlinx.serialization.builtins.ListSerializer(HomeSectionConfig.serializer()), v)
     }
+    fun setHomeTemplate(v: HomeTemplate) = edit { it[K.homeTemplate] = v.name }
     fun setAutoAddSections(v: Boolean) = edit { it[K.autoAddSections] = v }
     fun setSearchSections(v: List<SearchSection>) = edit { it[K.searchSections] = v.joinToString(",") { s -> s.name } }
     fun setSearchChips(v: List<String>) = edit { it[K.searchChips] = v.joinToString(",") }

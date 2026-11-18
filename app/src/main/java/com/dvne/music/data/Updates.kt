@@ -33,9 +33,21 @@ import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
 
 /** A newer DVNE on GitHub: its version and where to get it (the APK itself when the release has one). */
-data class AppUpdate(val version: String, val url: String) {
+data class AppUpdate(val version: String, val url: String, val notes: String? = null) {
     val isApk: Boolean get() = url.endsWith(".apk", ignoreCase = true)
 }
+
+/**
+ * The release notes as the update banner shows them, change by change (1.8.7.8): the release body's
+ * bullet lines, without their markers, headers or blank lines — markdown bold and code ticks stripped.
+ */
+fun releaseNotes(body: String?): List<String> = body.orEmpty().lineSequence()
+    .map { it.trim() }
+    .filter { it.isNotEmpty() && !it.startsWith("#") }
+    .map { it.removePrefix("- ").removePrefix("* ").removePrefix("• ").trim().replace("**", "").replace("`", "") }
+    .filter { it.isNotEmpty() }
+    .take(10)
+    .toList()
 
 /** Where updating DVNE from inside the app has got to. */
 sealed interface UpdateProgress {
@@ -83,7 +95,7 @@ class UpdateChecker(private val context: Context, private val http: OkHttpClient
     private fun saved(): AppUpdate? {
         val v = prefs.getString("latest_version", null) ?: return null
         val url = prefs.getString("latest_url", null) ?: return null
-        return AppUpdate(v, url).takeIf { isNewer(v, BuildConfig.VERSION_NAME) && v != prefs.getString("dismissed", null) }
+        return AppUpdate(v, url, prefs.getString("latest_notes", null)).takeIf { isNewer(v, BuildConfig.VERSION_NAME) && v != prefs.getString("dismissed", null) }
     }
 
     /**
@@ -132,7 +144,11 @@ class UpdateChecker(private val context: Context, private val http: OkHttpClient
             val version = json.str("tag_name")?.removePrefix("v")?.trim() ?: error("GitHub's answer had no version")
             val apk = json.arr("assets")?.firstOrNull { it.str("name")?.endsWith(".apk", true) == true }?.str("browser_download_url")
             val url = apk ?: json.str("html_url") ?: "https://github.com/$REPO/releases/latest"
-            prefs.edit().putString("latest_version", version).putString("latest_url", url).putLong("checked_at", System.currentTimeMillis()).apply()
+            // The release's notes (1.8.7.8): the update banner lists them, change by change.
+            val notes = json.str("body")?.takeIf { it.isNotBlank() }
+            val edit = prefs.edit().putString("latest_version", version).putString("latest_url", url).putLong("checked_at", System.currentTimeMillis())
+            if (notes != null) edit.putString("latest_notes", notes) else edit.remove("latest_notes")
+            edit.apply()
             _available.value = saved()
         }
     }
@@ -144,7 +160,7 @@ class UpdateChecker(private val context: Context, private val http: OkHttpClient
             val version = versionFromLatestRedirect(r.header("Location")) ?: return@use false
             prefs.edit().putString("latest_version", version)
                 .putString("latest_url", "https://github.com/$REPO/releases/download/v$version/DVNE.apk")
-                .putLong("checked_at", System.currentTimeMillis()).apply()
+                .putLong("checked_at", System.currentTimeMillis()).remove("latest_notes").apply()
             _available.value = saved()
             true
         }

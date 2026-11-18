@@ -2,6 +2,12 @@
 
 What changed in each release. Older releases are described on the [Releases page](https://github.com/teamsharkd89-commits/DVNE/releases).
 
+## 1.8.7.8
+
+- **Tema AMOLED.** En Apariencia → Color hay un tema nuevo, AMOLED: negro total en toda la app, sin el grano que se veía en playlists y descargas. El tema oscuro y el negro siguen como estaban.
+- **Tres plantillas para el Inicio.** En Personalizar Inicio → Secciones, elige Clásica, Portadas grandes o Compacta: cambia qué secciones se ven, en qué orden y qué tan grandes son sus portadas. Tus secciones fijadas y agregadas no se tocan.
+- **La actualización explica sus cambios.** El aviso de actualización ahora lista cambio por cambio lo que trae la versión nueva.
+
 ## 1.8.7.7
 
 ### DVNE

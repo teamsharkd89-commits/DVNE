@@ -66,6 +66,7 @@ import com.dvne.music.data.model.PlaylistItem
 import com.dvne.music.data.prefs.HomeSectionConfig
 import com.dvne.music.data.prefs.HomeSections
 import com.dvne.music.data.prefs.HomeShortcut
+import com.dvne.music.data.prefs.HomeTemplate
 import com.dvne.music.data.prefs.PinnedPlaylist
 import com.dvne.music.data.prefs.SectionStyle
 import com.dvne.music.ui.components.DvneChip
@@ -164,6 +165,8 @@ private fun CataloguePage(bottomPadding: Dp, find: String?) {
     val heightChanged = reset.add(tr(R.string.height), settings.home.headerHeight, d.home.headerHeight, { it.label }) { prefs.setHomeHeaderHeight(it) }
     val pictureChanged = reset.add(tr(R.string.picture), settings.home.headerPicture, d.home.headerPicture, ::headerPictureLabel) { prefs.setHomeHeaderPicture(it) }
     val sectionsChanged = reset.add(tr(R.string.sections), layout, d.home.layout, asDvneComes(d.home.layout)) { save(it) }
+    // 1.8.7.8: the Home template — a preset layout, applied on pick (its sections in its order and style).
+    val templateChanged = reset.add(tr(R.string.home_template), settings.home.template, d.home.template, { it.label }) { prefs.setHomeTemplate(it) }
     val shortcutsChanged = reset.add(tr(R.string.section_shortcut_tiles), settings.home.shortcuts, d.home.shortcuts, { l -> l.joinToString(" · ") { it.label }.ifEmpty { tr(R.string.none) } }) { prefs.setHomeShortcuts(it) }
     val pinnedChanged = reset.add(tr(R.string.pinned_playlists), settings.home.playlists, d.home.playlists, { l -> l.joinToString(", ") { it.title }.ifEmpty { tr(R.string.none) } }) { prefs.setHomePlaylists(it) }
     val recentChanged = reset.add(tr(R.string.recently_played_albums), settings.home.recentTiles, d.home.recentTiles, tilesCount) { prefs.setHomeRecentTiles(it) }
@@ -201,6 +204,14 @@ private fun CataloguePage(bottomPadding: Dp, find: String?) {
             if (header == HomeHeader.PICTURE) HeaderPictureRow(pictureChanged)
         }
         group(tr(R.string.sections), info = tr(R.string.hold_a_section_or_drag_its)) {
+            // 1.8.7.8: the template applies at once; pins and added sections stay where they are.
+            ChoiceRow(
+                tr(R.string.home_template), HomeTemplate.entries, settings.home.template, { it.label },
+                info = tr(R.string.home_template_info), changed = templateChanged,
+            ) { picked ->
+                prefs.setHomeTemplate(picked)
+                save(HomeSections.applyTemplate(layout, picked))
+            }
             SectionsList(layout, sectionsChanged, ::save) { adding = true }
         }
         // Faint (still editable) while the Shortcut tiles section is hidden or removed; the group's ⓘ says why.

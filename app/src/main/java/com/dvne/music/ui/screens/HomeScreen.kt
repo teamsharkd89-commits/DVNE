@@ -870,6 +870,19 @@ internal fun UpdateBanner(inSettings: Boolean = false) {
             }
             if (!busy && !inSettings) IconButton(onClick = { c.updates.dismiss() }) { Icon(DvneIcons.Close, tr(R.string.dismiss), tint = ink) }
         }
+        // 1.8.7.8: what the update brings, change by change, before the tap to install it.
+        if (progress == com.dvne.music.data.UpdateProgress.Idle) {
+            val notes = com.dvne.music.data.releaseNotes(u.notes)
+            if (notes.isNotEmpty()) Column(Modifier.padding(start = 16.dp, end = 16.dp, bottom = 12.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                notes.forEach { line ->
+                    Row(verticalAlignment = Alignment.Top) {
+                        Box(Modifier.padding(top = 7.dp).size(width = 12.dp, height = 3.dp).clip(CircleShape).background(com.dvne.music.ui.theme.DvneTokens.spectrum(com.dvne.music.ui.theme.LocalIsDark.current)))
+                        Spacer(Modifier.width(9.dp))
+                        Text(line, style = MaterialTheme.typography.bodySmall, color = ink.copy(alpha = 0.9f))
+                    }
+                }
+            }
+        }
         (progress as? com.dvne.music.data.UpdateProgress.Downloading)?.let { p ->
             com.dvne.music.ui.components.DvneProgressBar(p.fraction?.let { f -> { f } }, Modifier.padding(start = 16.dp, end = 16.dp, bottom = 12.dp))
         }

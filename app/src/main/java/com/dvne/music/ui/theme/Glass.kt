@@ -245,10 +245,11 @@ fun GlassSurface(
             else -> scheme.surfaceContainerHigh.copy(alpha = frostedWash(dark, look.frost, thin))
         }
         val blurDp = frostedBlurDp(look.blur, thin)
-        val style = remember(wash, blurDp) {
+        val style = remember(wash, blurDp, settings.isAmoled) {
             HazeBlurStyle {
                 blurRadius(blurDp.dp)
-                noiseFactor(0.12f)
+                // AMOLED: no noise over the glass, so bars stay true black too.
+                noiseFactor(if (settings.isAmoled) 0f else 0.12f)
                 colorEffects(listOf(HazeColorEffect.tint(wash)))
             }
         }

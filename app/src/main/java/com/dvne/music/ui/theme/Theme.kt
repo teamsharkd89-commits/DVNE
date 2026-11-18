@@ -353,6 +353,7 @@ fun isAppDark(settings: AppSettings = LocalAppSettings.current): Boolean = when 
     ThemeMode.SYSTEM -> isSystemInDarkTheme()
     ThemeMode.LIGHT -> false
     ThemeMode.DARK -> true
+    ThemeMode.AMOLED -> true
 }
 
 /** The playing cover's color as the theme has it (for Settings' examples of "Now playing"). */
@@ -401,15 +402,17 @@ fun themeColors(s: AppSettings, dark: Boolean, seed: Color, dynamic: ((Boolean) 
     val minRatio = s.contrast.minRatio
     val custom = s.colorSource == ColorSource.CUSTOM
     val exact = custom && s.accentExact
+    // AMOLED is true black too: the Pure black switch, or the AMOLED theme.
+    val black = s.blackPages
     fun accentScheme(d: Boolean): ColorScheme =
-        dynamic?.invoke(d) ?: schemeFromSeed(if (d == dark || !custom) seed else seedFor(s, d, null), d, s.pureBlack, exact, minRatio)
+        dynamic?.invoke(d) ?: schemeFromSeed(if (d == dark || !custom) seed else seedFor(s, d, null), d, black, exact, minRatio)
     val accented = accentScheme(dark).let { sc ->
-        if (dark && s.pureBlack && dynamic != null) sc.copy(background = Color.Black, surface = Color.Black, surfaceContainerLowest = Color.Black) else sc
+        if (dark && black && dynamic != null) sc.copy(background = Color.Black, surface = Color.Black, surfaceContainerLowest = Color.Black) else sc
     }
     val accentful = dynamic != null || !isNeutralSeed(seed.toArgb())
     // White light: neutral surfaces with the accent's own colors swapped in (greys only for a white accent).
     val built = if (!white) accented else {
-        val neutral = schemeFromSeed(Color.White, dark, s.pureBlack, minRatio = minRatio)
+        val neutral = schemeFromSeed(Color.White, dark, black, minRatio = minRatio)
         if (!accentful) neutral
         else neutral.copy(
             primary = accented.primary, onPrimary = accented.onPrimary, primaryContainer = accented.primaryContainer,
@@ -419,10 +422,10 @@ fun themeColors(s: AppSettings, dark: Boolean, seed: Color, dynamic: ((Boolean) 
     // Appearance → Color → Background (1.7.2): Automatic keeps what each style always had.
     val tinted = when (s.surfaceTint) {
         com.dvne.music.data.prefs.SurfaceTint.AUTO -> built
-        com.dvne.music.data.prefs.SurfaceTint.NEUTRAL -> withSurfaces(built, 0f, 0f, dark, s.pureBlack, minRatio)
+        com.dvne.music.data.prefs.SurfaceTint.NEUTRAL -> withSurfaces(built, 0f, 0f, dark, black, minRatio)
         // The accent's hue: the wallpaper's own when the accent follows it (the stored pick isn't what's shown then).
-        com.dvne.music.data.prefs.SurfaceTint.ACCENT -> withSurfaces(built, (if (dynamic != null) accented.primary else seed).toHsl().first, s.surfaceTintStrength, dark, s.pureBlack, minRatio)
-        com.dvne.music.data.prefs.SurfaceTint.CUSTOM -> withSurfaces(built, Color(s.surfaceColor).toHsl().first, s.surfaceTintStrength, dark, s.pureBlack, minRatio)
+        com.dvne.music.data.prefs.SurfaceTint.ACCENT -> withSurfaces(built, (if (dynamic != null) accented.primary else seed).toHsl().first, s.surfaceTintStrength, dark, black, minRatio)
+        com.dvne.music.data.prefs.SurfaceTint.CUSTOM -> withSurfaces(built, Color(s.surfaceColor).toHsl().first, s.surfaceTintStrength, dark, black, minRatio)
     }
     val scheme = if (minRatio > 4.5f) firmed(tinted, minRatio) else tinted
     // The White preset (1.7.2, "Black" in light mode) lights progress, Play and switches in white / black whatever the

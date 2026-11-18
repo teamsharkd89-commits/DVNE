@@ -430,6 +430,11 @@
     <string name="prism_needs_the_camera_to_scan">DVNE necesita la cámara para escanear un código</string>
     <string name="allow_the_camera">Permitir la cámara</string>
     <string name="customize_home">Personalizar Inicio</string>
+    <string name="home_template">Plantilla de inicio</string>
+    <string name="home_template_classic">Clásica</string>
+    <string name="home_template_hero">Portadas grandes</string>
+    <string name="home_template_compact">Compacta</string>
+    <string name="home_template_info">Un diseño listo para el Inicio: qué secciones se ven, en qué orden y qué tan grandes son sus portadas. Tus secciones fijadas y agregadas se quedan donde están.</string>
     <string name="tv_home_editor_how">OK muestra u oculta una fila. Para moverla, elige Mover a su lado (o mantén pulsado OK) y luego Arriba o Abajo.</string>
     <string name="tv_home_moving">Moviendo %1$s: Arriba y Abajo la llevan, OK la suelta.</string>
     <string name="tv_home_move">Mover %1$s</string>

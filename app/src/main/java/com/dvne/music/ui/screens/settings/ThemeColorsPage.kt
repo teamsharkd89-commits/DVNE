@@ -93,9 +93,9 @@ private val page = SettingsPageId.THEME_COLORS
 
 // ---------------------------------------------------------------------------- The page's merges (plan §2.5)
 
-/** **Theme**: the three theme chips and the Pure black switch as one choice. Black is Dark on true black. */
+/** **Theme**: the theme chips as one choice. Black is Dark on true black; AMOLED is true black with no grain, no frost. */
 enum class ThemeChoice(val label: String) {
-    SYSTEM(tr(R.string.system)), LIGHT(tr(R.string.light)), DARK(tr(R.string.dark)), BLACK(tr(R.string.black)),
+    SYSTEM(tr(R.string.system)), LIGHT(tr(R.string.light)), DARK(tr(R.string.dark)), BLACK(tr(R.string.black)), AMOLED("AMOLED"),
 }
 
 /** The stored theme ([mode], [pureBlack]) as the one control shows it. Pure black only shows as Black with Dark. */
@@ -103,18 +103,20 @@ fun themeToMerged(mode: ThemeMode, pureBlack: Boolean): ThemeChoice = when (mode
     ThemeMode.SYSTEM -> ThemeChoice.SYSTEM
     ThemeMode.LIGHT -> ThemeChoice.LIGHT
     ThemeMode.DARK -> if (pureBlack) ThemeChoice.BLACK else ThemeChoice.DARK
+    ThemeMode.AMOLED -> ThemeChoice.AMOLED
 }
 
 /**
  * What picking [choice] stores, from what was stored ([was]: mode, pure black). Dark and Black say which black they
- * are; System and Light leave pure black as it was (it only shows on dark pages), so "System, black at night" and a
- * stored "Light + pure black" both stay as they are.
+ * are; System, Light and AMOLED leave pure black as it was (it only shows on dark pages), so "System, black at night"
+ * and a stored "Light + pure black" both stay as they are.
  */
 fun themeToStored(choice: ThemeChoice, was: Pair<ThemeMode, Boolean>): Pair<ThemeMode, Boolean> = when (choice) {
     ThemeChoice.SYSTEM -> ThemeMode.SYSTEM to was.second
     ThemeChoice.LIGHT -> ThemeMode.LIGHT to was.second
     ThemeChoice.DARK -> ThemeMode.DARK to false
     ThemeChoice.BLACK -> ThemeMode.DARK to true
+    ThemeChoice.AMOLED -> ThemeMode.AMOLED to was.second
 }
 
 /** **Glass also on**: "Glass on more of the screen" and "Frosted pages" as chips of one row. */

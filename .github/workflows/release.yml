@@ -45,11 +45,19 @@ jobs:
           cp app/build/outputs/apk/release/app-release.apk DVNE.apk
           sha256sum DVNE.apk > SHA256SUMS.txt
 
+      - name: Release notes
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          awk -v ver="$VERSION" '$0 == "## " ver {flag=1; next} /^## / {flag=0} flag' CHANGELOG.md > RELEASE_NOTES.md
+          [ -s RELEASE_NOTES.md ] || echo "- DVNE $VERSION." > RELEASE_NOTES.md
+          cat RELEASE_NOTES.md
+
       - name: Publish release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ steps.version.outputs.version }}
           name: DVNE ${{ steps.version.outputs.version }}
+          body_path: RELEASE_NOTES.md
           files: |
             DVNE.apk
             SHA256SUMS.txt

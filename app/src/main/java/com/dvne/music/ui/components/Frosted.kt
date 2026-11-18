@@ -255,8 +255,8 @@ fun FrostedBackdrop(
     val settings = LocalAppSettings.current
     val pureBlack = settings.pureBlack
     val bg = MaterialTheme.colorScheme.background
-    // Turned off in Appearance: the page's own background, as before.
-    if (!settings.frostedPages) { Box(modifier.fillMaxSize().background(bg)); return }
+    // Turned off in Appearance: the page's own background, as before. AMOLED too: true black, no frost, no grain.
+    if (!settings.frostedPages || settings.isAmoled) { Box(modifier.fillMaxSize().background(bg)); return }
     val shown by animateFloatAsState(if (frost != null) 1f else 0f, tween(500), label = "frost")
     val grainBrush = remember { ShaderBrush(ImageShader(grain, TileMode.Repeated, TileMode.Repeated)) }
     // Appearance → Color → Page background reaches the Ambient frost (1.7.2): Plain greys it, a tint colors it in that

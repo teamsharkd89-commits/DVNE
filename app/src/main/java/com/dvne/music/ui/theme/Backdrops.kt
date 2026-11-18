@@ -342,9 +342,9 @@ fun ScreenBackdrop(screen: BackdropScreen, content: @Composable BoxScope.() -> U
 
 /**
  * Whether the Default background is the frost from what's playing. Pure black in dark mode means black pages (Reddit,
- * Pixel 9 Pro: "AMOLED mode stays grey"), so the frost steps aside for it.
+ * Pixel 9 Pro: "AMOLED mode stays grey"), so the frost steps aside for it — the Pure black switch, or the AMOLED theme.
  */
-fun ambientFrostShown(s: com.dvne.music.data.prefs.AppSettings, dark: Boolean): Boolean = s.frostedPages && !(dark && s.pureBlack)
+fun ambientFrostShown(s: com.dvne.music.data.prefs.AppSettings, dark: Boolean): Boolean = s.frostedPages && !(dark && s.blackPages)
 
 /** One background, at any size (the settings previews use it too). */
 @Composable
@@ -353,7 +353,7 @@ fun BackdropLayer(style: Backdrop, photo: String?, dim: Float, motion: Boolean, 
     val dark = LocalIsDark.current
     // Pure black (AMOLED) in dark mode: every background sits on true black, its own colors kept but quieter, so most of
     // the screen's pixels stay off whichever background is picked (it used to change only Ambient and the plain page).
-    val black = dark && LocalAppSettings.current.pureBlack
+    val black = dark && LocalAppSettings.current.blackPages
     val palette = style.colors(dark).map { Color(it) }.let { if (black && it.isNotEmpty()) listOf(Color.Black) + it.drop(1) else it }
     Box(modifier) {
         when (style) {

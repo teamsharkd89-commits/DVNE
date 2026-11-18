@@ -468,6 +468,11 @@
     <string name="prism_needs_the_camera_to_scan">DVNE needs the camera to scan a code</string>
     <string name="allow_the_camera">Allow the camera</string>
     <string name="customize_home">Customize Home</string>
+    <string name="home_template">Home template</string>
+    <string name="home_template_classic">Classic</string>
+    <string name="home_template_hero">Big covers</string>
+    <string name="home_template_compact">Compact</string>
+    <string name="home_template_info">A preset layout for Home: which sections show, in which order, and how big their covers are. Your pins and added sections stay where they are.</string>
     <string name="tv_home_editor_how">OK shows or hides a row. To move one, pick Move beside it (or hold OK), then Up or Down.</string>
     <string name="tv_home_moving">Moving %1$s: Up and Down carry it, OK puts it down.</string>
     <string name="tv_home_move">Move %1$s</string>
