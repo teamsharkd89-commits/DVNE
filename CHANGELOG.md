@@ -2,6 +2,10 @@
 
 What changed in each release. Older releases are described on the [Releases page](https://github.com/teamsharkd89-commits/DVNE/releases).
 
+## 1.8.7.27
+
+- **Mezclas en el dispositivo estilo Mochy.** Los encabezados de Hecho para ti y Nuevos lanzamientos, y los títulos de las mezclas, ahora van en estilo Mochy. Las mezclas en sí no cambian.
+
 ## 1.8.7.26
 
 - **Replay estilo Mochy.** Los encabezados de Replay y el título de la hoja de fechas ahora van en estilo Mochy. La historia (las diapositivas) no cambia: usa la fuente que elijas en Ajustes.

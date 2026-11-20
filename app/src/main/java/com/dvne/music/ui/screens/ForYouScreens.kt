@@ -61,7 +61,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.sp
+import com.dvne.music.ui.theme.AppFonts
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
@@ -84,7 +87,6 @@ import com.dvne.music.ui.components.Artwork
 import com.dvne.music.ui.components.ItemCarousel
 import com.dvne.music.ui.components.DvneChip
 import com.dvne.music.ui.components.RoundAction
-import com.dvne.music.ui.components.SectionHeader
 import com.dvne.music.ui.components.SubPage
 import com.dvne.music.ui.theme.LocalContainer
 import com.dvne.music.ui.theme.LocalUi
@@ -119,12 +121,15 @@ fun MixCover(mix: Mix, modifier: Modifier = Modifier, showTitle: Boolean = true)
         // Made by Dvne: the split light along the bottom edge (Aura × Spectrum), as Dvne signs its own covers.
         Box(Modifier.align(Alignment.BottomStart).fillMaxWidth().height(4.dp).background(com.dvne.music.ui.theme.DvneTokens.spectrum))
         if (showTitle) Text(
-            mix.title, color = Color.White, style = MaterialTheme.typography.titleMedium,
+            mix.title, color = Color.White, style = TextStyle(fontFamily = AppFonts.dvne, fontWeight = FontWeight.SemiBold, fontSize = 15.sp, lineHeight = 19.sp),
             maxLines = 2, overflow = TextOverflow.Ellipsis, modifier = Modifier.align(Alignment.BottomStart).padding(start = 12.dp, end = 12.dp, bottom = 14.dp),
         )
     }
 }
 
+// Fase 11: las mezclas en el dispositivo en estilo Mochy —
+// encabezados MochySectionHeader y títulos de mezcla en 15.sp
+// seminegrita. Las mezclas en sí (hechas en el teléfono) no cambian.
 /**
  * Home's "Made for you", all made on the phone: the time-of-day mix, the Daily Mixes and Release Radar, then [yours],
  * the mixes from your music (by genre, by artist, and what's ready offline, from songs you know).
@@ -155,7 +160,7 @@ fun MadeForYouSection(cfg: HomeSectionConfig, offline: Boolean = false, yours: L
     if (shown.isEmpty()) {
         // Nothing to make them from yet: a way to start.
         if (favorites.isEmpty() && recent.isEmpty()) {
-            SectionHeader(cfg.title)
+            MochySectionHeader(cfg.title)
             Row(
                 Modifier.padding(horizontal = 16.dp).fillMaxWidth().pane(LocalUi.current.card)
                     .border(1.5.dp, com.dvne.music.ui.theme.DvneTokens.spectrum, LocalUi.current.card).clickable { nav.go(Routes.PICK_ARTISTS) }.padding(16.dp),
@@ -164,14 +169,14 @@ fun MadeForYouSection(cfg: HomeSectionConfig, offline: Boolean = false, yours: L
                 Icon(DvneIcons.StarFilled, null, tint = MaterialTheme.colorScheme.onSurface)
                 Spacer(Modifier.width(14.dp))
                 Column(Modifier.weight(1f)) {
-                    Text(tr(R.string.pick_a_few_artists_you_like), style = MaterialTheme.typography.titleMedium)
+                    Text(tr(R.string.pick_a_few_artists_you_like), style = TextStyle(fontFamily = AppFonts.dvne, fontWeight = FontWeight.SemiBold, fontSize = 15.sp, lineHeight = 19.sp))
                     Text(tr(R.string.your_mixes_and_new_releases_start), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
             }
         }
         return
     }
-    SectionHeader(cfg.title, strapline = tr(R.string.made_on_your_phone_from_what))
+    MochySectionHeader(cfg.title)
     // Carousel (the default) is the row of covers below; the other styles show the same mixes their way.
     if (cfg.style != com.dvne.music.data.prefs.SectionStyle.CAROUSEL) {
         val playMix: (Mix) -> Unit = { mix ->
@@ -233,7 +238,7 @@ fun NewReleasesSection(cfg: HomeSectionConfig) {
     val starredOnly = remember { c.library.sortOf(ReleaseRadar.STARRED_ONLY) != null }
     val releases = if (starredOnly) ReleaseRadar.fromFavorites(recent, favorites.map { it.id }.toSet()) else recent
     if (releases.isEmpty()) return
-    SectionHeader(cfg.title, strapline = tr(R.string.from_artists_you_listen_to), onMore = { nav.go(Routes.NEW_RELEASES) })
+    MochySectionHeader(cfg.title, onMore = { nav.go(Routes.NEW_RELEASES) })
     StyledItems(cfg.style, releases.take(15).map { it.asItem() }) { nav.go(Routes.album(it.id)) }
 }
 
