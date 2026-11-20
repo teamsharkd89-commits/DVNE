@@ -48,6 +48,7 @@ import androidx.compose.ui.unit.dp
 import com.dvne.music.ui.theme.DvneIcons
 import com.dvne.music.ui.theme.MochyDesign
 import com.dvne.music.ui.theme.MochyGlowColor
+import com.dvne.music.ui.theme.MochyGlowFixedColor
 import com.dvne.music.ui.theme.MochyText
 
 /**
