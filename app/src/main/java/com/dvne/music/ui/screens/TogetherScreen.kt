@@ -11,6 +11,8 @@ import com.dvne.music.ui.components.DvneTextButton
 import com.dvne.music.ui.theme.DvneIcons
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -42,6 +44,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
@@ -49,6 +52,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
+import androidx.compose.ui.unit.sp
 import com.dvne.music.data.model.Song
 import com.dvne.music.playback.together.Msg
 import com.dvne.music.playback.together.NearbySession
@@ -62,7 +66,11 @@ import com.dvne.music.ui.components.SubPage
 import com.dvne.music.ui.components.LocalFrosted
 import com.dvne.music.ui.components.featureInk
 import com.dvne.music.ui.components.featurePane
+import com.dvne.music.ui.components.frostFill
 import com.dvne.music.ui.components.pane
+import com.dvne.music.ui.player.MochyRoundedHighlight
+import com.dvne.music.ui.player.mochyPressBounce
+import com.dvne.music.ui.theme.AppFonts
 import com.dvne.music.ui.theme.LocalContainer
 import com.dvne.music.ui.theme.LocalUi
 import kotlinx.coroutines.launch
@@ -292,15 +300,20 @@ private fun QueueLine(song: Song) {
 
 @Composable
 private fun BigCard(icon: androidx.compose.ui.graphics.vector.ImageVector, title: String, body: String, action: String, onClick: () -> Unit) {
-    val ui = LocalUi.current
     val ink = featureInk()
+    val press = remember { MutableInteractionSource() }
+    // Fase 11: la tarjeta de Escuchar Juntos en estilo Mochy — esquinas
+    // de 18.dp como las tarjetas anchas, icono en baldosa blanca 10%,
+    // título en 20.sp negrita, y el rebote con highlight al tocarla.
     Column(
-        Modifier.fillMaxWidth().featurePane(ui.card)
-            .clickable(onClick = onClick).padding(20.dp),
+        Modifier.fillMaxWidth().featurePane(RoundedCornerShape(18.dp))
+            .mochyPressBounce(press, pressedScale = 0.96f)
+            .clickable(interactionSource = press, indication = MochyRoundedHighlight(cornerRadius = 18.dp, color = frostFill(1f)), onClick = onClick)
+            .padding(20.dp),
     ) {
-        Box(Modifier.size(48.dp).border(1.5.dp, com.dvne.music.ui.theme.DvneTokens.spectrumRing(), CircleShape), contentAlignment = Alignment.Center) { Icon(icon, null, Modifier.size(24.dp), tint = ink) }
+        Box(Modifier.size(48.dp).clip(RoundedCornerShape(14.dp)).background(Color.White.copy(alpha = 0.10f)), contentAlignment = Alignment.Center) { Icon(icon, null, Modifier.size(24.dp), tint = ink) }
         Spacer(Modifier.height(10.dp))
-        Text(title, style = MaterialTheme.typography.titleLarge, color = ink)
+        Text(title, style = TextStyle(fontFamily = AppFonts.dvne, fontWeight = FontWeight.Bold, fontSize = 20.sp, lineHeight = 25.sp), color = ink)
         Text(body, style = MaterialTheme.typography.bodyMedium, color = ink.copy(alpha = 0.85f))
         Spacer(Modifier.height(14.dp))
         DvneButton(onClick = onClick) { Text(action) }

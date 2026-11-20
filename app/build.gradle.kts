@@ -26,8 +26,8 @@ android {
         applicationId = "com.dvne.music"
         minSdk = 26
         targetSdk = 36
-        versionCode = 80
-        versionName = "1.8.7.19"
+        versionCode = 81
+        versionName = "1.8.7.20"
         vectorDrawables { useSupportLibrary = true }
         // The name under the launcher icon; a side-by-side build (below) is called "DVNE Dev" so it can't be mistaken for DVNE.
         manifestPlaceholders["appLabel"] = "@string/app_name"

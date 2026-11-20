@@ -2,6 +2,10 @@
 
 What changed in each release. Older releases are described on the [Releases page](https://github.com/teamsharkd89-commits/DVNE/releases).
 
+## 1.8.7.20
+
+- **Escuchar Juntos estilo Mochy.** La tarjeta de iniciar sesión ahora tiene las esquinas de 18.dp de las tarjetas anchas de Mochy, el icono en una baldosa blanca, el título en 20.sp negrita y el rebote con highlight al tocarla. Cómo funciona (solo Wi-Fi, sin servidor) no cambia.
+
 ## 1.8.7.19
 
 - **Ajustes estilo Mochy.** Las filas de ajustes ahora se encogen un poco al presionarlas y se iluminan con el highlight redondo, con los títulos en 15.sp seminegrita y más aire a los lados. Todas las opciones siguen en su sitio.
