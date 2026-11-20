@@ -2,6 +2,10 @@
 
 What changed in each release. Older releases are described on the [Releases page](https://github.com/teamsharkd89-commits/DVNE/releases).
 
+## 1.8.7.15
+
+- **Controles del reproductor estilo Mochy.** En el estilo de glifos, los botones anterior, play y siguiente ahora miden el 21% del ancho (entre 64 y 96.dp) con sus iconos al 73%, se encogen bajo el dedo y el play cambia a pausa con el mismo pop del mini reproductor. El disco, el modo compacto y el mantener-para-buscar no cambian.
+
 ## 1.8.7.14
 
 - **Mini reproductor estilo Mochy.** Sus botones ahora se encogen bajo el dedo y vuelven con un poco de rebote, con un highlight redondo al presionarlos, y el play cambia a pausa apareciendo desde pequeño. Lo demás del mini reproductor (gestos, estilos, progreso) no cambia.

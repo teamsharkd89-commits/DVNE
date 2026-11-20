@@ -578,11 +578,23 @@ fun TransportRow(
     val shuffle by pc.shuffle.collectAsState()
     val smart by LocalContainer.current.queue.smartShuffle.collectAsState()
     val repeat by pc.repeatMode.collectAsState()
-    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceAround, verticalAlignment = Alignment.CenterVertically) {
+    BoxWithConstraints(Modifier.fillMaxWidth()) {
+        // Fase 7b (Mochy): en el estilo de glifos, los tres botones de
+        // transporte miden el 21% del ancho (entre 64 y 96.dp) y sus
+        // iconos el 73% de eso. El modo compacto y el disco conservan
+        // sus medidas.
+        val mochy = style == TransportStyle.GLYPHS && !compact
+        val mochyButton = (maxWidth * 0.21f).coerceIn(64.dp, 96.dp)
+        val playIcon = if (mochy) mochyButton * 0.73f else playSize
+        val playTouchM = if (mochy) mochyButton else playTouch
+        val skipIconBase = if (style == TransportStyle.GLYPHS) skipSize else skipSize * 0.82f
+        val skipIcon = if (mochy) mochyButton * 0.73f else skipIconBase
+        val skipTouch = if (mochy) mochyButton else 53.dp
+        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceAround, verticalAlignment = Alignment.CenterVertically) {
         if (modes) ShuffleGlyph(shuffle, smart) { pc.toggleShuffle() }
         val prevIcon = if (style == TransportStyle.GLYPHS) DvneIcons.Backward else DvneIcons.Previous
         val nextIcon = if (style == TransportStyle.GLYPHS) DvneIcons.Forward else DvneIcons.Next
-        val skip = if (style == TransportStyle.GLYPHS) skipSize else skipSize * 0.82f
+        val skip = skipIcon
         // Settings → Player → "Hold to seek": holding previous / next jumps back / forward.
         val holdMs = LocalAppSettings.current.holdSeekSeconds * 1000L
         val back = if (holdMs > 0) ({ pc.seekBy(-holdMs) }) else null
@@ -590,22 +602,22 @@ fun TransportRow(
         // A podcast episode skips within itself, as podcast players do: back 15 s, ahead 30 s.
         if (skips || episode) {
             if (episode) SkipGlyph(EPISODE_BACK_S, ahead = false, touch = 53.dp) { pc.seekBy(-EPISODE_BACK_S * 1000L) }
-            else PreviousGlyph(prevIcon, skip, if (style == TransportStyle.GLYPHS) 0.85f else 1f, previousEnabled, holdSeek = back, onPrevious = pc::previous, onPreviousSong = pc::previousSong)
+            else PreviousGlyph(prevIcon, skip, if (style == TransportStyle.GLYPHS) 0.85f else 1f, previousEnabled, holdSeek = back, touch = skipTouch, onPrevious = pc::previous, onPreviousSong = pc::previousSong)
         }
         if (style == TransportStyle.GLYPHS) {
             if (isLoading) {
-                Box(Modifier.size(playTouch), contentAlignment = Alignment.Center) {
+                Box(Modifier.size(playTouchM), contentAlignment = Alignment.Center) {
                     CircularProgressIndicator(color = Color.White, strokeWidth = 3.dp, modifier = Modifier.size(if (compact) 30.dp else 38.dp))
                 }
             } else {
-                TransportGlyph(if (isPlaying) DvneIcons.Pause else DvneIcons.Play, if (isPlaying) tr(R.string.widget_pause) else tr(R.string.widget_play), playSize, playTouch) { pc.togglePlay() }
+                TransportGlyph(if (isPlaying) DvneIcons.Pause else DvneIcons.Play, if (isPlaying) tr(R.string.widget_pause) else tr(R.string.widget_play), playIcon, playTouchM, swapKey = isPlaying) { pc.togglePlay() }
             }
         } else {
             PlayDisc(isPlaying, isLoading, filled = style == TransportStyle.BUTTON, size = if (compact) 64.dp else 78.dp) { pc.togglePlay() }
         }
         if (skips || episode) {
             if (episode) SkipGlyph(EPISODE_AHEAD_S, ahead = true, touch = 53.dp) { pc.seekBy(EPISODE_AHEAD_S * 1000L) }
-            else TransportGlyph(nextIcon, tr(R.string.widget_next), skip, 53.dp, if (style == TransportStyle.GLYPHS) 0.85f else 1f, nextEnabled, onHold = ahead) { pc.next() }
+            else TransportGlyph(nextIcon, tr(R.string.widget_next), skip, skipTouch, if (style == TransportStyle.GLYPHS) 0.85f else 1f, nextEnabled, onHold = ahead) { pc.next() }
         }
         if (modes) ModeGlyph(
             DvneIcons.Repeat,
@@ -613,6 +625,7 @@ fun TransportRow(
             repeat != Player.REPEAT_MODE_OFF,
             badge = if (repeat == Player.REPEAT_MODE_ONE) "1" else null,
         ) { pc.cycleRepeat() }
+        }
     }
 }
 
@@ -711,8 +724,9 @@ internal fun PreviousGlyph(
     onPrevious: () -> Unit,
     onPreviousSong: () -> Unit,
     modifier: Modifier = Modifier,
+    touch: Dp = 53.dp,
 ) = TransportGlyph(
-    icon, tr(R.string.widget_previous), size, 53.dp, heightScale, enabled, onHold = holdSeek,
+    icon, tr(R.string.widget_previous), size, touch, heightScale, enabled, onHold = holdSeek,
     onLongPress = if (holdSeek == null) onPreviousSong else null, longPressLabel = tr(R.string.previous_song),
     modifier = modifier, onClick = onPrevious,
 )
@@ -724,6 +738,8 @@ private fun TransportGlyph(
     size: Dp,
     touch: Dp,
     heightScale: Float = 1f,
+    /** Fase 7b: si cambia, el icono aparece con el pop de Mochy (play/pausa). */
+    swapKey: Any? = null,
     enabled: Boolean = true,
     onHold: (() -> Unit)? = null,
     /** One long press (when [onHold] isn't set): done once, named [longPressLabel] for TalkBack. */
@@ -737,13 +753,17 @@ private fun TransportGlyph(
     val tap by rememberUpdatedState(onClick)
     val tapEnabled by rememberUpdatedState(enabled)
     val step by rememberUpdatedState(onHold)
+    // Fase 7b: el rebote de Mochy en las ramas de toque (la de
+    // mantener-para-buscar usa pointerInput y no lo lleva: el rebote
+    // no se dispara sin una fuente de interacción).
+    val press = remember { MutableInteractionSource() }
     Box(
-        modifier.size(touch).then(
+        modifier.size(touch).mochyPressBounce(press).then(
             if (onHold == null && onLongPress != null) Modifier.combinedClickable(
-                remember { MutableInteractionSource() }, indication = null, enabled = enabled,
+                press, indication = null, enabled = enabled,
                 onLongClickLabel = longPressLabel, onLongClick = { haptics.click(); onLongPress() },
             ) { haptics.click(); onClick() }
-            else if (onHold == null) Modifier.clickable(remember { MutableInteractionSource() }, indication = null, enabled = enabled) { haptics.click(); onClick() }
+            else if (onHold == null) Modifier.clickable(press, indication = null, enabled = enabled) { haptics.click(); onClick() }
             // A tap changes songs; holding seeks, one step at once and then again every moment it's held.
             // Holding works even when the tap can't (forward on the queue's last song).
             else Modifier
@@ -768,7 +788,13 @@ private fun TransportGlyph(
         ),
         contentAlignment = Alignment.Center,
     ) {
-        Icon(icon, description, tint = Color.White.copy(alpha = alpha), modifier = Modifier.size(size).graphicsLayer { scaleY = heightScale })
+        if (swapKey == null) {
+            Icon(icon, description, tint = Color.White.copy(alpha = alpha), modifier = Modifier.size(size).graphicsLayer { scaleY = heightScale })
+        } else {
+            AnimatedContent(swapKey, transitionSpec = { MochyMiniIconSwap }, label = "transportSwap") {
+                Icon(icon, description, tint = Color.White.copy(alpha = alpha), modifier = Modifier.size(size).graphicsLayer { scaleY = heightScale })
+            }
+        }
     }
 }
 
