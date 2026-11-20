@@ -67,7 +67,6 @@ import com.dvne.music.ui.Routes
 import com.dvne.music.ui.components.ItemCard
 import com.dvne.music.ui.components.DvneChip
 import com.dvne.music.ui.components.DvneTextButton
-import com.dvne.music.ui.components.SectionHeader
 import com.dvne.music.ui.theme.BackdropKind
 import com.dvne.music.ui.theme.LocalAppSettings
 import com.dvne.music.ui.theme.LocalContainer
@@ -189,7 +188,7 @@ internal fun SearchLanding(
                 SearchSection.RECENT -> {
                     val items = opened.distinctBy { it.kind + it.id }.mapNotNull { o -> o.item()?.let { o to it } }
                     if (items.isNotEmpty()) {
-                        item(key = "opened-h") { SectionHeader(tr(R.string.recently_opened)) }
+                        item(key = "opened-h") { MochySectionHeader(tr(R.string.recently_opened)) }
                         item(key = "opened") {
                             LazyRow(contentPadding = PaddingValues(horizontal = 12.dp), horizontalArrangement = Arrangement.spacedBy(4.dp)) {
                                 items(items, key = { (o, _) -> o.kind + o.id }) { (o, item) ->
@@ -199,12 +198,12 @@ internal fun SearchLanding(
                         }
                     }
                     if (recents.isNotEmpty()) {
-                        item(key = "recents-h") { SectionHeader(tr(R.string.recent_searches)) }
+                        item(key = "recents-h") { MochySectionHeader(tr(R.string.recent_searches)) }
                         item(key = "recents") { RecentSearchChips(recents, onPick, onRemove, onClearAll) }
                     }
                 }
                 SearchSection.ARTISTS -> if (artists.isNotEmpty()) {
-                    item(key = "artists-h") { SectionHeader(tr(R.string.your_artists)) }
+                    item(key = "artists-h") { MochySectionHeader(tr(R.string.your_artists)) }
                     item(key = "artists") {
                         LazyRow(contentPadding = PaddingValues(horizontal = 12.dp), horizontalArrangement = Arrangement.spacedBy(4.dp)) {
                             items(artists, key = { it.id }) { a -> ItemCard(a, width = 104.dp) { onOpen(a) } }
@@ -217,7 +216,7 @@ internal fun SearchLanding(
                 }
                 // One line, so the page people know stays as it is: it can be moved or hidden with the rest (Arrange).
                 SearchSection.EXPLORE -> item(key = "explore") {
-                    SectionHeader(tr(R.string.explore), strapline = tr(R.string.explore_strapline), onMore = { nav.go(Routes.EXPLORE) })
+                    MochySectionHeader(tr(R.string.explore), onMore = { nav.go(Routes.EXPLORE) })
                 }
             }
         }
@@ -254,7 +253,7 @@ internal fun androidx.compose.foundation.lazy.LazyListScope.moodSections(
 ) {
     groups.forEachIndexed { g, (title, tiles) ->
         if (tiles.isEmpty()) return@forEachIndexed
-        item(key = "mh:$g") { SectionHeader(if (g == 0) tr(R.string.moods_genres_for_you) else title, onMore = onMore) }
+        item(key = "mh:$g") { MochySectionHeader(if (g == 0) tr(R.string.moods_genres_for_you) else title, onMore = onMore) }
         tiles.chunked(2).forEachIndexed { i, pair ->
             item(key = "m:$g:$i") {
                 Row(Modifier.padding(horizontal = 16.dp, vertical = 5.dp), horizontalArrangement = Arrangement.spacedBy(10.dp)) {

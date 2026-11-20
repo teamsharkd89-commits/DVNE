@@ -143,6 +143,7 @@ import com.dvne.music.ui.theme.ScreenBackdrop
 import com.dvne.music.ui.theme.hairline
 import com.dvne.music.ui.theme.ink3
 import com.dvne.music.ui.theme.mochyNavHighlight
+import com.dvne.music.ui.screens.MochySearchFocus
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.semantics.selected
@@ -1131,7 +1132,7 @@ private fun TabBar(
                         .mochyNavHighlight(selectedIndex, tabs.size, highlight),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    tabs.forEach { tab -> TabItem(tab, isSelected(tab, route), settings.navLabels, compact, Modifier.weight(1f).fillMaxHeight(), ownHighlight = false) { onSelect(tab.route) } }
+                    tabs.forEach { tab -> TabItem(tab, isSelected(tab, route), settings.navLabels, compact, Modifier.weight(1f).fillMaxHeight(), ownHighlight = false, onDoubleClick = if (tab.route == Routes.SEARCH) ({ MochySearchFocus.request() }) else null) { onSelect(tab.route) } }
                 }
             }
             Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
@@ -1154,7 +1155,7 @@ private fun TabBar(
                     Modifier.testTag(NAV_TABS_TAG).fillMaxWidth().navigationBarsPadding().height(lerp(barSize.docked.dp, barSize.docked.dp - 12.dp, compact)).padding(horizontal = 8.dp),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    tabs.forEach { tab -> TabItem(tab, isSelected(tab, route), settings.navLabels, compact, Modifier.weight(1f).fillMaxHeight(), line = true) { onSelect(tab.route) } }
+                    tabs.forEach { tab -> TabItem(tab, isSelected(tab, route), settings.navLabels, compact, Modifier.weight(1f).fillMaxHeight(), line = true, onDoubleClick = if (tab.route == Routes.SEARCH) ({ MochySearchFocus.request() }) else null) { onSelect(tab.route) } }
                 }
             }
             if (settings.liquidGlass || settings.frostedGlass) GlassSurface(Modifier.fillMaxWidth(), shape = RoundedCornerShape(0.dp), elevation = 0.dp, tint = tint, refract = false) { row() }
@@ -1167,7 +1168,7 @@ private fun TabBar(
             Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
                 GlassSurface(Modifier.height(barSize.minimal.dp), shape = RoundedCornerShape((barSize.minimal / 2).dp), tint = tint) {
                     Row(Modifier.testTag(NAV_TABS_TAG).fillMaxHeight().padding(5.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(2.dp)) {
-                        tabs.forEach { tab -> MinimalTab(tab, isSelected(tab, route), (barSize.minimal - 10).dp) { onSelect(tab.route) } }
+                        tabs.forEach { tab -> MinimalTab(tab, isSelected(tab, route), (barSize.minimal - 10).dp, onDoubleClick = if (tab.route == Routes.SEARCH) ({ MochySearchFocus.request() }) else null) { onSelect(tab.route) } }
                     }
                 }
             }
@@ -1222,7 +1223,7 @@ internal fun navFill(fill: com.dvne.music.data.prefs.NavBarFill): Color {
  */
 @OptIn(androidx.compose.foundation.ExperimentalFoundationApi::class)
 @Composable
-private fun TabItem(tab: Tab, selected: Boolean, labels: NavLabels, compact: Float, modifier: Modifier, line: Boolean = false, ownHighlight: Boolean = true, onClick: () -> Unit) {
+private fun TabItem(tab: Tab, selected: Boolean, labels: NavLabels, compact: Float, modifier: Modifier, line: Boolean = false, ownHighlight: Boolean = true, onDoubleClick: (() -> Unit)? = null, onClick: () -> Unit) {
     val scheme = MaterialTheme.colorScheme
     val fg by animateColorAsState(if (selected) scheme.onSurface else scheme.ink3, label = "tabInk")
     // Aura × Spectrum: the current tab is lifted on the glass, with a short line of split light under it.
@@ -1239,6 +1240,8 @@ private fun TabItem(tab: Tab, selected: Boolean, labels: NavLabels, compact: Flo
         onLongClickLabel = if (tab.route == Routes.SETTINGS) tr(R.string.customize_this) else null,
         onLongClick = if (tab.route == Routes.SETTINGS) ({ c.customizing.value = !c.customizing.value }) else null,
         onClick = onClick,
+        // Fase 6: doble toque en Buscar (Mochy) pide el foco del campo de búsqueda.
+        onDoubleClick = onDoubleClick,
     ).semantics { this.selected = selected }
     val icon = if (selected) tab.selectedIcon else tab.icon
     // The current tab's icon in ink, the accent or the light (1.7.7).
@@ -1318,12 +1321,12 @@ private fun TabItem(tab: Tab, selected: Boolean, labels: NavLabels, compact: Flo
 }
 
 @Composable
-private fun MinimalTab(tab: Tab, selected: Boolean, height: Dp = 44.dp, onClick: () -> Unit) {
+private fun MinimalTab(tab: Tab, selected: Boolean, height: Dp = 44.dp, onDoubleClick: (() -> Unit)? = null, onClick: () -> Unit) {
     val scheme = MaterialTheme.colorScheme
     val bg by animateColorAsState(if (selected) scheme.onSurface else Color.Transparent, label = "minTab")
     Box(
         Modifier.size(54.dp, height).clip(CircleShape).background(bg)
-            .clickable(interactionSource = remember { MutableInteractionSource() }, indication = null, onClickLabel = tab.label, onClick = onClick),
+            .combinedClickable(interactionSource = remember { MutableInteractionSource() }, indication = null, onClickLabel = tab.label, onClick = onClick, onDoubleClick = onDoubleClick),
         contentAlignment = Alignment.Center,
     ) {
         Icon(if (selected) tab.selectedIcon else tab.icon, tab.label, tint = if (selected) scheme.surface else scheme.onSurfaceVariant, modifier = Modifier.size(23.dp))

@@ -2,6 +2,10 @@
 
 What changed in each release. Older releases are described on the [Releases page](https://github.com/teamsharkd89-commits/DVNE/releases).
 
+## 1.8.7.12
+
+- **Búsqueda estilo Mochy.** Los títulos de sección de Búsqueda — recientes, tus artistas, Explorar, estados de ánimo y los grupos de resultados — ahora son los de Mochy. Y doble toque en el tab Buscar pone el foco en el campo para escribir sin tocarlo.
+
 ## 1.8.7.11
 
 - **Biblioteca estilo Mochy.** Al abrir Biblioteca ahora ves primero un Resumen: cuatro tarjetas con tus Canciones, Listas, Álbumes y Artistas, cada una con su conteo y dos portadas reales, y debajo las tarjetas anchas de Añadidas recientemente y Me gusta. Tocar una tarjeta abre su sección. Tus secciones y tus listas no cambian; en Ajustes → Inicio y Biblioteca puedes elegir que Biblioteca abra en otra sección.

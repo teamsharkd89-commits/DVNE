@@ -88,7 +88,6 @@ import com.dvne.music.ui.components.ErrorState
 import com.dvne.music.ui.components.ItemCarousel
 import com.dvne.music.ui.components.LoadingState
 import com.dvne.music.ui.components.MoodTile
-import com.dvne.music.ui.components.SectionHeader
 import com.dvne.music.ui.components.SongRow
 import com.dvne.music.ui.components.playable
 import com.dvne.music.ui.components.pane
@@ -173,6 +172,12 @@ fun SearchScreen(bottomPadding: Dp) {
             delay(250) // after the tab's own transition, or the keyboard can come up and drop again
             runCatching { focusRequester.requestFocus() }
         }
+    }
+    // Fase 6: doble toque en el tab Buscar (Mochy) pone el foco en el campo.
+    LaunchedEffect(MochySearchFocus.requestAt) {
+        if (MochySearchFocus.requestAt == 0L) return@LaunchedEffect
+        delay(150) // después de la transición del tab, o el teclado sube y baja
+        runCatching { focusRequester.requestFocus() }
     }
     LaunchedEffect(query) {
         if (query.isBlank()) { suggestions.clear(); suggestedItems.clear(); live = ""; return@LaunchedEffect }
@@ -429,7 +434,7 @@ private fun PhoneResults(query: String, bottomPadding: Dp, onPlay: () -> Unit) {
         LazyColumn(state = resultsState, contentPadding = PaddingValues(top = 4.dp, bottom = bottomPadding + 16.dp)) {
             listOf(tr(R.string.your_music_files) to files, tr(R.string.downloads) to downloads).forEachIndexed { g, (title, songs) ->
                 if (songs.isEmpty()) return@forEachIndexed
-                item(key = "h:$g") { SectionHeader(title, strapline = com.dvne.music.data.model.songCount(songs.size)) }
+                item(key = "h:$g") { MochySectionHeader(title) }
                 items(songs.size, key = { "$g:$it:" + songs[it].id }) { i ->
                     com.dvne.music.ui.components.SwipeToQueue(songs[i]) {
                         SongRow(songs[i], playing = current?.id == songs[i].id) {
@@ -514,7 +519,7 @@ private fun TopResults(
     val hitSongs = hits.map { it.song }
     fun androidx.compose.foundation.lazy.LazyListScope.fromTheLyrics() {
         if (hits.isEmpty()) return
-        item("lyr-h") { SectionHeader(tr(R.string.from_the_lyrics)) }
+        item("lyr-h") { MochySectionHeader(tr(R.string.from_the_lyrics)) }
         items(hits, key = { "lyr:" + it.song.id }) { h -> LyricHitRow(h) { onSongs(hitSongs, hitSongs.indexOf(h.song)) } }
     }
     // Select many (1.8.3): every song row shown here is what "All" picks.
@@ -529,15 +534,15 @@ private fun TopResults(
         // Already yours (1.7.6): what in your library matches, before the rest.
         if (inLibrary.isNotEmpty()) {
             // All of it, with filters (1.8.3).
-            item("lib-h") { val nav = com.dvne.music.ui.LocalNavigator.current; SectionHeader(tr(R.string.in_your_library), onMore = { nav.go(com.dvne.music.ui.Routes.librarySearch(query)) }) }
+            item("lib-h") { val nav = com.dvne.music.ui.LocalNavigator.current; MochySectionHeader(tr(R.string.in_your_library), onMore = { nav.go(com.dvne.music.ui.Routes.librarySearch(query)) }) }
             items(inLibrary, key = { "lib:" + it.id }) { item -> ResultRow(item) { open(item) } }
         }
         if (onPhoneHits.isNotEmpty()) {
-            item("phone-h") { SectionHeader(tr(R.string.on_this_phone), onMore = onSeePhone) }
+            item("phone-h") { MochySectionHeader(tr(R.string.on_this_phone), onMore = onSeePhone) }
             items(onPhoneHits, key = { "ph:" + it.id }) { s -> SongRow(s) { onSongs(onPhoneHits, onPhoneHits.indexOf(s)) } }
         }
         r.sections.forEach { (f, items) ->
-            item("h:${f.name}") { SectionHeader(f.label, onMore = { onSeeAll(f) }) }
+            item("h:${f.name}") { MochySectionHeader(f.label, onMore = { onSeeAll(f) }) }
             when (f) {
                 SearchFilter.SONGS -> {
                     val songs = items.filterIsInstance<SongItem>().map { it.song }.distinctBy { it.id }
