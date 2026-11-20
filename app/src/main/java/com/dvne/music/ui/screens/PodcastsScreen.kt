@@ -43,7 +43,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.sp
+import com.dvne.music.ui.theme.AppFonts
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.dvne.music.data.model.Episode
@@ -65,7 +68,6 @@ import com.dvne.music.ui.components.ItemCarousel
 import com.dvne.music.ui.components.LoadingState
 import com.dvne.music.ui.components.PlayingBars
 import com.dvne.music.ui.components.RoundAction
-import com.dvne.music.ui.components.SectionHeader
 import com.dvne.music.ui.components.SongActionsSheet
 import androidx.compose.ui.text.withLink
 import com.dvne.music.ui.components.SubPage
@@ -89,6 +91,9 @@ private class PodcastsHome(val yourShows: List<PodcastItem>, val saved: List<Son
  * Podcasts, opened from the round button at the top of Home (as on Spotify's home page): episodes to finish,
  * the shows saved to the account, its "Episodes for later", then popular shows and episodes by category.
  */
+// Fase 11: los podcasts en estilo Mochy — todos los
+// encabezados de sección son MochySectionHeader y el título del
+// podcast va en 20.sp negrita.
 @Composable
 fun PodcastsScreen(bottomPadding: Dp) {
     val c = LocalContainer.current
@@ -139,11 +144,11 @@ fun PodcastsScreen(bottomPadding: Dp) {
                 }
                 else -> {
                     if (f.shows.isNotEmpty()) item(key = "found-shows") {
-                        SectionHeader(tr(R.string.shows))
+                        MochySectionHeader(tr(R.string.shows))
                         ItemCarousel(f.shows, { nav.open(it, onSong) })
                     }
                     if (f.episodes.isNotEmpty()) {
-                        item(key = "found-eps-h") { SectionHeader(tr(R.string.episodes)) }
+                        item(key = "found-eps-h") { MochySectionHeader(tr(R.string.episodes)) }
                         // YouTube's search can list an episode twice: each row a key of its own (#330's kind).
                         val eps = f.episodes.take(30)
                         val keys = com.dvne.music.ui.components.rowKeys(eps) { "fe:" + it.id }
@@ -157,7 +162,7 @@ fun PodcastsScreen(bottomPadding: Dp) {
             return@SubPage
         }
         if (resume.isNotEmpty()) {
-            item(key = "resume-h") { SectionHeader(tr(R.string.continue_listening)) }
+            item(key = "resume-h") { MochySectionHeader(tr(R.string.continue_listening)) }
             items(resume.take(5), key = { "r:" + it.song.id }) { e ->
                 EpisodeRow(
                     Episode(e.song, date = null, description = null, progress = e.fraction),
@@ -174,11 +179,11 @@ fun PodcastsScreen(bottomPadding: Dp) {
             is Load.Ok -> {
                 val home = st.value
                 if (home.yourShows.isNotEmpty()) item(key = "yours") {
-                    SectionHeader(tr(R.string.your_shows))
+                    MochySectionHeader(tr(R.string.your_shows))
                     ItemCarousel(home.yourShows, { nav.open(it, onSong) })
                 }
                 if (home.saved.isNotEmpty()) {
-                    item(key = "saved-h") { SectionHeader(tr(R.string.episodes_for_later), onMore = { nav.go(Routes.playlist("SE")) }) }
+                    item(key = "saved-h") { MochySectionHeader(tr(R.string.episodes_for_later), onMore = { nav.go(Routes.playlist("SE")) }) }
                     // A playlist ("SE") can hold an episode twice.
                     val later = home.saved.take(5)
                     val keys = com.dvne.music.ui.components.rowKeys(later) { "sv:" + it.id }
@@ -254,7 +259,7 @@ fun PodcastScreen(id: String, bottomPadding: Dp) {
                             Artwork(p.thumbnail, Modifier.size(132.dp), ui.art, size = 544, placeholderIcon = DvneIcons.Podcasts)
                             Spacer(Modifier.width(16.dp))
                             Column(Modifier.weight(1f)) {
-                                Text(p.title, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Medium, maxLines = 3, overflow = TextOverflow.Ellipsis)
+                                Text(p.title, style = TextStyle(fontFamily = AppFonts.dvne, fontWeight = FontWeight.Bold, fontSize = 20.sp, lineHeight = 25.sp), maxLines = 3, overflow = TextOverflow.Ellipsis)
                                 p.author?.let { a ->
                                     Text(
                                         a.name, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.primary,
@@ -300,7 +305,7 @@ fun PodcastScreen(id: String, bottomPadding: Dp) {
                         )
                     }
                 }
-                item(key = "eps-h") { SectionHeader(tr(R.string.episodes)) }
+                item(key = "eps-h") { MochySectionHeader(tr(R.string.episodes)) }
                 items(episodes, key = { "e:" + it.song.id }) { e ->
                     val local = resume.firstOrNull { it.song.id == e.song.id }
                     EpisodeRow(
@@ -341,7 +346,7 @@ private fun RssShowsSection(shows: List<com.dvne.music.data.podcast.RssShow>, on
     val ui = LocalUi.current
     Column(Modifier.fillMaxWidth()) {
         if (shows.isNotEmpty()) {
-            SectionHeader(tr(R.string.rss_your_shows))
+            MochySectionHeader(tr(R.string.rss_your_shows))
             androidx.compose.foundation.lazy.LazyRow(
                 contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 14.dp),
                 horizontalArrangement = Arrangement.spacedBy(6.dp),
@@ -507,7 +512,7 @@ private fun RssShowScreen(id: String, bottomPadding: Dp) {
                 }
             }
         }
-        item(key = "eps-h") { SectionHeader(tr(R.string.episodes)) }
+        item(key = "eps-h") { MochySectionHeader(tr(R.string.episodes)) }
         items(episodes, key = { "e:" + it.song.id }) { e ->
             val local = resume.firstOrNull { it.song.id == e.song.id }
             EpisodeRow(

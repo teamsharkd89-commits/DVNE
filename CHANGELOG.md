@@ -2,6 +2,10 @@
 
 What changed in each release. Older releases are described on the [Releases page](https://github.com/teamsharkd89-commits/DVNE/releases).
 
+## 1.8.7.25
+
+- **Podcasts estilo Mochy.** Los encabezados de los podcasts y el título de cada programa ahora van en estilo Mochy. Los episodios y la reproducción no cambian.
+
 ## 1.8.7.24
 
 - **Lista de Mezclas estilo Mochy.** El encabezado de tus mezclas ahora va en 17.sp negrita y cada mezcla muestra su nombre en 15.sp seminegrita. Crear y abrir mezclas no cambia.
