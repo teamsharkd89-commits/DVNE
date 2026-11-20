@@ -2,6 +2,10 @@
 
 What changed in each release. Older releases are described on the [Releases page](https://github.com/teamsharkd89-commits/DVNE/releases).
 
+## 1.8.7.18
+
+- **Arreglo de compilación de la Cola estilo Mochy.** La 1.8.7.16 no compiló: faltaba un import en la fila de la cola. Corregido; la Cola y las Letras estilo Mochy van en esta versión.
+
 ## 1.8.7.17
 
 - **Letras estilo Mochy.** Nuevo estilo de letras "Mochy" en Letras a tu manera → Empezar desde: líneas grandes seminegrita, la que suena crece un poco y brilla, y las palabras avanzan una por una. Es el estilo nuevo por defecto; los demás estilos siguen ahí y se puede volver a cualquiera.
