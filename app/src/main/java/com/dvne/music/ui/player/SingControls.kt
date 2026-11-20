@@ -37,6 +37,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
+import com.dvne.music.ui.theme.AppFonts
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
@@ -320,12 +324,15 @@ fun SingSheet(song: Song, onDismiss: () -> Unit) {
     val method by sing.method.collectAsState()
 
     ActionSheet(song.thumbnail, onDismiss) { _ ->
-        Column(Modifier.padding(horizontal = 24.dp).padding(bottom = 8.dp)) {
+        // Fase 11: la hoja de Cantar en estilo Mochy — laterales de
+        // 20.dp, título en 20.sp negrita y etiquetas en 15.sp
+        // seminegrita.
+        Column(Modifier.padding(horizontal = 20.dp).padding(bottom = 8.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(DvneIcons.MicFilled, null, Modifier.size(26.dp), tint = MaterialTheme.colorScheme.primary)
                 Spacer(Modifier.width(12.dp))
                 Column(Modifier.weight(1f)) {
-                    Text(tr(R.string.sing), style = MaterialTheme.typography.titleLarge)
+                    Text(tr(R.string.sing), style = TextStyle(fontFamily = AppFonts.dvne, fontWeight = FontWeight.Bold, fontSize = 20.sp, lineHeight = 25.sp))
                     Text(tr(R.string.the_song_s_own_music_with), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
                 if (ready) DvneSwitch(on, { sing.setOn(it) })
@@ -378,14 +385,14 @@ fun SingSheet(song: Song, onDismiss: () -> Unit) {
                     }
                     Spacer(Modifier.height(14.dp))
                     Row {
-                        Text(tr(R.string.lead_voice), Modifier.weight(1f), style = MaterialTheme.typography.bodyLarge)
+                        Text(tr(R.string.lead_voice), Modifier.weight(1f), style = TextStyle(fontFamily = AppFonts.dvne, fontWeight = FontWeight.SemiBold, fontSize = 15.sp, lineHeight = 19.sp))
                         Text(if (level <= 0.005f) tr(R.string.none) else "${(level * 100).toInt()}%", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.primary)
                     }
                     DvneSlider(level, { sing.setLevel(it) }, enabled = on, valueRange = 0f..1f)
                     Text(tr(R.string.keep_a_little_of_it_in), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                     Spacer(Modifier.height(14.dp))
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text(tr(R.string.key), Modifier.weight(1f), style = MaterialTheme.typography.bodyLarge)
+                        Text(tr(R.string.key), Modifier.weight(1f), style = TextStyle(fontFamily = AppFonts.dvne, fontWeight = FontWeight.SemiBold, fontSize = 15.sp, lineHeight = 19.sp))
                         DvneTextButton(onClick = { sing.setSemitones(semitones - 1) }, enabled = on && semitones > -6) { Text("−", style = MaterialTheme.typography.titleLarge) }
                         Text(if (semitones == 0) tr(R.string.original) else "%+d".format(semitones), Modifier.width(72.dp), style = MaterialTheme.typography.titleMedium, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
                         DvneTextButton(onClick = { sing.setSemitones(semitones + 1) }, enabled = on && semitones < 6) { Text("+", style = MaterialTheme.typography.titleLarge) }
