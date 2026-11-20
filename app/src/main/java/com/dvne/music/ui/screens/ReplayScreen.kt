@@ -61,7 +61,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.sp
+import com.dvne.music.ui.theme.AppFonts
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.dvne.music.data.db.ArtistPlays
@@ -77,7 +80,6 @@ import com.dvne.music.ui.Routes
 import com.dvne.music.ui.components.Artwork
 import com.dvne.music.ui.components.EmptyState
 import com.dvne.music.ui.components.LoadingState
-import com.dvne.music.ui.components.SectionHeader
 import com.dvne.music.ui.theme.LocalAppSettings
 import com.dvne.music.ui.theme.LocalContainer
 import androidx.compose.runtime.ReadOnlyComposable
@@ -301,7 +303,7 @@ private fun ReplayDatesSheet(onPick: (Period) -> Unit, onDismiss: () -> Unit) {
     }
     com.dvne.music.ui.components.DvneSheet(onDismiss) { close ->
         Column(Modifier.padding(bottom = 20.dp)) {
-            Text(tr(R.string.other_dates), style = MaterialTheme.typography.titleLarge, modifier = Modifier.padding(horizontal = 20.dp, vertical = 4.dp))
+            Text(tr(R.string.other_dates), style = TextStyle(fontFamily = AppFonts.dvne, fontWeight = FontWeight.Bold, fontSize = 20.sp, lineHeight = 25.sp), modifier = Modifier.padding(horizontal = 20.dp, vertical = 4.dp))
             com.dvne.music.ui.components.SheetAction(DvneIcons.Calendar, tr(R.string.pick_days_on_a_calendar)) { calendar = true }
             if (months.isNotEmpty()) Text(
                 tr(R.string.a_month), style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -321,6 +323,10 @@ private fun ReplayDatesSheet(onPick: (Period) -> Unit, onDismiss: () -> Unit) {
 }
 
 /** Replay / Rewind: a private, on-device recap of your listening. */
+// Fase 11: Replay en estilo Mochy — todos los encabezados
+// de sección son MochySectionHeader y el título de la hoja de
+// fechas va en 20.sp negrita. La historia (diapositivas) no se
+// toca: usa la fuente que Daniel elija en Ajustes.
 @Composable
 fun ReplayScreen(bottomPadding: Dp) = ReplayContent(bottomPadding)
 
@@ -465,10 +471,10 @@ internal fun ReplayContent(
         // A day by its hours, a week or a month by its days (#286, #287); longer stretches by month, as before.
         val timeline = d.timeline
         if (timeline != null) item {
-            SectionHeader(timeline.heading())
+            MochySectionHeader(timeline.heading())
             TimelineChart(timeline, Modifier.padding(horizontal = 20.dp).fillMaxWidth().height(196.dp))
         } else if (d.months.size > 1) item {
-            SectionHeader(if (LocalAppSettings.current.replayHours) tr(R.string.hours_by_month) else tr(R.string.minutes_by_month))
+            MochySectionHeader(if (LocalAppSettings.current.replayHours) tr(R.string.hours_by_month) else tr(R.string.minutes_by_month))
             // 176 dp since 1.8.6 (160 before): the 16 more are the numbers' line, the bars keep their height.
             MonthChart(d.months, Modifier.padding(horizontal = 20.dp).fillMaxWidth().height(176.dp))
             // The busiest month, as the shorter graphs say theirs.
@@ -489,7 +495,7 @@ internal fun ReplayContent(
             // Artist photos, not the cover of whichever of their songs came first.
             val thumbs by c.library.artistThumbs.collectAsState()
             LaunchedEffect(d.artists) { c.library.fetchArtistPhotos(d.artists.map { it.artistId to it.artistName }) }
-            SectionHeader(tr(R.string.top_artists))
+            MochySectionHeader(tr(R.string.top_artists))
             LazyRow(contentPadding = PaddingValues(horizontal = 16.dp), horizontalArrangement = Arrangement.spacedBy(14.dp)) {
                 itemsIndexed(d.artists) { i, a ->
                     Column(
@@ -514,7 +520,7 @@ internal fun ReplayContent(
             }
         }
         if (d.genres.isNotEmpty()) item {
-            SectionHeader(tr(R.string.top_genres))
+            MochySectionHeader(tr(R.string.top_genres))
             val max = d.genres.maxOf { it.second }.coerceAtLeast(1)
             // The bar runs primary → tertiary; with a pale accent (white) its labels go dark.
             val barInk = inkOn(MaterialTheme.colorScheme.primary)
@@ -540,7 +546,7 @@ internal fun ReplayContent(
         item(key = "milestones") { MilestonesSection(milestonesHeld) }
         // "Finish the lyric" (1.8.5): draws nothing unless its setting is on and enough songs have saved lyrics.
         item(key = "finish_lyric") { FinishLyricCard() }
-        item { SectionHeader(tr(R.string.top_songs_3)) }
+        item { MochySectionHeader(tr(R.string.top_songs_3)) }
         itemsIndexed(d.songs, key = { _, s -> s.songId }) { i, s ->
             val songs = remember(d) { d.songs.map { it.toSong() } }
             ReplaySongRow(i, s) { c.player.playQueue(songs, i, QueueSource(QueueKind.REPLAY, tr(R.string.replay_2))) }
@@ -1037,7 +1043,7 @@ private fun ClockSection(period: Period, held: MutableState<ClockData?>, still: 
     Column(Modifier.fillMaxWidth().testTag(ReplayTags.CLOCK)) {
         Box(Modifier.fillMaxWidth()) {
             Column(Modifier.fillMaxWidth().recordCard(layer, scheme.surface).padding(bottom = 12.dp)) {
-                SectionHeader(title)
+                MochySectionHeader(title)
                 Row(Modifier.padding(horizontal = 20.dp)) {
                     Column(Modifier.width(namesW)) {
                         dayNames.forEach { name ->
@@ -1167,7 +1173,7 @@ private fun CalendarSection(period: Period, held: MutableState<CalendarData?>, s
     } ?: busiestLine
     Box(Modifier.fillMaxWidth().testTag(ReplayTags.CALENDAR)) {
         Column(Modifier.fillMaxWidth().recordCard(layer, scheme.surface).padding(bottom = 12.dp)) {
-            SectionHeader(title)
+            MochySectionHeader(title)
             BoxWithConstraints(Modifier.padding(horizontal = 20.dp).fillMaxWidth()) {
                 val density = LocalDensity.current
                 val widthPx = constraints.maxWidth.toFloat()
@@ -1224,7 +1230,7 @@ private fun MilestonesSection(held: MutableState<List<ShownMilestone>?>) {
     LaunchedEffect(all) { c.milestones.markSeen(first) }
     var more by remember { mutableStateOf(false) }
     Column(Modifier.fillMaxWidth().testTag(ReplayTags.MILESTONES)) {
-        SectionHeader(tr(R.string.milestones))
+        MochySectionHeader(tr(R.string.milestones))
         first.forEach { MilestoneRow(it) }
         if (all.size > first.size) Text(
             tr(R.string.ms_and_more, all.size - first.size),
