@@ -7,6 +7,7 @@ import com.dvne.music.ui.components.DvneSwitch
 import com.dvne.music.ui.theme.DvneIcons
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.relocation.bringIntoViewRequester
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -32,12 +33,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.dvne.music.ui.components.ChoiceFlow
 import com.dvne.music.ui.components.Eyebrow
 import com.dvne.music.ui.components.Segmented
+import com.dvne.music.ui.components.frostFill
 import com.dvne.music.ui.components.pane
+import com.dvne.music.ui.player.MochyRoundedHighlight
+import com.dvne.music.ui.player.mochyPressBounce
+import com.dvne.music.ui.theme.AppFonts
 import com.dvne.music.ui.theme.LocalUi
 import com.dvne.music.ui.theme.hairline
 import com.dvne.music.ui.theme.ink3
@@ -50,6 +57,15 @@ import androidx.compose.ui.semantics.stateDescription
 
 /** The group a Settings search result opened its page at (#73): it scrolls into view and glows for a moment. */
 val LocalSettingsFind = androidx.compose.runtime.compositionLocalOf<String?> { null }
+
+/**
+ * Fase 10: el highlight redondo de Mochy detrás de una fila de ajustes
+ * al presionarla (esquinas 20.dp, como las tarjetas agrupadas de
+ * Mochy), en el color del highlight de la barra.
+ */
+@Composable
+private fun mochyRowHighlight(): MochyRoundedHighlight =
+    MochyRoundedHighlight(cornerRadius = 20.dp, color = frostFill(1f))
 
 /**
  * A titled card of settings rows: a small label, then the rows on a pane of glass. [info]: what the whole group is
@@ -142,7 +158,8 @@ fun InfoText(open: Boolean, text: String?, modifier: Modifier = Modifier) {
 private fun ColumnScope.SettingText(title: String, subtitle: String?, info: String?) {
     var open by androidx.compose.runtime.saveable.rememberSaveable(title) { androidx.compose.runtime.mutableStateOf(false) }
     Row(verticalAlignment = Alignment.CenterVertically) {
-        Text(title, style = MaterialTheme.typography.bodyLarge, modifier = Modifier.weight(1f, fill = false))
+        // Fase 10: los títulos de las filas de ajustes son los de Mochy: 15.sp seminegrita.
+        Text(title, style = TextStyle(fontFamily = AppFonts.dvne, fontWeight = FontWeight.SemiBold, fontSize = 15.sp, lineHeight = 19.sp), modifier = Modifier.weight(1f, fill = false))
         if (info != null) InfoMark(open, title) { open = !open }
     }
     if (subtitle != null) Text(subtitle, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
@@ -152,10 +169,13 @@ private fun ColumnScope.SettingText(title: String, subtitle: String?, info: Stri
 @Composable
 fun Toggle(title: String, subtitle: String?, checked: Boolean, icon: ImageVector? = null, info: String? = null, enabled: Boolean = true, onChange: (Boolean) -> Unit) {
     val ui = LocalUi.current
+    val press = remember { MutableInteractionSource() }
     // The whole row is the switch (one target for TalkBack too); the switch itself only shows the state.
+    // Fase 10: la fila se encoge un poco al presionarla y se ilumina con el highlight de Mochy.
     Row(
-        Modifier.fillMaxWidth().toggleable(checked, enabled = enabled, role = androidx.compose.ui.semantics.Role.Switch, onValueChange = onChange)
-            .padding(horizontal = 16.dp, vertical = ui.gap(13.dp)),
+        Modifier.fillMaxWidth().mochyPressBounce(press, pressedScale = 0.96f)
+            .toggleable(checked, interactionSource = press, indication = mochyRowHighlight(), enabled = enabled, role = androidx.compose.ui.semantics.Role.Switch, onValueChange = onChange)
+            .padding(horizontal = 20.dp, vertical = ui.gap(13.dp)),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         if (icon != null) { Icon(icon, null, tint = MaterialTheme.colorScheme.onSurfaceVariant); Spacer(Modifier.width(16.dp)) }
@@ -168,8 +188,11 @@ fun Toggle(title: String, subtitle: String?, checked: Boolean, icon: ImageVector
 @Composable
 fun Item(title: String, subtitle: String?, onClick: () -> Unit, icon: ImageVector? = null, info: String? = null, trailing: (@Composable () -> Unit)? = null) {
     val ui = LocalUi.current
+    val press = remember { MutableInteractionSource() }
     Row(
-        Modifier.fillMaxWidth().clickable(onClick = onClick).padding(horizontal = 16.dp, vertical = ui.gap(14.dp)),
+        Modifier.fillMaxWidth().mochyPressBounce(press, pressedScale = 0.96f)
+            .clickable(interactionSource = press, indication = mochyRowHighlight(), onClick = onClick)
+            .padding(horizontal = 20.dp, vertical = ui.gap(14.dp)),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         if (icon != null) { Icon(icon, null, tint = MaterialTheme.colorScheme.onSurfaceVariant); Spacer(Modifier.width(16.dp)) }
@@ -210,11 +233,14 @@ fun ShowChips(options: List<ShowOption>) {
 @Composable
 fun NavRow(icon: ImageVector, title: String, subtitle: String?, selected: Boolean = false, hint: String? = null, hue: Color? = null, onClick: () -> Unit) {
     val ui = LocalUi.current
+    val press = remember { MutableInteractionSource() }
     Row(
         Modifier.fillMaxWidth()
             // The page open beside the list (wide windows) is marked.
             .then(if (selected) Modifier.background(MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f)) else Modifier)
-            .clickable(onClick = onClick).padding(horizontal = 16.dp, vertical = ui.gap(11.dp)),
+            .mochyPressBounce(press, pressedScale = 0.96f)
+            .clickable(interactionSource = press, indication = mochyRowHighlight(), onClick = onClick)
+            .padding(horizontal = 20.dp, vertical = ui.gap(11.dp)),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         if (hue != null) androidx.compose.foundation.layout.Box(

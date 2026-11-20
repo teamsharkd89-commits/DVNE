@@ -2,6 +2,10 @@
 
 What changed in each release. Older releases are described on the [Releases page](https://github.com/teamsharkd89-commits/DVNE/releases).
 
+## 1.8.7.19
+
+- **Ajustes estilo Mochy.** Las filas de ajustes ahora se encogen un poco al presionarlas y se iluminan con el highlight redondo, con los títulos en 15.sp seminegrita y más aire a los lados. Todas las opciones siguen en su sitio.
+
 ## 1.8.7.18
 
 - **Arreglo de compilación de la Cola estilo Mochy.** La 1.8.7.16 no compiló: faltaba un import en la fila de la cola. Corregido; la Cola y las Letras estilo Mochy van en esta versión.
