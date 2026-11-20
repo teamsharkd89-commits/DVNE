@@ -12,7 +12,6 @@ import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.gestures.detectVerticalDragGestures
@@ -31,7 +30,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -252,23 +250,32 @@ fun MiniPlayer(
                 }
             }
             if (settings.miniPrevButton) {
-                IconButton(onClick = { haptics.click(); pc.previous() }, modifier = Modifier.size(40.dp)) { Icon(DvneIcons.Previous, tr(R.string.widget_previous)) }
+                MochyMiniButton(onClick = { haptics.click(); pc.previous() }, modifier = Modifier.size(40.dp)) { Icon(DvneIcons.Previous, tr(R.string.widget_previous)) }
             }
             // Play / pause can be left off (Reddit, 1.8.1): a tap still opens the player.
             if (!settings.view.miniPlayButton) {
                 if (!settings.miniSkipButtons) Spacer(Modifier.width(8.dp))
             } else if (style == MiniPlayerStyle.PILL) {
-                Box(
-                    Modifier.size(40.dp).clip(CircleShape).background(scheme.onSurface).clickable { haptics.click(); pc.togglePlay() },
-                    contentAlignment = Alignment.Center,
-                ) { Icon(if (playing) DvneIcons.Pause else DvneIcons.Play, tr(R.string.play_pause), Modifier.size(24.dp), tint = scheme.surface) }
+                MochyMiniButton(
+                    onClick = { haptics.click(); pc.togglePlay() },
+                    modifier = Modifier.size(40.dp).clip(CircleShape).background(scheme.onSurface),
+                ) {
+                    AnimatedContent(playing, transitionSpec = { MochyMiniIconSwap }, label = "miniPlay") { p ->
+                        Icon(if (p) DvneIcons.Pause else DvneIcons.Play, tr(R.string.play_pause), Modifier.size(24.dp), tint = scheme.surface)
+                    }
+                }
             } else {
-                IconButton(onClick = { haptics.click(); pc.togglePlay() }, modifier = Modifier.size(44.dp)) {
-                    Icon(if (playing) DvneIcons.Pause else DvneIcons.Play, tr(R.string.play_pause), Modifier.size(if (style == MiniPlayerStyle.SLIM) 26.dp else 28.dp))
+                MochyMiniButton(
+                    onClick = { haptics.click(); pc.togglePlay() },
+                    modifier = Modifier.size(44.dp),
+                ) {
+                    AnimatedContent(playing, transitionSpec = { MochyMiniIconSwap }, label = "miniPlay") { p ->
+                        Icon(if (p) DvneIcons.Pause else DvneIcons.Play, tr(R.string.play_pause), Modifier.size(if (style == MiniPlayerStyle.SLIM) 26.dp else 28.dp))
+                    }
                 }
             }
             if (settings.miniSkipButtons) {
-                IconButton(onClick = { haptics.click(); pc.next() }, modifier = Modifier.size(40.dp)) { Icon(DvneIcons.Next, tr(R.string.widget_next)) }
+                MochyMiniButton(onClick = { haptics.click(); pc.next() }, modifier = Modifier.size(40.dp)) { Icon(DvneIcons.Next, tr(R.string.widget_next)) }
             }
         }
         if (settings.miniProgress == MiniProgress.LINE) {

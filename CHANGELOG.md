@@ -2,6 +2,10 @@
 
 What changed in each release. Older releases are described on the [Releases page](https://github.com/teamsharkd89-commits/DVNE/releases).
 
+## 1.8.7.14
+
+- **Mini reproductor estilo Mochy.** Sus botones ahora se encogen bajo el dedo y vuelven con un poco de rebote, con un highlight redondo al presionarlos, y el play cambia a pausa apareciendo desde pequeño. Lo demás del mini reproductor (gestos, estilos, progreso) no cambia.
+
 ## 1.8.7.13
 
 - **Arreglo de compilación de la Biblioteca estilo Mochy.** La 1.8.7.11 no compiló: la vista general usaba `remember` dentro del cuerpo de la rejilla y lambdas finales donde Kotlin no las admite. Corregido; la vista general (Resumen) y la Búsqueda estilo Mochy van en esta versión.
