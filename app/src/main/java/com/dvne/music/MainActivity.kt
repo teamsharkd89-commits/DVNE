@@ -142,6 +142,7 @@ import com.dvne.music.ui.theme.DvneTheme
 import com.dvne.music.ui.theme.ScreenBackdrop
 import com.dvne.music.ui.theme.hairline
 import com.dvne.music.ui.theme.ink3
+import com.dvne.music.ui.theme.mochyNavHighlight
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.semantics.selected
@@ -1119,9 +1120,18 @@ private fun TabBar(
         NavBarStyle.FLOATING -> {
             val full = barSize.floating.dp
             val height = lerp(full, full - 14.dp, compact)
+            // Fase 3: el highlight deslizante de Mochy — una sola píldora que se
+            // desliza detrás del tab activo, en vez de una cápsula por tab. Los
+            // tabs, las etiquetas y selectTab siguen siendo los de DVNE.
+            val selectedIndex = tabs.indexOfFirst { isSelected(it, route) }
+            val highlight = com.dvne.music.ui.components.frostFill(1f)
             val tabsRow: @Composable () -> Unit = {
-                Row(Modifier.testTag(NAV_TABS_TAG).fillMaxWidth().height(height).padding(lerp(6.dp, 4.dp, compact)), verticalAlignment = Alignment.CenterVertically) {
-                    tabs.forEach { tab -> TabItem(tab, isSelected(tab, route), settings.navLabels, compact, Modifier.weight(1f).fillMaxHeight()) { onSelect(tab.route) } }
+                Row(
+                    Modifier.testTag(NAV_TABS_TAG).fillMaxWidth().height(height).padding(lerp(6.dp, 4.dp, compact))
+                        .mochyNavHighlight(selectedIndex, tabs.size, highlight),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    tabs.forEach { tab -> TabItem(tab, isSelected(tab, route), settings.navLabels, compact, Modifier.weight(1f).fillMaxHeight(), ownHighlight = false) { onSelect(tab.route) } }
                 }
             }
             Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
@@ -1212,13 +1222,15 @@ internal fun navFill(fill: com.dvne.music.data.prefs.NavBarFill): Color {
  */
 @OptIn(androidx.compose.foundation.ExperimentalFoundationApi::class)
 @Composable
-private fun TabItem(tab: Tab, selected: Boolean, labels: NavLabels, compact: Float, modifier: Modifier, line: Boolean = false, onClick: () -> Unit) {
+private fun TabItem(tab: Tab, selected: Boolean, labels: NavLabels, compact: Float, modifier: Modifier, line: Boolean = false, ownHighlight: Boolean = true, onClick: () -> Unit) {
     val scheme = MaterialTheme.colorScheme
     val fg by animateColorAsState(if (selected) scheme.onSurface else scheme.ink3, label = "tabInk")
     // Aura × Spectrum: the current tab is lifted on the glass, with a short line of split light under it.
+    // Fase 3: with Mochy's sliding highlight (ownHighlight = false, FLOATING bar) the tab draws neither
+    // its own capsule nor the spectrum line — the sliding pill behind the row is the only mark.
     val lifted = com.dvne.music.ui.components.frostFill(2.6f)
-    val indicator by animateColorAsState(if (selected && !line) lifted else Color.Transparent, label = "tab")
-    val mark by animateFloatAsState(if (selected) 1f else 0f, tween(com.dvne.music.ui.theme.DvneTokens.Motion.STANDARD), label = "tabLine")
+    val indicator by animateColorAsState(if (selected && !line && ownHighlight) lifted else Color.Transparent, label = "tab")
+    val mark by animateFloatAsState(if (selected && ownHighlight) 1f else 0f, tween(com.dvne.music.ui.theme.DvneTokens.Motion.STANDARD), label = "tabLine")
     val dark = com.dvne.music.ui.theme.LocalIsDark.current
     // Holding the Settings tab switches "Customize this" on and off (1.7.3).
     val c = LocalContainer.current

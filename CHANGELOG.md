@@ -2,6 +2,11 @@
 
 What changed in each release. Older releases are described on the [Releases page](https://github.com/teamsharkd89-commits/DVNE/releases).
 
+## 1.8.7.9
+
+- **La barra inferior, estilo Mochy.** El tab activo ahora se marca con una sola píldora que se desliza de un tab a otro, en vez de una cápsula que aparece detrás de cada tab. Tus tabs, tus etiquetas y el comportamiento al tocar un tab (volver arriba de ese tab) siguen igual. Solo cambia en la barra flotante; la barra fija y la mínima quedan como estaban.
+- **Base del look Mochy.** Por dentro ya están las medidas, los estilos de texto y el muestreador del glow de Mochy, listos para el rediseño del Inicio y la Biblioteca que sigue.
+
 ## 1.8.7.8
 
 - **Tema AMOLED.** En Apariencia → Color hay un tema nuevo, AMOLED: negro total en toda la app, sin el grano que se veía en playlists y descargas. El tema oscuro y el negro siguen como estaban.
