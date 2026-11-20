@@ -76,6 +76,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -112,6 +113,7 @@ import com.dvne.music.ui.components.recordInto
 import com.dvne.music.ui.components.shareLayer
 import com.dvne.music.ui.theme.LocalContainer
 import com.dvne.music.ui.theme.LocalUi
+import com.dvne.music.ui.theme.AppFonts
 import com.dvne.music.ui.theme.DvneIcons
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.guava.await
@@ -261,7 +263,10 @@ fun BlendsScreen(bottomPadding: Dp) {
                 }
             }
         }
-        if (blends.isNotEmpty()) item("h") { Text(tr(R.string.your_blends), style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(start = 20.dp, top = 24.dp, bottom = 6.dp)) }
+        // Fase 11: las mezclas en estilo Mochy — encabezado de
+        // sección en 17.sp negrita y filas con título en 15.sp
+        // seminegrita.
+        if (blends.isNotEmpty()) item("h") { Text(tr(R.string.your_blends), style = TextStyle(fontFamily = AppFonts.dvne, fontWeight = FontWeight.Bold, fontSize = 17.sp, lineHeight = 22.sp), modifier = Modifier.padding(start = 20.dp, top = 24.dp, bottom = 6.dp)) }
         items(blends.size) { i ->
             val e = blends[i]
             val b = remember(e) { c.blends.blendOf(e) }
@@ -272,7 +277,7 @@ fun BlendsScreen(bottomPadding: Dp) {
                 BlendCover(e, Modifier.size(56.dp), small = true)
                 Spacer(Modifier.width(14.dp))
                 Column(Modifier.weight(1f)) {
-                    Text("${c.blends.myName.ifBlank { "You" }} + ${e.friendName}", style = MaterialTheme.typography.titleMedium, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                    Text("${c.blends.myName.ifBlank { "You" }} + ${e.friendName}", style = TextStyle(fontFamily = AppFonts.dvne, fontWeight = FontWeight.SemiBold, fontSize = 15.sp, lineHeight = 19.sp), maxLines = 1, overflow = TextOverflow.Ellipsis)
                     Text(trp(R.plurals.taste_match_n_songs, b?.songs?.size ?: 0, b?.match ?: 0, b?.songs?.size ?: 0), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
             }
