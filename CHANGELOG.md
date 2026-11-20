@@ -2,6 +2,10 @@
 
 What changed in each release. Older releases are described on the [Releases page](https://github.com/teamsharkd89-commits/DVNE/releases).
 
+## 1.8.7.23
+
+- **Tarjeta de Reconocer estilo Mochy.** La tarjeta de reconocer canciones ahora tiene los laterales de 20.dp, los títulos en 20.sp negrita y los textos en 15.sp. Escuchar y encontrar canciones no cambia.
+
 ## 1.8.7.22
 
 - **Hoja de Cantar estilo Mochy.** La hoja de Cantar ahora tiene los laterales de 20.dp, el título en 20.sp negrita y las etiquetas en 15.sp seminegrita. Separar la voz, su nivel y el tono no cambian.

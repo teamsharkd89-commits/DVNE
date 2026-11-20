@@ -33,9 +33,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.sp
+import com.dvne.music.ui.theme.AppFonts
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import com.dvne.music.DvneActivity
@@ -114,8 +117,10 @@ private fun RecognizeCard(denied: Boolean, onListen: () -> Unit, onOpen: (String
         if (c.recognizer.state.value is Recognizer.State.Listening) c.recognizer.cancel()
         onDone()
     }) { close ->
+        // Fase 11: la tarjeta de Reconocer en estilo Mochy — laterales
+        // de 20.dp, títulos en 20.sp negrita y textos en 15.sp.
         Column(
-            Modifier.fillMaxWidth().navigationBarsPadding().padding(start = 24.dp, end = 24.dp, bottom = 20.dp),
+            Modifier.fillMaxWidth().navigationBarsPadding().padding(start = 20.dp, end = 20.dp, bottom = 20.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             when (val s = state) {
@@ -127,8 +132,8 @@ private fun RecognizeCard(denied: Boolean, onListen: () -> Unit, onOpen: (String
                         Spacer(Modifier.width(16.dp))
                         Column(Modifier.weight(1f)) {
                             Text(tr(R.string.found_it), style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.primary)
-                            Text(r.title ?: "", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Medium, maxLines = 2, overflow = TextOverflow.Ellipsis)
-                            Text(r.artist ?: "", style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                            Text(r.title ?: "", style = TextStyle(fontFamily = AppFonts.dvne, fontWeight = FontWeight.Bold, fontSize = 20.sp, lineHeight = 25.sp), maxLines = 2, overflow = TextOverflow.Ellipsis)
+                            Text(r.artist ?: "", style = TextStyle(fontFamily = AppFonts.dvne, fontWeight = FontWeight.Normal, fontSize = 15.sp, lineHeight = 19.sp), color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 1, overflow = TextOverflow.Ellipsis)
                         }
                     }
                     Spacer(Modifier.height(20.dp))
@@ -155,7 +160,7 @@ private fun RecognizeCard(denied: Boolean, onListen: () -> Unit, onOpen: (String
                 }
                 else -> {
                     val listening = s as? Recognizer.State.Listening
-                    Text(tr(R.string.recognize), style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Medium)
+                    Text(tr(R.string.recognize), style = TextStyle(fontFamily = AppFonts.dvne, fontWeight = FontWeight.Bold, fontSize = 20.sp, lineHeight = 25.sp))
                     ListenButton(listening != null, listening?.level ?: 0f, size = 190.dp) {
                         if (listening != null) c.recognizer.cancel() else onListen()
                     }
@@ -169,7 +174,7 @@ private fun RecognizeCard(denied: Boolean, onListen: () -> Unit, onOpen: (String
                             s is Recognizer.State.Failed -> s.message
                             else -> tr(R.string.tap_to_listen)
                         },
-                        style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Medium, textAlign = TextAlign.Center,
+                        style = TextStyle(fontFamily = AppFonts.dvne, fontWeight = FontWeight.SemiBold, fontSize = 15.sp, lineHeight = 19.sp), textAlign = TextAlign.Center,
                     )
                     Text(
                         when {
