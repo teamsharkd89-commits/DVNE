@@ -2,6 +2,10 @@
 
 What changed in each release. Older releases are described on the [Releases page](https://github.com/teamsharkd89-commits/DVNE/releases).
 
+## 1.8.7.11
+
+- **Biblioteca estilo Mochy.** Al abrir Biblioteca ahora ves primero un Resumen: cuatro tarjetas con tus Canciones, Listas, Álbumes y Artistas, cada una con su conteo y dos portadas reales, y debajo las tarjetas anchas de Añadidas recientemente y Me gusta. Tocar una tarjeta abre su sección. Tus secciones y tus listas no cambian; en Ajustes → Inicio y Biblioteca puedes elegir que Biblioteca abra en otra sección.
+
 ## 1.8.7.10
 
 - **Inicio estilo Mochy.** Nueva plantilla "Mochy" en Personalizar Inicio → Secciones: el Inicio muestra el glow de arriba con los colores de tus portadas, que se apaga al bajar, y los títulos de sección al estilo Mochy. Las secciones de canciones se ven como filas y las mezclas como tarjetas. Las plantillas Clásica, Portadas grandes y Compacta siguen ahí. Si tu Inicio no cambia solo, elige "Mochy" en Personalizar Inicio → Secciones.

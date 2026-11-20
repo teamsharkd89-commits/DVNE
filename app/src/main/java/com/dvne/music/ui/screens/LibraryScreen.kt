@@ -86,7 +86,8 @@ import androidx.compose.ui.semantics.semantics
 
 // The phone's own music files have their own page (Local files, from Playlists), with Songs, Artists and Albums.
 // Tags (1.8.3) last, and only once there's a tag: the other tabs keep their places.
-private enum class LibTab(val label: String) { PLAYLISTS(tr(R.string.playlists)), SONGS(tr(R.string.songs)), ALBUMS(tr(R.string.albums)), ARTISTS(tr(R.string.artists)), HISTORY(tr(R.string.history)), DOWNLOADS(tr(R.string.downloads)), TAGS(tr(R.string.tags)) }
+/** Fase 5: la vista general estilo Mochy, primera al abrir Biblioteca. */
+private enum class LibTab(val label: String) { OVERVIEW(tr(R.string.library_overview)), PLAYLISTS(tr(R.string.playlists)), SONGS(tr(R.string.songs)), ALBUMS(tr(R.string.albums)), ARTISTS(tr(R.string.artists)), HISTORY(tr(R.string.history)), DOWNLOADS(tr(R.string.downloads)), TAGS(tr(R.string.tags)) }
 
 /** One row of History (#118): a play, or a run of plays of the same song one after another. */
 private data class HistoryEntry(val song: com.dvne.music.data.model.Song, val at: Long, val times: Int, val ids: List<Long> = emptyList())
@@ -576,6 +577,36 @@ fun LibraryScreen(bottomPadding: Dp) {
                     }
                 }
                 when (tab) {
+                    LibTab.OVERVIEW -> {
+                        // Fase 5: la Biblioteca estilo Mochy — tarjetas de categoría,
+                        // añadidas recientemente y Me gusta. Cada tarjeta abre su tab.
+                        val goTo: (LibTab) -> Unit = { t -> scope.launch { pager.animateScrollToPage(LibTab.entries.indexOf(t)) } }
+                        val added = remember(albums, savedAlbums, albumsSeen) { albumsRecentlyAdded(albums, savedAlbums.associate { it.id to it.savedAt }, albumsSeen) }
+                        val allEmpty = songsBase.isEmpty() && myPlaylists.isEmpty() && albums.isEmpty() && artists.isEmpty()
+                        if (allEmpty) item(span = { GridItemSpan(maxLineSpan) }) {
+                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                EmptyState(DvneIcons.LibraryFilled, tr(R.string.nothing_here_yet), tr(R.string.like_or_download_songs_or_star))
+                            }
+                        } else {
+                            item(span = { GridItemSpan(maxLineSpan) }, key = "ov-cards") {
+                                MochyLibraryCardGrid(
+                                    listOf(
+                                        MochyLibraryCardEntry(tr(R.string.songs), songsBase.size, songsBase.take(4).map { it.thumbnail }) { goTo(LibTab.SONGS) },
+                                        MochyLibraryCardEntry(tr(R.string.playlists), myPlaylists.size, myPlaylists.take(2).map { it.thumbnail }) { goTo(LibTab.PLAYLISTS) },
+                                        MochyLibraryCardEntry(tr(R.string.albums), albums.size, albums.take(4).map { it.thumbnail }) { goTo(LibTab.ALBUMS) },
+                                        MochyLibraryCardEntry(tr(R.string.artists), artists.size, artists.take(4).map { it.thumbnail }, roundCovers = true) { goTo(LibTab.ARTISTS) },
+                                    ),
+                                    modifier = Modifier.padding(bottom = 10.dp),
+                                )
+                            }
+                            if (added.isNotEmpty()) item(span = { GridItemSpan(maxLineSpan) }, key = "ov-added") {
+                                MochyLibraryWideCard(tr(R.string.recently_added), added.size, added.take(4).map { it.thumbnail }, modifier = Modifier.padding(bottom = 10.dp)) { goTo(LibTab.ALBUMS) }
+                            }
+                            if (liked.isNotEmpty()) item(span = { GridItemSpan(maxLineSpan) }, key = "ov-liked") {
+                                MochyLibraryWideCard(tr(R.string.liked_songs), liked.size, liked.take(4).map { it.thumbnail }) { nav.go(Routes.liked()) }
+                            }
+                        }
+                    }
                     LibTab.PLAYLISTS -> {
                       // The tiles picked and ordered with the edit button at the top (Settings → Library & Replay too).
                       val tilesPart: androidx.compose.foundation.lazy.grid.LazyGridScope.() -> Unit = {

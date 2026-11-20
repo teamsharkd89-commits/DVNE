@@ -542,7 +542,8 @@ data class LibraryPrefs(
     val columns: LibraryColumns = LibraryColumns.AUTO,
     /** Song counts, owners and years under Library's playlists, albums and artists (1.7.6). */
     val subtitles: Boolean = true,
-    val startTab: String = "PLAYLISTS",
+    /** Fase 5: Biblioteca abre en la vista general estilo Mochy. */
+    val startTab: String = "OVERVIEW",
     /** Library's tiles that show, in order (the rest are hidden). */
     val tiles: List<LibraryTile> = LibraryTile.initial,
     /** Library → Playlists shows your playlists above the tiles (Liked songs, Downloads…) instead of below them. */

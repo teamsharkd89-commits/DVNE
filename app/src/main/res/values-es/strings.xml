@@ -861,6 +861,7 @@
     <string name="recent_activity">Actividad reciente</string>
     <string name="favorite">★ Favorito</string>
     <string name="library">Biblioteca</string>
+    <string name="library_overview">Resumen</string>
     <string name="show_as_grid">Mostrar como cuadrícula</string>
     <string name="show_as_list">Mostrar como lista</string>
     <string name="local_files">Archivos locales</string>

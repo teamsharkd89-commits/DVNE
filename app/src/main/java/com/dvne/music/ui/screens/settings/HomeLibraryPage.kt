@@ -50,6 +50,7 @@ internal object HlGroups {
 /** Library's tabs, by the name each is stored under ("Open Library on"). */
 private val libraryTabs: List<Pair<String, String>>
     get() = listOf(
+        "OVERVIEW" to tr(R.string.library_overview),
         "PLAYLISTS" to tr(R.string.playlists), "SONGS" to tr(R.string.songs), "ALBUMS" to tr(R.string.albums), "ARTISTS" to tr(R.string.artists),
         "HISTORY" to tr(R.string.history), "DOWNLOADS" to tr(R.string.downloads),
     )

@@ -926,6 +926,7 @@
     <string name="recent_activity">Recent activity</string>
     <string name="favorite">★ Favorite</string>
     <string name="library">Library</string>
+    <string name="library_overview">Overview</string>
     <string name="show_as_grid">Show as grid</string>
     <string name="show_as_list">Show as list</string>
     <string name="local_files">Local files</string>
