@@ -448,6 +448,15 @@ fun HomeScreen(bottomPadding: androidx.compose.ui.unit.Dp) {
     val scrolled by remember { derivedStateOf { list.firstVisibleItemIndex > 0 || list.firstVisibleItemScrollOffset > 24 } }
     val edge by animateFloatAsState(if (scrolled) 1f else 0f, tween(220), label = "edge")
     Box(Modifier.fillMaxSize()) {
+    // Fase 4: el glow de Mochy detrás del saludo, con los colores de tus
+    // canciones (solo con la plantilla Mochy; se apaga al bajar).
+    if (settings.home.template == com.dvne.music.data.prefs.HomeTemplate.MOCHY) {
+        MochyHomeGlow(
+            urls = (pickSongs + recent).mapNotNull { it.thumbnail }.distinct().take(2),
+            alpha = 1f - edge,
+            modifier = Modifier.align(Alignment.TopCenter).fillMaxWidth().height(300.dp),
+        )
+    }
     PullToRefreshBox(
         isRefreshing = home.refreshing,
         onRefresh = { standInPicks.value = emptyList(); earlyPicks.value = null; refreshes++; home.reload(true); moods.reload(true) },
@@ -491,7 +500,7 @@ fun HomeScreen(bottomPadding: androidx.compose.ui.unit.Dp) {
                             // "Albums & playlists" (#196): what the songs were played from, as cards; songs until there are any.
                             val played by c.recentCollections.items.collectAsState()
                             if (settings.behavior.recentShows == com.dvne.music.data.prefs.RecentShows.COLLECTIONS && played.isNotEmpty()) {
-                                SectionHeader(cfg.titled())
+                                HomeSectionHeader(cfg.titled())
                                 StyledItems(cfg.style, played, openItem)
                             } else recent.filter(offline).take(20).let { if (it.isNotEmpty()) SongSection(cfg, cfg.titled(), null, it) }
                         }
@@ -516,7 +525,7 @@ fun HomeScreen(bottomPadding: androidx.compose.ui.unit.Dp) {
                         HomeSections.MOODS -> if (online) {
                             val m = (moods.state as? Load.Ok)?.value?.picks?.take(12)
                             if (!m.isNullOrEmpty()) {
-                                SectionHeader(cfg.titled(), strapline = tr(R.string.picked_for_you), onMore = { nav.go(Routes.MOODS) })
+                                HomeSectionHeader(cfg.titled(), strapline = tr(R.string.picked_for_you), onMore = { nav.go(Routes.MOODS) })
                                 if (cfg.style != SectionStyle.GRID) StyledEntries(cfg.style, m.map { mood ->
                                     val col = Color(mood.color or 0xFF000000).lit()
                                     HomeEntry(mood.id + mood.params, mood.title, fill = Brush.linearGradient(listOf(col, col.copy(alpha = 0.6f).compositeOver(Color.Black))), onFill = true, icon = DvneIcons.Mood) { openItem(mood) }
@@ -992,6 +1001,16 @@ private fun GreetingSection(cfg: HomeSectionConfig, recent: List<Song>) {
     }
 }
 
+/** Fase 4: con la plantilla Mochy el título de sección es el de Mochy (16sp Bold, blanco 69%, chevron, sin strapline); si no, el de DVNE. */
+@Composable
+private fun HomeSectionHeader(title: String, strapline: String? = null, onMore: (() -> Unit)? = null) {
+    if (com.dvne.music.ui.theme.LocalAppSettings.current.home.template == com.dvne.music.data.prefs.HomeTemplate.MOCHY) {
+        MochySectionHeader(title, onMore = onMore)
+    } else {
+        SectionHeader(title, strapline = strapline, onMore = onMore)
+    }
+}
+
 @Composable
 internal fun SongSection(
     cfg: HomeSectionConfig, title: String, strapline: String?, listed: List<Song>,
@@ -1008,7 +1027,7 @@ internal fun SongSection(
     val current by c.player.currentSong.collectAsState()
     val start: (Int) -> Unit = { i -> play?.invoke(songs, i) ?: c.player.playQueue(songs, i, QueueSource(QueueKind.OTHER, title)) }
     val indexOf: (BrowseItem) -> Int = { item -> songs.indexOfFirst { it.id == item.id }.coerceAtLeast(0) }
-    SectionHeader(title, strapline = strapline, onMore = onMore)
+    HomeSectionHeader(title, strapline = strapline, onMore = onMore)
     when (cfg.style) {
         // Grid (#44): two rows of covers, where List is four rows of songs.
         // One or two songs sit in a single row rather than a column of two.
@@ -1055,7 +1074,7 @@ private fun ShelfSection(cfg: HomeSectionConfig, shelf: Shelf, open: (BrowseItem
         SongSection(cfg, cfg.titled(shelf.title), shelf.strapline, songs, snap = shelf.rows, onMore = more)
         return
     }
-    SectionHeader(cfg.titled(shelf.title), strapline = shelf.strapline, onMore = more)
+    HomeSectionHeader(cfg.titled(shelf.title), strapline = shelf.strapline, onMore = more)
     // Every style, for every kind of item (List used to fall back to a carousel unless they were all songs).
     StyledItems(cfg.style, shelf.items, open)
 }
@@ -1068,7 +1087,7 @@ private fun ShelfSection(cfg: HomeSectionConfig, shelf: Shelf, open: (BrowseItem
 @Composable
 private fun SpeedDialSection(cfg: HomeSectionConfig, items: List<BrowseItem>, youtubeOnly: Boolean, open: (BrowseItem) -> Unit) {
     if (items.size < 3) return
-    SectionHeader(cfg.title, strapline = tr(R.string.your_go_to_music))
+    HomeSectionHeader(cfg.title, strapline = tr(R.string.your_go_to_music))
     when (cfg.style) {
         SectionStyle.CAROUSEL -> ItemCarousel(items, open)
         SectionStyle.HERO -> HeroRow(items, open)
@@ -1308,7 +1327,7 @@ private fun ReplayTeaser(cfg: HomeSectionConfig, now: Long) {
     if (cfg.style != SectionStyle.HERO) {
         val open: () -> Unit = { if (rewind) c.rewindRequest.value = year; nav.go(Routes.REPLAY) }
         val dark = com.dvne.music.ui.theme.LocalIsDark.current
-        SectionHeader(if (rewind) tr(R.string.rewind, year) else tr(R.string.replay, year), strapline = tr(R.string.your_year_so_far), onMore = open)
+        HomeSectionHeader(if (rewind) tr(R.string.rewind, year) else tr(R.string.replay, year), strapline = tr(R.string.your_year_so_far), onMore = open)
         StyledEntries(cfg.style, listOfNotNull(
             HomeEntry("replay:time", total.full, listOfNotNull(if (rewind) tr(R.string.your_year_in_music) else tr(R.string.listened_this_year)).joinToString(" · "), icon = DvneIcons.ReplayFilled,
                 fill = com.dvne.music.ui.theme.DvneTokens.spectrum(dark), onFill = true, onClick = open),
@@ -1405,7 +1424,7 @@ private fun TopGenresSection(cfg: HomeSectionConfig) {
         genres = map.values.groupingBy { it }.eachCount().toList().sortedByDescending { it.second }.take(8)
     }
     if (genres.isEmpty()) return
-    SectionHeader(tr(R.string.your_top_genres), strapline = tr(R.string.from_your_liked_songs))
+    HomeSectionHeader(tr(R.string.your_top_genres), strapline = tr(R.string.from_your_liked_songs))
     val palette = listOf(0xFF7C5CFF, 0xFFFF3B5C, 0xFF00B4D8, 0xFF2EC27E, 0xFFFF6B35, 0xFFE056FD, 0xFFFFB627, 0xFF3A86FF)
     val ui = com.dvne.music.ui.theme.LocalUi.current
     // Grid (the default) is the colored tiles below; the other styles show the same genres their way.

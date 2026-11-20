@@ -86,6 +86,8 @@ enum class SectionStyle(val label: String) { CAROUSEL(tr(R.string.carousel)), GR
 
 /** A Home template: a preset layout for Customize Home (1.8.7.8). */
 enum class HomeTemplate(val label: String) {
+    /** Fase 4: la plantilla Mochy — filas de canciones como Mochy, tarjetas como Mochy. */
+    MOCHY(tr(R.string.home_template_mochy)),
     CLASSIC(tr(R.string.home_template_classic)),
     HERO(tr(R.string.home_template_hero)),
     COMPACT(tr(R.string.home_template_compact)),
@@ -509,8 +511,8 @@ data class MixPrefs(
 /** Home: its sections, header, greeting tiles and buttons (1.8.7: moved out of [AppSettings] into a group of their own). */
 data class HomePrefs(
     val layout: List<HomeSectionConfig> = HomeSections.initial,
-    /** The last Home template applied from Customize Home (1.8.7.8). */
-    val template: HomeTemplate = HomeTemplate.CLASSIC,
+    /** The last Home template applied from Customize Home (1.8.7.8). Fase 4: Mochy is the fresh install's template. */
+    val template: HomeTemplate = HomeTemplate.MOCHY,
     val header: HomeHeader = HomeHeader.GREETING,
     val headerHeight: HomeHeaderHeight = HomeHeaderHeight.MEDIUM,
     /** The picture behind a PICTURE header: a background design's name, or "PHOTO|<file>" (as backgrounds keep theirs). */
@@ -1531,18 +1533,29 @@ object HomeSections {
     /**
      * A Home template's layout (1.8.7.8): the fresh install's sections, with the song sections in the
      * template's style. Classic is the install as it comes; Big covers spotlights the songs; Compact lists them.
+     * Fase 4: Mochy lists the song sections as track rows (like Mochy's HomeTrackGrid) and shows the mixes and
+     * new releases as card rows (like Mochy's HomeCardRow).
      */
     fun templateLayout(template: HomeTemplate): List<HomeSectionConfig> {
-        val songStyle = when (template) {
-            HomeTemplate.CLASSIC -> return initial
-            HomeTemplate.HERO -> SectionStyle.HERO
-            HomeTemplate.COMPACT -> SectionStyle.LIST
-        }
+        if (template == HomeTemplate.CLASSIC) return initial
         return initial.map { cfg ->
-            when (cfg.key) {
-                QUICK_PICKS, MADE_FOR_YOU, NEW_RELEASES, ON_REPEAT, "${YT_PREFIX}mixed for you" -> cfg.copy(style = songStyle)
-                else -> cfg
+            val style = when (template) {
+                HomeTemplate.HERO -> when (cfg.key) {
+                    QUICK_PICKS, MADE_FOR_YOU, NEW_RELEASES, ON_REPEAT, "${YT_PREFIX}mixed for you" -> SectionStyle.HERO
+                    else -> null
+                }
+                HomeTemplate.COMPACT -> when (cfg.key) {
+                    QUICK_PICKS, MADE_FOR_YOU, NEW_RELEASES, ON_REPEAT, "${YT_PREFIX}mixed for you" -> SectionStyle.LIST
+                    else -> null
+                }
+                HomeTemplate.MOCHY -> when (cfg.key) {
+                    QUICK_PICKS, ON_REPEAT, REPEAT_REWIND, FORGOTTEN, LIKED, RECENT, DOWNLOADS -> SectionStyle.LIST
+                    MADE_FOR_YOU, NEW_RELEASES, "${YT_PREFIX}mixed for you" -> SectionStyle.CAROUSEL
+                    else -> null
+                }
+                HomeTemplate.CLASSIC -> null
             }
+            if (style == null) cfg else cfg.copy(style = style)
         }
     }
 

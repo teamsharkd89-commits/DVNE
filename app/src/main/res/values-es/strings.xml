@@ -432,6 +432,7 @@
     <string name="customize_home">Personalizar Inicio</string>
     <string name="home_template">Plantilla de inicio</string>
     <string name="home_template_classic">Clásica</string>
+    <string name="home_template_mochy">Mochy</string>
     <string name="home_template_hero">Portadas grandes</string>
     <string name="home_template_compact">Compacta</string>
     <string name="home_template_info">Un diseño listo para el Inicio: qué secciones se ven, en qué orden y qué tan grandes son sus portadas. Tus secciones fijadas y agregadas se quedan donde están.</string>

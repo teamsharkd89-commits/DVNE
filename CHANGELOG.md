@@ -2,10 +2,10 @@
 
 What changed in each release. Older releases are described on the [Releases page](https://github.com/teamsharkd89-commits/DVNE/releases).
 
-## 1.8.7.9
+## 1.8.7.10
 
+- **Inicio estilo Mochy.** Nueva plantilla "Mochy" en Personalizar Inicio → Secciones: el Inicio muestra el glow de arriba con los colores de tus portadas, que se apaga al bajar, y los títulos de sección al estilo Mochy. Las secciones de canciones se ven como filas y las mezclas como tarjetas. Las plantillas Clásica, Portadas grandes y Compacta siguen ahí. Si tu Inicio no cambia solo, elige "Mochy" en Personalizar Inicio → Secciones.
 - **La barra inferior, estilo Mochy.** El tab activo ahora se marca con una sola píldora que se desliza de un tab a otro, en vez de una cápsula que aparece detrás de cada tab. Tus tabs, tus etiquetas y el comportamiento al tocar un tab (volver arriba de ese tab) siguen igual. Solo cambia en la barra flotante; la barra fija y la mínima quedan como estaban.
-- **Base del look Mochy.** Por dentro ya están las medidas, los estilos de texto y el muestreador del glow de Mochy, listos para el rediseño del Inicio y la Biblioteca que sigue.
 
 ## 1.8.7.8
 

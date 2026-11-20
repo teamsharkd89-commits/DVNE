@@ -470,6 +470,7 @@
     <string name="customize_home">Customize Home</string>
     <string name="home_template">Home template</string>
     <string name="home_template_classic">Classic</string>
+    <string name="home_template_mochy">Mochy</string>
     <string name="home_template_hero">Big covers</string>
     <string name="home_template_compact">Compact</string>
     <string name="home_template_info">A preset layout for Home: which sections show, in which order, and how big their covers are. Your pins and added sections stay where they are.</string>
