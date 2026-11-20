@@ -2,6 +2,10 @@
 
 What changed in each release. Older releases are described on the [Releases page](https://github.com/teamsharkd89-commits/DVNE/releases).
 
+## 1.8.7.29
+
+- **Arreglo de compilación.** La 1.8.7.26 no compiló por un import en conflicto en la pantalla de Replay (dos `TextStyle` distintos); ya está corregido. Lleva también las mezclas y la importación de listas en estilo Mochy.
+
 ## 1.8.7.28
 
 - **Importar listas estilo Mochy.** El encabezado de "Cómo funciona" en Importar listas ahora va en 15.sp seminegrita. Importar desde Spotify, Apple Music y otros servicios no cambia.

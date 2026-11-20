@@ -61,7 +61,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.sp
 import com.dvne.music.ui.theme.AppFonts
@@ -303,7 +302,7 @@ private fun ReplayDatesSheet(onPick: (Period) -> Unit, onDismiss: () -> Unit) {
     }
     com.dvne.music.ui.components.DvneSheet(onDismiss) { close ->
         Column(Modifier.padding(bottom = 20.dp)) {
-            Text(tr(R.string.other_dates), style = TextStyle(fontFamily = AppFonts.dvne, fontWeight = FontWeight.Bold, fontSize = 20.sp, lineHeight = 25.sp), modifier = Modifier.padding(horizontal = 20.dp, vertical = 4.dp))
+            Text(tr(R.string.other_dates), style = androidx.compose.ui.text.TextStyle(fontFamily = AppFonts.dvne, fontWeight = FontWeight.Bold, fontSize = 20.sp, lineHeight = 25.sp), modifier = Modifier.padding(horizontal = 20.dp, vertical = 4.dp))
             com.dvne.music.ui.components.SheetAction(DvneIcons.Calendar, tr(R.string.pick_days_on_a_calendar)) { calendar = true }
             if (months.isNotEmpty()) Text(
                 tr(R.string.a_month), style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant,
