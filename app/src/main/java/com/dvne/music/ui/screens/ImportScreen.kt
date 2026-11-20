@@ -28,8 +28,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.dvne.music.ui.theme.AppFonts
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
@@ -48,6 +52,9 @@ private const val TMM = "https://www.tunemymusic.com/transfer"
  * Library → Import playlist. TuneMyMusic (the service YouTube Music's own app uses) moves playlists
  * from Spotify, Apple Music and others straight into the YouTube Music account; Dvne opens it in the
  * browser and syncs the library when the listener comes back. Dvne never shares its sign-in with it.
+ *
+ * Fase 11: el encabezado "Cómo funciona" va en 15.sp seminegrita
+ * en estilo Mochy; los botones son los compartidos de Dvne.
  */
 @Composable
 fun ImportScreen(bottomPadding: Dp) {
@@ -92,7 +99,7 @@ fun ImportScreen(bottomPadding: Dp) {
                     Text(tr(R.string.from_another_service_or_a_file)); Spacer(Modifier.width(8.dp)); Icon(DvneIcons.OpenInNew, null, Modifier.size(18.dp))
                 }
                 Spacer(Modifier.size(4.dp))
-                Text(tr(R.string.how_it_works), style = MaterialTheme.typography.titleSmall)
+                Text(tr(R.string.how_it_works), style = TextStyle(fontFamily = AppFonts.dvne, fontWeight = FontWeight.SemiBold, fontSize = 15.sp, lineHeight = 19.sp))
                 Text(
                     tr(R.string.t_1_sign_in_to_spotify_or_all, settings.accountEmail.takeIf { it.isNotBlank() }?.let { " ($it)" }.orEmpty()) + "\n" +
                         tr(R.string.t_3_when_the_transfer_finishes_come),

@@ -2,6 +2,10 @@
 
 What changed in each release. Older releases are described on the [Releases page](https://github.com/teamsharkd89-commits/DVNE/releases).
 
+## 1.8.7.28
+
+- **Importar listas estilo Mochy.** El encabezado de "Cómo funciona" en Importar listas ahora va en 15.sp seminegrita. Importar desde Spotify, Apple Music y otros servicios no cambia.
+
 ## 1.8.7.27
 
 - **Mezclas en el dispositivo estilo Mochy.** Los encabezados de Hecho para ti y Nuevos lanzamientos, y los títulos de las mezclas, ahora van en estilo Mochy. Las mezclas en sí no cambian.
