@@ -708,6 +708,12 @@ private fun HomeTopBar() {
     }
     val ui = com.dvne.music.ui.theme.LocalUi.current
     val header = settings.home.header
+    // Armazón Mochy: sin saludo, fecha, nombre ni foto de encabezado —
+    // solo los botones sobre el glow, como en Mochy.
+    if (ui.mochy) {
+        HomeTopRow(greeting, today, showGreeting = false)
+        return
+    }
     // A picture behind the greeting (1.7.6): it runs up under the status bar and fades into the page at its foot.
     if (header == com.dvne.music.data.prefs.HomeHeader.PICTURE || header == com.dvne.music.data.prefs.HomeHeader.NOW_PLAYING) {
         val statusTop = androidx.compose.foundation.layout.WindowInsets.statusBars.asPaddingValues().calculateTopPadding()

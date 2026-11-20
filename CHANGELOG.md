@@ -2,6 +2,10 @@
 
 What changed in each release. Older releases are described on the [Releases page](https://github.com/teamsharkd89-commits/DVNE/releases).
 
+## 1.8.7.34
+
+- **Inicio Mochy sin saludo.** Con el Aspecto Mochy prendido, el Inicio ya no muestra el saludo, la fecha ni la foto de encabezado: arriba quedan solo los botones sobre el glow, como en Mochy. Con el aspecto apagado, el saludo sigue igual.
+
 ## 1.8.7.33
 
 - **Inicio con la estructura de Mochy.** Con el Aspecto Mochy prendido, el Inicio se abre como en Mochy: márgenes de 36.dp en todas las listas, tarjetas de 137.dp y columnas de canciones al ancho de Mochy. Las secciones, los datos y las funciones son las de siempre; solo cambia cómo se presentan.
