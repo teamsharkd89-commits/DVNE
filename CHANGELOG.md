@@ -2,6 +2,10 @@
 
 What changed in each release. Older releases are described on the [Releases page](https://github.com/teamsharkd89-commits/DVNE/releases).
 
+## 1.8.7.13
+
+- **Arreglo de compilación de la Biblioteca estilo Mochy.** La 1.8.7.11 no compiló: la vista general usaba `remember` dentro del cuerpo de la rejilla y lambdas finales donde Kotlin no las admite. Corregido; la vista general (Resumen) y la Búsqueda estilo Mochy van en esta versión.
+
 ## 1.8.7.12
 
 - **Búsqueda estilo Mochy.** Los títulos de sección de Búsqueda — recientes, tus artistas, Explorar, estados de ánimo y los grupos de resultados — ahora son los de Mochy. Y doble toque en el tab Buscar pone el foco en el campo para escribir sin tocarlo.

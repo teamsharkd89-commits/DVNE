@@ -581,7 +581,9 @@ fun LibraryScreen(bottomPadding: Dp) {
                         // Fase 5: la Biblioteca estilo Mochy — tarjetas de categoría,
                         // añadidas recientemente y Me gusta. Cada tarjeta abre su tab.
                         val goTo: (LibTab) -> Unit = { t -> scope.launch { pager.animateScrollToPage(LibTab.entries.indexOf(t)) } }
-                        val added = remember(albums, savedAlbums, albumsSeen) { albumsRecentlyAdded(albums, savedAlbums.associate { it.id to it.savedAt }, albumsSeen) }
+                        // Sin remember: esta rama vive en el LazyGridScope, que no es
+                        // @Composable; la ordenación es barata y pura.
+                        val added = albumsRecentlyAdded(albums, savedAlbums.associate { it.id to it.savedAt }, albumsSeen)
                         val allEmpty = songsBase.isEmpty() && myPlaylists.isEmpty() && albums.isEmpty() && artists.isEmpty()
                         if (allEmpty) item(span = { GridItemSpan(maxLineSpan) }) {
                             Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -591,19 +593,19 @@ fun LibraryScreen(bottomPadding: Dp) {
                             item(span = { GridItemSpan(maxLineSpan) }, key = "ov-cards") {
                                 MochyLibraryCardGrid(
                                     listOf(
-                                        MochyLibraryCardEntry(tr(R.string.songs), songsBase.size, songsBase.take(4).map { it.thumbnail }) { goTo(LibTab.SONGS) },
-                                        MochyLibraryCardEntry(tr(R.string.playlists), myPlaylists.size, myPlaylists.take(2).map { it.thumbnail }) { goTo(LibTab.PLAYLISTS) },
-                                        MochyLibraryCardEntry(tr(R.string.albums), albums.size, albums.take(4).map { it.thumbnail }) { goTo(LibTab.ALBUMS) },
-                                        MochyLibraryCardEntry(tr(R.string.artists), artists.size, artists.take(4).map { it.thumbnail }, roundCovers = true) { goTo(LibTab.ARTISTS) },
+                                        MochyLibraryCardEntry(tr(R.string.songs), songsBase.size, songsBase.take(4).map { it.thumbnail }, onClick = { goTo(LibTab.SONGS) }),
+                                        MochyLibraryCardEntry(tr(R.string.playlists), myPlaylists.size, myPlaylists.take(2).map { it.thumbnail }, onClick = { goTo(LibTab.PLAYLISTS) }),
+                                        MochyLibraryCardEntry(tr(R.string.albums), albums.size, albums.take(4).map { it.thumbnail }, onClick = { goTo(LibTab.ALBUMS) }),
+                                        MochyLibraryCardEntry(tr(R.string.artists), artists.size, artists.take(4).map { it.thumbnail }, roundCovers = true, onClick = { goTo(LibTab.ARTISTS) }),
                                     ),
                                     modifier = Modifier.padding(bottom = 10.dp),
                                 )
                             }
                             if (added.isNotEmpty()) item(span = { GridItemSpan(maxLineSpan) }, key = "ov-added") {
-                                MochyLibraryWideCard(tr(R.string.recently_added), added.size, added.take(4).map { it.thumbnail }, modifier = Modifier.padding(bottom = 10.dp)) { goTo(LibTab.ALBUMS) }
+                                MochyLibraryWideCard(tr(R.string.recently_added), added.size, added.take(4).map { it.thumbnail }, onClick = { goTo(LibTab.ALBUMS) }, modifier = Modifier.padding(bottom = 10.dp))
                             }
                             if (liked.isNotEmpty()) item(span = { GridItemSpan(maxLineSpan) }, key = "ov-liked") {
-                                MochyLibraryWideCard(tr(R.string.liked_songs), liked.size, liked.take(4).map { it.thumbnail }) { nav.go(Routes.liked()) }
+                                MochyLibraryWideCard(tr(R.string.liked_songs), liked.size, liked.take(4).map { it.thumbnail }, onClick = { nav.go(Routes.liked()) })
                             }
                         }
                     }
