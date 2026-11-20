@@ -2,6 +2,10 @@
 
 What changed in each release. Older releases are described on the [Releases page](https://github.com/teamsharkd89-commits/DVNE/releases).
 
+## 1.8.7.16
+
+- **Cola estilo Mochy.** Las filas ahora miden 60.dp con el título en 15.sp seminegrita y el artista en 13.sp, la fila que suena lleva el fondo claro y las barras animadas sobre su portada, y los títulos de sección son de 17.sp en negrita. Deslizar para quitar, arrastrar para ordenar y elegir canciones no cambian.
+
 ## 1.8.7.15
 
 - **Controles del reproductor estilo Mochy.** En el estilo de glifos, los botones anterior, play y siguiente ahora miden el 21% del ancho (entre 64 y 96.dp) con sus iconos al 73%, se encogen bajo el dedo y el play cambia a pausa con el mismo pop del mini reproductor. El disco, el modo compacto y el mantener-para-buscar no cambian.

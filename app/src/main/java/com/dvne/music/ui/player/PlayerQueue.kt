@@ -20,6 +20,11 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
+import com.dvne.music.ui.components.PlayingBars
+import com.dvne.music.ui.theme.AppFonts
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -493,8 +498,13 @@ private fun djBadge(key: com.dvne.music.playback.MusicKey?, bpmValue: Double?): 
 }
 
 @Composable
+// Fase 8: los títulos de sección de la cola son los de Mochy: 17.sp negrita en blanco.
 private fun Heading(title: String, modifier: Modifier = Modifier) {
-    Text(title, style = MaterialTheme.typography.titleMedium, color = Color.White.copy(alpha = 0.75f), maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = modifier.fillMaxWidth())
+    Text(
+        title,
+        style = TextStyle(fontFamily = AppFonts.dvne, fontWeight = FontWeight.Bold, fontSize = 17.sp, lineHeight = 22.sp),
+        color = Color.White, maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = modifier.fillMaxWidth(),
+    )
 }
 
 @Composable
@@ -562,14 +572,20 @@ private fun QueueRow(
         }
     }
     Row(
-        modifier.fillMaxWidth().then(swipe)
+        modifier.fillMaxWidth().height(60.dp).then(swipe)
             .graphicsLayer {
                 translationX = slide.value
                 alpha = 1f - (-slide.value / size.width.coerceAtLeast(1f)).coerceIn(0f, 0.7f)
             }
-            .clip(RoundedCornerShape(8.dp))
-            .then(if (pick == true) Modifier.background(Color.White.copy(alpha = 0.1f)) else Modifier)
-            .combinedClickable(onClick = onClick, onLongClick = onLongClick).padding(vertical = 6.dp),
+            .clip(RoundedCornerShape(14.dp))
+            .then(
+                when {
+                    pick == true -> Modifier.background(Color.White.copy(alpha = 0.1f))
+                    isCurrent -> Modifier.background(Color.White.copy(alpha = 0.07f))
+                    else -> Modifier
+                },
+            )
+            .combinedClickable(onClick = onClick, onLongClick = onLongClick),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         if (pick != null) {
@@ -580,13 +596,29 @@ private fun QueueRow(
             Icon(DvneIcons.DragHandle, tr(R.string.drag_to_reorder), tint = Color.White.copy(alpha = 0.4f), modifier = Modifier.size(20.dp).offset(x = (-4).dp).then(dragHandle))
             Spacer(Modifier.width(4.dp))
         }
-        AsyncImage(hiRes(com.dvne.music.data.PlaylistCovers.artOf(song), 226), null, modifier = Modifier.size(44.dp).clip(RoundedCornerShape(10.dp)).background(Color.White.copy(alpha = 0.08f)))
+        // Fase 8: la canción que suena lleva las barras sobre su portada, como en Mochy.
+        Box(Modifier.size(44.dp).clip(RoundedCornerShape(8.dp)).background(Color.White.copy(alpha = 0.08f)), contentAlignment = Alignment.Center) {
+            AsyncImage(hiRes(com.dvne.music.data.PlaylistCovers.artOf(song), 226), null, modifier = Modifier.fillMaxSize())
+            if (isCurrent) {
+                Box(Modifier.fillMaxSize().background(Color.Black.copy(alpha = 0.35f)), contentAlignment = Alignment.Center) {
+                    PlayingBars(Modifier.size(18.dp, 14.dp))
+                }
+            }
+        }
         Spacer(Modifier.width(12.dp))
         Column(Modifier.weight(1f)) {
             // #328: as the version picked to play in its place, if any.
             val shown = com.dvne.music.data.SongVersions.shownOf(song)
-            Text(shown.title, style = MaterialTheme.typography.titleMedium, color = if (isCurrent) Color.White else Color.White.copy(alpha = 0.92f), maxLines = 1, overflow = TextOverflow.Ellipsis)
-            Text(shown.artistText, style = MaterialTheme.typography.bodyMedium, color = Color.White.copy(alpha = 0.55f), maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Text(
+                shown.title,
+                style = TextStyle(fontFamily = AppFonts.dvne, fontWeight = FontWeight.SemiBold, fontSize = 15.sp, lineHeight = 19.sp),
+                color = if (isCurrent) Color.White else Color.White.copy(alpha = 0.92f), maxLines = 1, overflow = TextOverflow.Ellipsis,
+            )
+            Text(
+                shown.artistText,
+                style = TextStyle(fontFamily = AppFonts.dvne, fontWeight = FontWeight.Normal, fontSize = 13.sp, lineHeight = 17.sp),
+                color = Color.White.copy(alpha = 0.6f), maxLines = 1, overflow = TextOverflow.Ellipsis,
+            )
         }
         if (showLength && song.durationSec > 0) {
             Spacer(Modifier.width(8.dp))
@@ -602,10 +634,6 @@ private fun QueueRow(
                 modifier = Modifier.clip(RoundedCornerShape(50)).background(Color.White.copy(alpha = 0.12f)).padding(horizontal = 9.dp, vertical = 3.dp),
             )
             Spacer(Modifier.width(8.dp))
-        }
-        if (isCurrent) {
-            Icon(DvneIcons.Equalizer, tr(R.string.widget_now_playing), tint = Color.White, modifier = Modifier.size(18.dp))
-            Spacer(Modifier.width(10.dp))
         }
         if (onMore != null && pick == null) Box(Modifier.size(32.dp).clip(CircleShape).clickable(onClick = onMore), contentAlignment = Alignment.Center) {
             Icon(DvneIcons.More, tr(R.string.more_for, song.title), tint = Color.White.copy(alpha = 0.55f), modifier = Modifier.size(18.dp))
