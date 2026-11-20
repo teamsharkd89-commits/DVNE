@@ -38,6 +38,8 @@ data class DvneUi(
     val buttonShape: com.dvne.music.data.prefs.ButtonShape = com.dvne.music.data.prefs.ButtonShape.PILL,
     /** Dvne 1.6's switches, sliders and buttons: Material's, in the accent (1.7.8, Classic controls). */
     val classicControls: Boolean = false,
+    /** Mochy (1.8.7.30): la plantilla Mochy — tarjetas de 25.dp y filas de 14.dp, fijas. */
+    val mochy: Boolean = false,
 ) {
     /** A corner radius designed at [base] for the default "Round" setting. */
     fun r(base: Dp): Dp = base * corner
@@ -47,8 +49,8 @@ data class DvneUi(
     fun gap(base: Dp): Dp = base * density
 
     // Aura × Spectrum (1.7): soft corners. The Corners setting still scales them.
-    val tile: RoundedCornerShape get() = shape(16.dp)
-    val card: RoundedCornerShape get() = shape(22.dp)
+    val tile: RoundedCornerShape get() = if (mochy) RoundedCornerShape(14.dp) else shape(16.dp)
+    val card: RoundedCornerShape get() = if (mochy) RoundedCornerShape(25.dp) else shape(22.dp)
     val art: RoundedCornerShape get() = shape(14.dp)
     val smallArt: RoundedCornerShape get() = shape(10.dp)
 
@@ -84,6 +86,9 @@ data class DvneUi(
             artistShape = s.shapes.artists,
             buttonShape = s.shapes.button,
             classicControls = s.shapes.classicControls,
+            // El armazón Mochy vive de la plantilla Mochy: al elegirla,
+            // toda la app pasa a tarjetas de 25.dp y barra plana.
+            mochy = s.home.template == com.dvne.music.data.prefs.HomeTemplate.MOCHY,
         )
     }
 }

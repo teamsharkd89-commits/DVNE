@@ -493,7 +493,8 @@ fun DvneTheme(settings: AppSettings, artworkColor: Color?, content: @Composable 
     if (DvneTokens.whiteAccent?.now != whiteAccent?.now || (DvneTokens.whiteAccent == null) != (whiteAccent == null)) DvneTokens.whiteAccent = whiteAccent
 
     // Shapes (1.7.7) are part of it: a cover shape, the corner slider or the buttons' shape applies at once.
-    val ui = remember(settings.corners, settings.shapes, settings.uiDensity, settings.cardSize, settings.titleSize, settings.reduceMotion) { DvneUi.from(settings) }
+    // La plantilla Mochy también: al cambiarla, las esquinas y la barra se recalculan.
+    val ui = remember(settings.corners, settings.shapes, settings.uiDensity, settings.cardSize, settings.titleSize, settings.reduceMotion, settings.home.template) { DvneUi.from(settings) }
     val typography = remember(settings.fontChoice, settings.fontStamp, settings.type) { appTypography(settings) }
     // Settings → Appearance → Text → "Lyrics font" (#12): null keeps each lyric style's own face.
     val lyricsFont = remember(settings.lyrics.font, settings.fontStamp) {

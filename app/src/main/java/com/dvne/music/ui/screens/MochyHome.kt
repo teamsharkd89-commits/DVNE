@@ -61,9 +61,17 @@ fun MochyHomeGlow(urls: List<String>, alpha: Float, modifier: Modifier = Modifie
     var tones by remember { mutableStateOf<Pair<Color, Color>?>(null) }
     LaunchedEffect(urls) {
         tones = null
-        val url = urls.firstOrNull() ?: return@LaunchedEffect
+        // Sin portadas no hay tonos que sacar: el glow fijo de Mochy.
+        val url = urls.firstOrNull()
+        if (url == null) {
+            tones = MochyGlowFixedColor.BLUE.color to MochyGlowFixedColor.VIOLET.color
+            return@LaunchedEffect
+        }
         tones = MochyGlowColor.loadPair(context, url, 0.5f)
             ?: MochyGlowColor.load(context, url, 0.5f)?.let { it to it }
+            // Armazón Mochy: si la portada no da tonos, el glow no
+            // desaparece — cae a los dos fijos de Mochy (azul/violeta).
+            ?: (MochyGlowFixedColor.BLUE.color to MochyGlowFixedColor.VIOLET.color)
     }
     val pair = tones
     Box(

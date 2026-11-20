@@ -2,6 +2,10 @@
 
 What changed in each release. Older releases are described on the [Releases page](https://github.com/teamsharkd89-commits/DVNE/releases).
 
+## 1.8.7.30
+
+- **Armazón Mochy.** Al elegir la plantilla Mochy en Personalizar Inicio → Secciones, ahora cambia toda la app, no solo los títulos: la barra de navegación deja de ser cristal y pasa a ser una píldora plana oscura, y las tarjetas pasan a esquinas de 25.dp como en Mochy. El glow del Inicio ya no desaparece si la portada no da colores: cae a azul/violeta. Con las demás plantillas todo sigue igual que antes.
+
 ## 1.8.7.29
 
 - **Arreglo de compilación.** La 1.8.7.26 no compiló por un import en conflicto en la pantalla de Replay (dos `TextStyle` distintos); ya está corregido. Lleva también las mezclas y la importación de listas en estilo Mochy.

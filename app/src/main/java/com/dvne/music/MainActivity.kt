@@ -136,6 +136,7 @@ import com.dvne.music.ui.screens.WelcomeScreen
 import com.dvne.music.ui.theme.BackdropScreen
 import com.dvne.music.ui.theme.GlassSurface
 import com.dvne.music.ui.theme.LocalContainer
+import com.dvne.music.ui.theme.LocalUi
 import com.dvne.music.ui.theme.LocalHazeState
 import com.dvne.music.ui.theme.DvneIcons
 import com.dvne.music.ui.theme.DvneTheme
@@ -1136,14 +1137,35 @@ private fun TabBar(
                 }
             }
             Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-                if (joined != null) GlassSurface(Modifier.fillMaxWidth(), shape = RoundedCornerShape(28.dp), tint = tint) {
-                    Column {
-                        joined()
-                        Box(Modifier.fillMaxWidth().padding(horizontal = 16.dp).height(0.75.dp).background(MaterialTheme.colorScheme.hairline))
+                // Armazón Mochy (1.8.7.30): la barra es una píldora plana
+                // (#1A1A1A en negro puro), sin cristal; el cristal sigue
+                // siendo el de DVNE con las demás plantillas.
+                val mochy = LocalUi.current.mochy
+                val flatBar: @Composable (Modifier, androidx.compose.ui.graphics.Shape, @Composable () -> Unit) -> Unit = { m, shape, c ->
+                    Box(m.clip(shape).background(MaterialTheme.colorScheme.surfaceContainerHigh)) { c() }
+                }
+                if (joined != null) {
+                    if (mochy) Box(Modifier.fillMaxWidth()) {
+                        flatBar(Modifier.fillMaxWidth(), RoundedCornerShape(28.dp)) {
+                            Column {
+                                joined()
+                                Box(Modifier.fillMaxWidth().padding(horizontal = 16.dp).height(0.75.dp).background(MaterialTheme.colorScheme.hairline))
+                                tabsRow()
+                            }
+                        }
+                    } else GlassSurface(Modifier.fillMaxWidth(), shape = RoundedCornerShape(28.dp), tint = tint) {
+                        Column {
+                            joined()
+                            Box(Modifier.fillMaxWidth().padding(horizontal = 16.dp).height(0.75.dp).background(MaterialTheme.colorScheme.hairline))
+                            tabsRow()
+                        }
+                    }
+                } else {
+                    if (mochy) Box(Modifier.fillMaxWidth(1f - 0.30f * compact).height(height)) {
+                        flatBar(Modifier.fillMaxWidth().height(height), RoundedCornerShape(height / 2)) { tabsRow() }
+                    } else GlassSurface(Modifier.fillMaxWidth(1f - 0.30f * compact).height(height), shape = RoundedCornerShape(height / 2), tint = tint) {
                         tabsRow()
                     }
-                } else GlassSurface(Modifier.fillMaxWidth(1f - 0.30f * compact).height(height), shape = RoundedCornerShape(height / 2), tint = tint) {
-                    tabsRow()
                 }
             }
         }
@@ -1158,7 +1180,7 @@ private fun TabBar(
                     tabs.forEach { tab -> TabItem(tab, isSelected(tab, route), settings.navLabels, compact, Modifier.weight(1f).fillMaxHeight(), line = true, onDoubleClick = if (tab.route == Routes.SEARCH) ({ MochySearchFocus.request() }) else null) { onSelect(tab.route) } }
                 }
             }
-            if (settings.liquidGlass || settings.frostedGlass) GlassSurface(Modifier.fillMaxWidth(), shape = RoundedCornerShape(0.dp), elevation = 0.dp, tint = tint, refract = false) { row() }
+            if ((settings.liquidGlass || settings.frostedGlass) && !LocalUi.current.mochy) GlassSurface(Modifier.fillMaxWidth(), shape = RoundedCornerShape(0.dp), elevation = 0.dp, tint = tint, refract = false) { row() }
             else Box(
                 Modifier.fillMaxWidth().background(if (tint.isSpecified) tint else scheme.background)
                     .drawBehind { drawLine(scheme.hairline, Offset(0f, 0f), Offset(size.width, 0f), 1.dp.toPx() * 0.75f) },
@@ -1166,7 +1188,12 @@ private fun TabBar(
         }
         NavBarStyle.MINIMAL -> {
             Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-                GlassSurface(Modifier.height(barSize.minimal.dp), shape = RoundedCornerShape((barSize.minimal / 2).dp), tint = tint) {
+                // Armazón Mochy: píldora plana en vez de cristal.
+                if (LocalUi.current.mochy) Box(Modifier.height(barSize.minimal.dp).clip(RoundedCornerShape((barSize.minimal / 2).dp)).background(MaterialTheme.colorScheme.surfaceContainerHigh)) {
+                    Row(Modifier.testTag(NAV_TABS_TAG).fillMaxHeight().padding(5.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(2.dp)) {
+                        tabs.forEach { tab -> MinimalTab(tab, isSelected(tab, route), (barSize.minimal - 10).dp, onDoubleClick = if (tab.route == Routes.SEARCH) ({ MochySearchFocus.request() }) else null) { onSelect(tab.route) } }
+                    }
+                } else GlassSurface(Modifier.height(barSize.minimal.dp), shape = RoundedCornerShape((barSize.minimal / 2).dp), tint = tint) {
                     Row(Modifier.testTag(NAV_TABS_TAG).fillMaxHeight().padding(5.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(2.dp)) {
                         tabs.forEach { tab -> MinimalTab(tab, isSelected(tab, route), (barSize.minimal - 10).dp, onDoubleClick = if (tab.route == Routes.SEARCH) ({ MochySearchFocus.request() }) else null) { onSelect(tab.route) } }
                     }
