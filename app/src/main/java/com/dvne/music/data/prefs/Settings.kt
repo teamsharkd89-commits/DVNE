@@ -134,7 +134,8 @@ enum class ButtonShape(val label: String) { PILL(tr(R.string.button_shape_fully_
 
 /** Lyrics, your way (1.7.5). Every default draws the lyrics as 1.7.4 did. Nested since 1.7.7 (see [ShapeLook]). */
 data class LyricsLookPrefs(
-    val style: LyricsStyle = LyricsStyle.DVNE,
+    /** Fase 9: el estilo de Mochy es el punto de partida. */
+    val style: LyricsStyle = LyricsStyle.MOCHY,
     /** Focus blur's strength (0 off … 2 strong; 1 as before). It replaces the old on/off `lyricsBlur`, which it starts from. */
     val blurAmount: Float = 1f,
     /** Room between lines (0.6 tight … 1.8 airy; 1 as before). */
@@ -183,11 +184,16 @@ data class LyricsLookPrefs(
     /** Bold card: the lines on the cover's color, the ones to come dark (only with that background; see [pageBackground]). */
     val cardNow: Boolean get() = card ?: (style == LyricsStyle.CARD)
     /** A glow round the sung words (Android 12 and later). */
-    val haloNow: Boolean get() = halo ?: (style == LyricsStyle.GLOW)
+    val haloNow: Boolean get() = halo ?: (style == LyricsStyle.GLOW || style == LyricsStyle.MOCHY)
     /** Bold card's type: at least Bold, whatever [weight] says, until a weight is picked. */
     val boldLinesNow: Boolean get() = boldLines ?: (style == LyricsStyle.CARD)
     /** The weight the lines are drawn in. */
-    val weightNow: LyricsWeight get() = if (boldLinesNow && weight.weight < LyricsWeight.BOLD.weight) LyricsWeight.BOLD else weight
+    val weightNow: LyricsWeight get() = when {
+        boldLinesNow && weight.weight < LyricsWeight.BOLD.weight -> LyricsWeight.BOLD
+        // Fase 9: Mochy dibuja las líneas en seminegrita como mínimo.
+        style == LyricsStyle.MOCHY && weight.weight < LyricsWeight.SEMIBOLD.weight -> LyricsWeight.SEMIBOLD
+        else -> weight
+    }
     /** The lines' size against the size setting: starting from Bold card, a tenth bigger. */
     val sizeScale: Float get() = if (style == LyricsStyle.CARD) 1.1f else 1f
     /** What's behind the lyrics page: Bold card brings its own color when the background is left as it is. */
@@ -229,10 +235,11 @@ val LyricsStyle.motion: LyricsMotion get() = when (this) {
     LyricsStyle.CARD, LyricsStyle.GLOW -> LyricsMotion.SWEEP
     LyricsStyle.TYPEWRITER -> LyricsMotion.TYPEWRITER
     LyricsStyle.CALM -> LyricsMotion.NONE
+    LyricsStyle.MOCHY -> LyricsMotion.GROW
 }
 
 /** Whether a Style moves lines timed only as a whole word by word (Karaoke, Bold card and Typewriter did). */
-val LyricsStyle.wordByWord: Boolean get() = this == LyricsStyle.KARAOKE || this == LyricsStyle.CARD || this == LyricsStyle.TYPEWRITER
+val LyricsStyle.wordByWord: Boolean get() = this == LyricsStyle.KARAOKE || this == LyricsStyle.CARD || this == LyricsStyle.TYPEWRITER || this == LyricsStyle.MOCHY
 
 /** An instrumental break on the lyrics page (1.7.8, #158). */
 enum class LyricsGapMark(val label: String) { DOTS(tr(R.string.three_dots)), NOTE(tr(R.string.music_note)) }
@@ -1257,6 +1264,8 @@ enum class LyricsStyle(val label: String, val note: String) {
     GLOW(tr(R.string.glow), tr(R.string.the_sung_words_glow)),
     TYPEWRITER(tr(R.string.typewriter), tr(R.string.words_appear_as_they_re_sung)),
     CALM(tr(R.string.calm), tr(R.string.no_animation_the_line_simply_brightens)),
+    /** Fase 9: el estilo de Mochy — líneas grandes seminegrita, la que suena crece y brilla. */
+    MOCHY(tr(R.string.lyrics_style_mochy), tr(R.string.lyrics_mochy_note)),
 }
 
 /** What the player's volume slider changes (#116): the phone's media volume (as before), or Dvne's own. */
@@ -1266,7 +1275,7 @@ enum class VolumeControl(val label: String) { PHONE(tr(R.string.the_phone_s_volu
 enum class LyricsColor(val label: String) { WHITE(tr(R.string.white)), SPECTRUM(tr(R.string.your_light)), ACCENT(tr(R.string.accent)), COVER(tr(R.string.from_the_cover)), CUSTOM(tr(R.string.your_color)) }
 
 /** How heavy the lyrics are; the sung word grows two steps bolder (Dvne and Bold card). [LIGHT] as 1.7. */
-enum class LyricsWeight(val label: String, val weight: Int) { THIN(tr(R.string.thin), 200), LIGHT(tr(R.string.light), 300), REGULAR(tr(R.string.regular), 400), MEDIUM(tr(R.string.medium), 500), BOLD(tr(R.string.bold), 700) }
+enum class LyricsWeight(val label: String, val weight: Int) { THIN(tr(R.string.thin), 200), LIGHT(tr(R.string.light), 300), REGULAR(tr(R.string.regular), 400), MEDIUM(tr(R.string.medium), 500), SEMIBOLD(tr(R.string.semibold), 600), BOLD(tr(R.string.bold), 700) }
 
 /** Where the line being sung settles on the lyrics page ([fraction] of the way down). [TOP] as 1.7. */
 enum class LyricsPosition(val label: String, val note: String, val fraction: Float) {

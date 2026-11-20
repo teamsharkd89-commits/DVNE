@@ -2,6 +2,10 @@
 
 What changed in each release. Older releases are described on the [Releases page](https://github.com/teamsharkd89-commits/DVNE/releases).
 
+## 1.8.7.17
+
+- **Letras estilo Mochy.** Nuevo estilo de letras "Mochy" en Letras a tu manera → Empezar desde: líneas grandes seminegrita, la que suena crece un poco y brilla, y las palabras avanzan una por una. Es el estilo nuevo por defecto; los demás estilos siguen ahí y se puede volver a cualquiera.
+
 ## 1.8.7.16
 
 - **Cola estilo Mochy.** Las filas ahora miden 60.dp con el título en 15.sp seminegrita y el artista en 13.sp, la fila que suena lleva el fondo claro y las barras animadas sobre su portada, y los títulos de sección son de 17.sp en negrita. Deslizar para quitar, arrastrar para ordenar y elegir canciones no cambian.

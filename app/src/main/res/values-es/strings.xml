@@ -3043,6 +3043,9 @@
     <string name="three_dots">Tres puntos</string>
     <string name="music_note">Nota musical</string>
     <string name="bold">Negrita</string>
+    <string name="semibold">Seminegrita</string>
+    <string name="lyrics_style_mochy">Mochy</string>
+    <string name="lyrics_mochy_note">Líneas grandes seminegrita, la que suena brilla</string>
     <string name="wide">Amplio</string>
     <string name="ink">Sencillo</string>
     <string name="the_light">La luz</string>

@@ -72,7 +72,7 @@ import kotlin.math.roundToInt
 
 /*
  * Customize Dvne → Lyrics: how the lyrics look, in four parts (1.8.0, #253), each picked on its own: the Animation (how
- * the sung line moves), the Text, the Background and the Effects. The six Styles of 1.7.5 are where you "Start from": each
+ * the sung line moves), the Text, the Background and the Effects. The seven Styles are where you "Start from": each
  * sets the parts it used to fix, and any part can be changed after. Every choice shows what it does as a small example,
  * drawn by the same code as the lyrics themselves (always dark, white type).
  */

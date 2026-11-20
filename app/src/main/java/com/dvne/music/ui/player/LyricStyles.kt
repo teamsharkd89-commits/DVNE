@@ -78,6 +78,8 @@ data class LyricsLook(
     val position: Float = 0f,
     /** Bold card: the color the lines sit on (null for every other style). */
     val card: Color? = null,
+    /** Fase 9: cuánto crece la línea que suena (Mochy: 1.06; el resto: 1). */
+    val activeScale: Float = 1f,
 ) {
     /** Lines timed as a whole are drawn plain, not moving (Dvne's own sweep, as 1.7 drew them). */
     val plainWhenLineTimed: Boolean get() = motion == LyricsMotion.GROW && !wordByWord
@@ -177,6 +179,8 @@ fun lyricsLookOf(p: com.dvne.music.data.prefs.LyricsLookPrefs, sung: Brush?, oth
         ahead = p.ahead.lines,
         position = p.position.fraction,
         card = card,
+        // Fase 9: en el estilo Mochy la línea que suena crece un poco, como en Mochy (1.06).
+        activeScale = if (p.style == com.dvne.music.data.prefs.LyricsStyle.MOCHY) 1.06f else 1f,
     )
 }
 

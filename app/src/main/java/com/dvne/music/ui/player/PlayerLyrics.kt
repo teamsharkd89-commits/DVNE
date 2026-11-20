@@ -1352,8 +1352,9 @@ fun LyricsPanel(
                     textDirection = androidx.compose.ui.text.style.TextDirection.Content,
                 )
             // No animation holds every line at its size; with one, the others breathe back a little.
+            // Fase 9: en el estilo Mochy la línea que suena crece (1.06), como en Mochy.
             val lineScale by animateFloatAsState(
-                if (isActive || !synced || look.motion == com.dvne.music.data.prefs.LyricsMotion.NONE) 1f else 0.98f, tween(LYRIC_SETTLE_MS, easing = LYRIC_EASING), label = "scale",
+                if (isActive) look.activeScale else if (!synced || look.motion == com.dvne.music.data.prefs.LyricsMotion.NONE) 1f else 0.98f, tween(LYRIC_SETTLE_MS, easing = LYRIC_EASING), label = "scale",
             )
             val press = remember { MutableInteractionSource() }
             Box(
