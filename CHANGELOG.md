@@ -2,6 +2,10 @@
 
 What changed in each release. Older releases are described on the [Releases page](https://github.com/teamsharkd89-commits/DVNE/releases).
 
+## 1.8.7.21
+
+- **Chips de la cola estilo Mochy.** Los botones Guardar, Limpiar y DJ de la cola ahora son las píldoras grises de Mochy, con el texto en 13.sp seminegrita. El modo DJ sigue funcionando igual.
+
 ## 1.8.7.20
 
 - **Escuchar Juntos estilo Mochy.** La tarjeta de iniciar sesión ahora tiene las esquinas de 18.dp de las tarjetas anchas de Mochy, el icono en una baldosa blanca, el título en 20.sp negrita y el rebote con highlight al tocarla. Cómo funciona (solo Wi-Fi, sin servidor) no cambia.

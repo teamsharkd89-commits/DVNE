@@ -3,6 +3,8 @@ package com.dvne.music.ui.player
 import com.dvne.music.R
 import com.dvne.music.tr
 import com.dvne.music.trp
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.border
 import com.dvne.music.ui.theme.DvneIcons
 import androidx.compose.foundation.background
@@ -482,12 +484,22 @@ private fun QueueWhy(text: String) {
 /** A small action at the top of the queue ("Save", "Clear"; [selected] for a switch like "DJ"). */
 @Composable
 private fun QueueChip(label: String, selected: Boolean = false, onClick: () -> Unit) {
+    // Fase 11: los chips de la cola son los de Mochy — píldora gris
+    // (#232326, #3D3D41 al estar activo), texto 13.sp seminegrita,
+    // blanco al estar activo y blanco 72% cuando no; el fondo cambia
+    // con una animación de 220 ms.
+    val background by animateColorAsState(
+        targetValue = if (selected) Color(0xFF3D3D41) else Color(0xFF232326),
+        animationSpec = tween(220), label = "queueChip",
+    )
     Text(
-        label, style = MaterialTheme.typography.labelLarge, color = if (selected) Color.Black else Color.White,
+        label,
+        style = TextStyle(fontFamily = AppFonts.dvne, fontWeight = FontWeight.SemiBold, fontSize = 13.sp, lineHeight = 17.sp),
+        color = if (selected) Color.White else Color.White.copy(alpha = 0.72f),
         // Never on two lines (#427): in a row too narrow for it, it ends in "…".
         maxLines = 1, softWrap = false, overflow = TextOverflow.Ellipsis,
-        modifier = Modifier.clip(RoundedCornerShape(50)).background(if (selected) Color.White else Color.White.copy(alpha = 0.12f))
-            .clickable(onClick = onClick).padding(horizontal = 14.dp, vertical = 7.dp),
+        modifier = Modifier.clip(RoundedCornerShape(50)).background(background)
+            .clickable(onClick = onClick).padding(horizontal = 14.dp, vertical = 5.dp),
     )
 }
 
