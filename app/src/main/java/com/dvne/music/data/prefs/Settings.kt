@@ -1690,6 +1690,8 @@ data class AppSettings(
     /** Blurred, non-refractive glass. Mutually exclusive with Liquid Glass. */
     // Aura × Spectrum (1.7): floating glass (tab bar, mini player) blurs what's behind it.
     val frostedGlass: Boolean = true,
+    /** Mochy (1.8.7.32): el armazón Mochy — barra plana y tarjetas de 25.dp — sin depender de la plantilla. */
+    val mochyLook: Boolean = false,
     /** Taps and swipes on player controls give a little buzz. */
     val haptics: Boolean = true,
     /** Artwork runs edge to edge at the top of the player, dissolving into the backdrop. */
@@ -2103,6 +2105,7 @@ class SettingsRepository(
             )
         }
         val frostedGlass = booleanPreferencesKey("frosted_glass")
+        val mochyLook = booleanPreferencesKey("mochy_look")
         val haptics = booleanPreferencesKey("haptics")
         val fullBleedArtwork = booleanPreferencesKey("full_bleed_artwork")
         val videoFullBleed = booleanPreferencesKey("video_full_bleed")
@@ -2531,7 +2534,7 @@ class SettingsRepository(
                 colorSource to 's', accent to 'i', lightStyle to 's', accentExact to 'b', accentLight to 'i', spectrumPreset to 's',
                 spectrumStops to 's', spectrumBands to 'b', surfaceTint to 's', surfaceTintStrength to 'f', surfaceColor to 'i', contrast to 's',
                 artworkSwatch to 's', artworkVivid to 'b', artworkChange to 's', pageColors to 'b',
-                liquidGlass to 'b', glassKind to 's', frostedGlass to 'b', frostedPages to 'b', backdrops to 's', backdropDim to 'f',
+                liquidGlass to 'b', glassKind to 's', frostedGlass to 'b', mochyLook to 'b', frostedPages to 'b', backdrops to 's', backdropDim to 'f',
                 backdropMotion to 'b', reduceMotion to 'b',
                 fontChoice to 's', appFontName to 's', lyricsFont to 's', textScale to 'f', corners to 's', uiDensity to 's', titleSize to 's', cardSize to 's',
                 navStyle to 's', navLabels to 's', navHideOnScroll to 'b', navTabs to 's', startTab to 's',
@@ -2720,6 +2723,7 @@ class SettingsRepository(
             artworkChange = p.enum(K.artworkChange, d.artworkChange),
             pageColors = p[K.pageColors] ?: d.pageColors,
             frostedGlass = p[K.frostedGlass] ?: d.frostedGlass,
+            mochyLook = p[K.mochyLook] ?: d.mochyLook,
             haptics = p[K.haptics] ?: d.haptics,
             // Two switches again (1.8.1, owner): 1.8.0 made the cover and the video one, so the video's own button turned
             // the cover's edge-to-edge look on and off too. Each key is its own setting, as before 1.8.0.
@@ -3455,6 +3459,7 @@ class SettingsRepository(
     fun setAccent(v: Int) = edit { it[K.accent] = v }
     fun setLiquidGlass(v: Boolean) = edit { it[K.liquidGlass] = v; if (v) it[K.frostedGlass] = false }
     fun setFrostedGlass(v: Boolean) = edit { it[K.frostedGlass] = v; if (v) it[K.liquidGlass] = false }
+    fun setMochyLook(v: Boolean) = edit { it[K.mochyLook] = v }
     fun setHaptics(v: Boolean) = edit { it[K.haptics] = v }
     fun setGlassKind(v: GlassKind) = edit { it[K.glassKind] = v.name }
     /** A glass choice in one write, so Undo takes all of it back: as separate writes it could leave the kind behind. */

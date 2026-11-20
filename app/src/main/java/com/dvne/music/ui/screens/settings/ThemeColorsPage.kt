@@ -190,6 +190,7 @@ fun themeColorsChanges(s: AppSettings, dark: Boolean): List<String> {
     line(s.themeMode != d.themeMode || s.pureBlack != d.pureBlack, R.string.theme, themeToMerged(s.themeMode, s.pureBlack).label, themeToMerged(d.themeMode, d.pureBlack).label)
     line(LookChoices.screenChange(s) != LookChoices.screenChange(d), R.string.changing_screens, LookChoices.screenChange(s).label, LookChoices.screenChange(d).label)
     line(s.reduceMotion != d.reduceMotion, R.string.reduce_motion, onOff(s.reduceMotion), onOff(d.reduceMotion))
+    line(s.mochyLook != d.mochyLook, R.string.mochy_look, onOff(s.mochyLook), onOff(d.mochyLook))
     line(lightKey(s) != lightKey(d) || s.spectrumStops != d.spectrumStops, R.string.tl_preset, lightLabel(lightKey(s), dark), lightLabel(lightKey(d), dark))
     line(s.spectrumBands != d.spectrumBands, R.string.smooth_or_bands, bandsLabel(s.spectrumBands), bandsLabel(d.spectrumBands))
     line(s.colorSource != d.colorSource, R.string.accent_from, sourceLabel(s.colorSource), sourceLabel(d.colorSource))
@@ -285,6 +286,12 @@ fun ThemeColorsPage(bottomPadding: Dp, find: String? = null, showBack: Boolean =
                 tr(R.string.reduce_motion), s.reduceMotion, value = tr(R.string.calmer_quicker_animations),
                 info = tr(R.string.no_drifting_backgrounds_no_artwork_bounce), changed = s.reduceMotion != d.reduceMotion,
             ) { prefs.setReduceMotion(it) }
+            // Armazón Mochy (1.8.7.32): su propio interruptor, para no
+            // depender de la plantilla — cualquiera de los dos lo enciende.
+            SwitchRow(
+                tr(R.string.mochy_look), s.mochyLook, value = tr(R.string.mochy_look_note),
+                info = tr(R.string.mochy_look_info), changed = s.mochyLook != d.mochyLook,
+            ) { prefs.setMochyLook(it) }
         }
 
         group(
@@ -632,7 +639,7 @@ val themeColorsLookKeys: List<String> = listOf(
     "color_source", "accent", "accent_exact", "accent_light", "artwork_swatch", "artwork_vivid", "artwork_change",
     "surface_tint", "surface_color", "surface_tint_strength", "contrast_level", "page_picture_accent", "playing_page_color",
     "backdrops", "backdrop_dim", "backdrop_motion", "backdrop_fade",
-    "liquid_glass", "glass_kind", "frosted_glass", "glass_blur", "glass_frost", "glass_more", "frosted_pages",
+    "liquid_glass", "glass_kind", "frosted_glass", "mochy_look", "glass_blur", "glass_frost", "glass_more", "frosted_pages",
 )
 
 /** Old group titles → this page's groups (their titles are their keys). */

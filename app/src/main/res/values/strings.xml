@@ -1594,6 +1594,9 @@
     <string name="frosted_pages">Frosted pages</string>
     <string name="blur_artist_album_playlist">blur artist album playlist</string>
     <string name="reduce_motion">Reduce motion</string>
+    <string name="mochy_look">Mochy look</string>
+    <string name="mochy_look_note">Flat bar and big cards, like Mochy</string>
+    <string name="mochy_look_info">Also turns on when you pick the Mochy template in Customize Home.</string>
     <string name="animations_accessibility">animations accessibility</string>
     <string name="navigation_bar">Navigation bar</string>
     <string name="tab_bar_bottom_bar">tab bar bottom bar</string>

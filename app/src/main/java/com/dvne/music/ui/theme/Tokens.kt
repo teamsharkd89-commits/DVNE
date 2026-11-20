@@ -86,9 +86,9 @@ data class DvneUi(
             artistShape = s.shapes.artists,
             buttonShape = s.shapes.button,
             classicControls = s.shapes.classicControls,
-            // El armazón Mochy vive de la plantilla Mochy: al elegirla,
-            // toda la app pasa a tarjetas de 25.dp y barra plana.
-            mochy = s.home.template == com.dvne.music.data.prefs.HomeTemplate.MOCHY,
+            // El armazón Mochy: el interruptor de Apariencia, o la
+            // plantilla Mochy — cualquiera de los dos lo enciende.
+            mochy = s.mochyLook || s.home.template == com.dvne.music.data.prefs.HomeTemplate.MOCHY,
         )
     }
 }

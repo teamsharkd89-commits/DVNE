@@ -1493,6 +1493,9 @@
     <string name="frosted_pages">Páginas esmeriladas</string>
     <string name="blur_artist_album_playlist">desenfoque artista álbum playlist</string>
     <string name="reduce_motion">Reducir movimiento</string>
+    <string name="mochy_look">Aspecto Mochy</string>
+    <string name="mochy_look_note">Barra plana y tarjetas grandes, como en Mochy</string>
+    <string name="mochy_look_info">También se activa al elegir la plantilla Mochy en Personalizar Inicio.</string>
     <string name="animations_accessibility">animaciones accesibilidad</string>
     <string name="navigation_bar">Barra de navegación</string>
     <string name="tab_bar_bottom_bar">barra de pestañas barra inferior</string>

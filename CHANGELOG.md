@@ -2,6 +2,10 @@
 
 What changed in each release. Older releases are described on the [Releases page](https://github.com/teamsharkd89-commits/DVNE/releases).
 
+## 1.8.7.32
+
+- **Interruptor de Aspecto Mochy.** Ahora hay un interruptor propio en Ajustes → Apariencia → Tema y movimiento: "Aspecto Mochy". Al prenderlo, la barra pasa a plana y las tarjetas a 25.dp en toda la app, sin depender de la plantilla del Inicio. La plantilla Mochy también lo prende, como antes.
+
 ## 1.8.7.31
 
 - **Arreglo de compilación.** La 1.8.7.30 no compiló por un import faltante en el glow del Inicio; ya está corregido. Lleva el armazón Mochy: barra plana, tarjetas de 25.dp y glow con respaldo azul/violeta al elegir la plantilla Mochy.
