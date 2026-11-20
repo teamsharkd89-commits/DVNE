@@ -42,6 +42,8 @@ import com.dvne.music.ui.components.ItemCarousel
 import com.dvne.music.ui.components.rowKeys
 import com.dvne.music.ui.theme.LocalUi
 import com.dvne.music.ui.theme.DvneIcons
+import com.dvne.music.ui.theme.mochyHomeInset
+import com.dvne.music.ui.theme.mochyTrackColumnWidth
 
 /**
  * One thing in a Home section that isn't a YouTube item (a Dvne mix, a Blend, a genre, a shortcut): its picture is
@@ -76,26 +78,29 @@ private val LIST_WIDTH = 330.dp
 fun StyledEntries(style: SectionStyle, entries: List<HomeEntry>) {
     if (entries.isEmpty()) return
     val ui = LocalUi.current
+    // Armazón Mochy: las listas se abren a 36.dp y las columnas de
+    // canciones al ancho de Mochy; fuera de él, todo como DVNE.
+    val mochy = ui.mochy
     // The same entry twice (a mood YouTube lists twice) is a key used twice, which a lazy list refuses (#330's kind).
     val keys = rowKeys(entries) { it.key }
     when (style) {
-        SectionStyle.CAROUSEL -> LazyRow(contentPadding = PaddingValues(horizontal = 14.dp), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+        SectionStyle.CAROUSEL -> LazyRow(contentPadding = PaddingValues(horizontal = mochyHomeInset(14.dp)), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             items(entries.size, key = { keys[it] }) { i -> EntryCard(entries[i], ui.cardWidth) }
         }
         // Dvne's own tiles (mixes, moods) keep the two-row grid for 3 × 3 too: they're drawn, not covers.
         SectionStyle.GRID, SectionStyle.DIAL -> LazyHorizontalGrid(
             GridCells.Fixed(if (entries.size > 2) 2 else 1), Modifier.height(if (entries.size > 2) GRID_ROW * 2 else GRID_ROW),
-            contentPadding = PaddingValues(horizontal = 12.dp),
+            contentPadding = PaddingValues(horizontal = mochyHomeInset(12.dp)),
         ) {
-            items(entries.size, key = { keys[it] }) { i -> EntryCard(entries[i], GRID_CARD) }
+            items(entries.size, key = { keys[it] }) { i -> EntryCard(entries[i], if (mochy) 137.dp else GRID_CARD) }
         }
         SectionStyle.LIST -> {
             val rows = entries.size.coerceIn(1, 4)
-            LazyHorizontalGrid(GridCells.Fixed(rows), Modifier.height(LIST_ROW * rows), contentPadding = PaddingValues(horizontal = 4.dp)) {
-                items(entries.size, key = { keys[it] }) { i -> EntryRow(entries[i], Modifier.width(LIST_WIDTH)) }
+            LazyHorizontalGrid(GridCells.Fixed(rows), Modifier.height(LIST_ROW * rows), contentPadding = PaddingValues(horizontal = mochyHomeInset(4.dp))) {
+                items(entries.size, key = { keys[it] }) { i -> EntryRow(entries[i], Modifier.width(if (mochy) mochyTrackColumnWidth() else LIST_WIDTH)) }
             }
         }
-        SectionStyle.HERO -> LazyRow(contentPadding = PaddingValues(horizontal = 16.dp), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+        SectionStyle.HERO -> LazyRow(contentPadding = PaddingValues(horizontal = mochyHomeInset(16.dp)), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
             items(minOf(entries.size, 12), key = { keys[it] }) { i -> EntryHero(entries[i]) }
         }
     }
@@ -110,6 +115,8 @@ fun StyledItems(style: SectionStyle, listed: List<BrowseItem>, open: (BrowseItem
     // #216: "Hide them" leaves explicit songs off Home's shelves (albums, artists and playlists stay).
     val items = com.dvne.music.data.ExplicitFilter.items(com.dvne.music.ui.theme.LocalAppSettings.current.behavior.explicitContent, listed)
     if (items.isEmpty()) return
+    // Armazón Mochy: mismo margen y ancho de columna que StyledEntries.
+    val mochy = LocalUi.current.mochy
     when (style) {
         SectionStyle.CAROUSEL -> ItemCarousel(items, open)
         SectionStyle.HERO -> HeroRow(items, open)
@@ -117,14 +124,14 @@ fun StyledItems(style: SectionStyle, listed: List<BrowseItem>, open: (BrowseItem
         SectionStyle.DIAL -> SpeedDialPages(items, open)
         SectionStyle.GRID -> LazyHorizontalGrid(
             GridCells.Fixed(if (items.size > 2) 2 else 1), Modifier.height(if (items.size > 2) GRID_ROW * 2 else GRID_ROW),
-            contentPadding = PaddingValues(horizontal = 12.dp),
+            contentPadding = PaddingValues(horizontal = mochyHomeInset(12.dp)),
         ) {
-            items(items.size) { i -> ItemCard(items[i], width = GRID_CARD) { open(items[i]) } }
+            items(items.size) { i -> ItemCard(items[i], width = if (mochy) 137.dp else GRID_CARD) { open(items[i]) } }
         }
         SectionStyle.LIST -> {
             val rows = items.size.coerceIn(1, 4)
-            LazyHorizontalGrid(GridCells.Fixed(rows), Modifier.height(LIST_ROW * rows), contentPadding = PaddingValues(horizontal = 4.dp)) {
-                items(items.size) { i -> Box(Modifier.width(LIST_WIDTH)) { ResultRow(items[i]) { open(items[i]) } } }
+            LazyHorizontalGrid(GridCells.Fixed(rows), Modifier.height(LIST_ROW * rows), contentPadding = PaddingValues(horizontal = mochyHomeInset(4.dp))) {
+                items(items.size) { i -> Box(Modifier.width(if (mochy) mochyTrackColumnWidth() else LIST_WIDTH)) { ResultRow(items[i]) { open(items[i]) } } }
             }
         }
     }

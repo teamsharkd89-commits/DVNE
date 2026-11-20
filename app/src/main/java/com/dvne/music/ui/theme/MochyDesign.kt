@@ -48,8 +48,10 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.util.LruCache
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -314,4 +316,23 @@ object MochyGlowColor {
         val d = kotlin.math.abs(a - b) % 360f
         return minOf(d, 360f - d)
     }
+}
+
+/**
+ * El margen lateral de Mochy (36.dp) cuando el armazón Mochy está activo;
+ * el margen de DVNE que se le pasa fuera de él. Las pantallas lo usan en
+ * sus listas para que se abran como las de Mochy.
+ */
+@Composable
+fun mochyHomeInset(fallback: Dp): Dp =
+    if (LocalUi.current.mochy) MochyDesign.contentInset else fallback
+
+/**
+ * El ancho de columna de Mochy para las listas de canciones (HomeScreen.kt
+ * de Mochy): 76% del ancho, o 47.5% cuando ahí cabe una columna de 320.dp.
+ */
+@Composable
+fun mochyTrackColumnWidth(): Dp {
+    val w = LocalConfiguration.current.screenWidthDp.dp
+    return if (w * 0.475f >= 320.dp) w * 0.475f else w * 0.76f
 }

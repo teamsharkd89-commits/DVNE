@@ -531,7 +531,7 @@ fun HomeScreen(bottomPadding: androidx.compose.ui.unit.Dp) {
                                     HomeEntry(mood.id + mood.params, mood.title, fill = Brush.linearGradient(listOf(col, col.copy(alpha = 0.6f).compositeOver(Color.Black))), onFill = true, icon = DvneIcons.Mood) { openItem(mood) }
                                 }) else LazyHorizontalGrid(
                                     GridCells.Fixed(2), Modifier.height(150.dp),
-                                    contentPadding = PaddingValues(horizontal = 16.dp),
+                                    contentPadding = PaddingValues(horizontal = com.dvne.music.ui.theme.mochyHomeInset(16.dp)),
                                     horizontalArrangement = Arrangement.spacedBy(10.dp), verticalArrangement = Arrangement.spacedBy(10.dp),
                                 ) {
                                     items(m) { mood -> MoodTile(mood, Modifier.width(150.dp).height(68.dp)) { openItem(mood) } }
@@ -1025,6 +1025,8 @@ internal fun SongSection(
     val songs = com.dvne.music.data.ExplicitFilter.shown(com.dvne.music.ui.theme.LocalAppSettings.current.behavior.explicitContent, listed)
     if (songs.isEmpty()) return
     val current by c.player.currentSong.collectAsState()
+    // Armazón Mochy: las listas se abren a 36.dp y las columnas al ancho de Mochy.
+    val mochy = com.dvne.music.ui.theme.LocalUi.current.mochy
     val start: (Int) -> Unit = { i -> play?.invoke(songs, i) ?: c.player.playQueue(songs, i, QueueSource(QueueKind.OTHER, title)) }
     val indexOf: (BrowseItem) -> Int = { item -> songs.indexOfFirst { it.id == item.id }.coerceAtLeast(0) }
     HomeSectionHeader(title, strapline = strapline, onMore = onMore)
@@ -1033,9 +1035,9 @@ internal fun SongSection(
         // One or two songs sit in a single row rather than a column of two.
         SectionStyle.GRID -> LazyHorizontalGrid(
             GridCells.Fixed(if (songs.size > 2) 2 else 1), Modifier.height(if (songs.size > 2) 2 * 212.dp else 212.dp),
-            contentPadding = PaddingValues(horizontal = 12.dp),
+            contentPadding = PaddingValues(horizontal = com.dvne.music.ui.theme.mochyHomeInset(12.dp)),
         ) {
-            items(songs.size) { i -> ItemCard(SongItem(songs[i]), width = 140.dp) { start(i) } }
+            items(songs.size) { i -> ItemCard(SongItem(songs[i]), width = if (mochy) 137.dp else 140.dp) { start(i) } }
         }
         SectionStyle.LIST -> {
             val grid = androidx.compose.foundation.lazy.grid.rememberLazyGridState()
@@ -1049,12 +1051,12 @@ internal fun SongSection(
             LazyHorizontalGrid(
                 GridCells.Fixed(songs.size.coerceIn(1, 4)), Modifier.height(64.dp * songs.size.coerceIn(1, 4)),
                 state = grid,
-                contentPadding = PaddingValues(horizontal = 4.dp),
+                contentPadding = PaddingValues(horizontal = com.dvne.music.ui.theme.mochyHomeInset(4.dp)),
                 flingBehavior = if (snap) snapping else androidx.compose.foundation.gestures.ScrollableDefaults.flingBehavior(),
             ) {
                 items(songs.size) { i ->
                     // The song playing is marked, as in a playlist (#242: Quick picks never showed it).
-                    Box(Modifier.width(330.dp)) { SongRow(songs[i], playing = current?.id == songs[i].id) { start(i) } }
+                    Box(Modifier.width(if (mochy) com.dvne.music.ui.theme.mochyTrackColumnWidth() else 330.dp)) { SongRow(songs[i], playing = current?.id == songs[i].id) { start(i) } }
                 }
             }
         }
@@ -1158,7 +1160,7 @@ internal fun SpeedDialPages(items: List<BrowseItem>, open: (BrowseItem) -> Unit,
             pager,
             // Even margins on both sides (#67 again on 1.7.1: the next page peeking in at the right read as the grid
             // being off-centre); the dots under it say there's more.
-            contentPadding = PaddingValues(horizontal = 16.dp),
+            contentPadding = PaddingValues(horizontal = com.dvne.music.ui.theme.mochyHomeInset(16.dp)),
             // As wide as the start padding, so the page before doesn't show as a sliver at the left edge (#67).
             pageSpacing = 16.dp,
             verticalAlignment = Alignment.Top,
@@ -1227,7 +1229,7 @@ internal fun HeroRow(items: List<BrowseItem>, open: (BrowseItem) -> Unit) {
         if (item is SongItem || target == null) open(item)
         else com.dvne.music.ui.components.playPlayable(c, context, target, item.title, shuffle = false)
     }
-    LazyRow(contentPadding = PaddingValues(horizontal = 16.dp), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+    LazyRow(contentPadding = PaddingValues(horizontal = com.dvne.music.ui.theme.mochyHomeInset(16.dp)), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
         items(items.take(10)) { item ->
             Box(
                 Modifier.width(300.dp).aspectRatio(1.25f).clip(ui.shape(24.dp))
@@ -1437,7 +1439,7 @@ private fun TopGenresSection(cfg: HomeSectionConfig) {
         return
     }
     LazyHorizontalGrid(
-        GridCells.Fixed(2), Modifier.height(140.dp), contentPadding = PaddingValues(horizontal = 16.dp),
+        GridCells.Fixed(2), Modifier.height(140.dp), contentPadding = PaddingValues(horizontal = com.dvne.music.ui.theme.mochyHomeInset(16.dp)),
         horizontalArrangement = Arrangement.spacedBy(10.dp), verticalArrangement = Arrangement.spacedBy(10.dp),
     ) {
         items(genres.size) { i ->

@@ -2,6 +2,10 @@
 
 What changed in each release. Older releases are described on the [Releases page](https://github.com/teamsharkd89-commits/DVNE/releases).
 
+## 1.8.7.33
+
+- **Inicio con la estructura de Mochy.** Con el Aspecto Mochy prendido, el Inicio se abre como en Mochy: márgenes de 36.dp en todas las listas, tarjetas de 137.dp y columnas de canciones al ancho de Mochy. Las secciones, los datos y las funciones son las de siempre; solo cambia cómo se presentan.
+
 ## 1.8.7.32
 
 - **Interruptor de Aspecto Mochy.** Ahora hay un interruptor propio en Ajustes → Apariencia → Tema y movimiento: "Aspecto Mochy". Al prenderlo, la barra pasa a plana y las tarjetas a 25.dp en toda la app, sin depender de la plantilla del Inicio. La plantilla Mochy también lo prende, como antes.

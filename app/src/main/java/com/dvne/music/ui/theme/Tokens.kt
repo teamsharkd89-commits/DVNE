@@ -75,21 +75,25 @@ data class DvneUi(
         )
 
     companion object {
-        fun from(s: AppSettings) = DvneUi(
-            corner = s.shapes.cornerScale ?: s.corners.scale,
-            density = s.uiDensity.scale,
-            cardWidth = s.cardSize.widthDp.dp,
-            titleSize = s.titleSize,
-            reduceMotion = s.reduceMotion,
-            songShape = s.shapes.songs,
-            albumShape = s.shapes.albums,
-            artistShape = s.shapes.artists,
-            buttonShape = s.shapes.button,
-            classicControls = s.shapes.classicControls,
+        fun from(s: AppSettings): DvneUi {
             // El armazón Mochy: el interruptor de Apariencia, o la
             // plantilla Mochy — cualquiera de los dos lo enciende.
-            mochy = s.mochyLook || s.home.template == com.dvne.music.data.prefs.HomeTemplate.MOCHY,
-        )
+            val mochy = s.mochyLook || s.home.template == com.dvne.music.data.prefs.HomeTemplate.MOCHY
+            return DvneUi(
+                corner = s.shapes.cornerScale ?: s.corners.scale,
+                density = s.uiDensity.scale,
+                // Las tarjetas de Mochy miden 137.dp, no el ancho de DVNE.
+                cardWidth = if (mochy) 137.dp else s.cardSize.widthDp.dp,
+                titleSize = s.titleSize,
+                reduceMotion = s.reduceMotion,
+                songShape = s.shapes.songs,
+                albumShape = s.shapes.albums,
+                artistShape = s.shapes.artists,
+                buttonShape = s.shapes.button,
+                classicControls = s.shapes.classicControls,
+                mochy = mochy,
+            )
+        }
     }
 }
 

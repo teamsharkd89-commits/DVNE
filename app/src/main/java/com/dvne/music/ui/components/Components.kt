@@ -91,6 +91,7 @@ import com.dvne.music.ui.Routes
 import com.dvne.music.ui.theme.LocalContainer
 import com.dvne.music.ui.theme.hairline
 import com.dvne.music.ui.theme.ink3
+import com.dvne.music.ui.theme.mochyHomeInset
 import androidx.compose.foundation.border
 import kotlinx.coroutines.launch
 
@@ -430,7 +431,7 @@ private fun Color.compositeOverBlack(): Color = Color(red * alpha, green * alpha
 @Composable
 fun ItemCarousel(items: List<BrowseItem>, onClick: (BrowseItem) -> Unit, cardWidth: Dp = Dp.Unspecified) {
     val w = if (cardWidth == Dp.Unspecified) com.dvne.music.ui.theme.LocalUi.current.cardWidth else cardWidth
-    LazyRow(contentPadding = PaddingValues(horizontal = 14.dp), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+    LazyRow(contentPadding = PaddingValues(horizontal = mochyHomeInset(14.dp)), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
         // Each once: a shelf listing one twice crashed the row ("Key was already used", #346's kind).
         items(items.distinctBy { it.id + it.title }, key = { it.id + it.title }) { item ->
             ItemCard(item, width = if (item is SongItem && item.song.isVideo) w * 1.5f else w) { onClick(item) }
